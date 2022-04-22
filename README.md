@@ -1,5 +1,6 @@
 - per vscode atsidaryt Frontend ir terminale npm install
 - atsidaryti backenda per visual studio, susibuildinti
 - Package Manager Consolej parasyt Update-Database
+- runinti backenda
 - fronto appse .env faile i REACT_APP_API_URL isidet urla, kur tavo visual studio paleidzia backenda
 - vscode terminale npm start

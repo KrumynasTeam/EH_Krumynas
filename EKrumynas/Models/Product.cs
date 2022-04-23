@@ -29,10 +29,15 @@ namespace EKrumynas.Models
         public ProductType Type { get; set; }
         [Required] public string Name { get; set; }
         [Required] public string Description { get; set; }
-        public int DiscountId { get; set; }
+        public int? DiscountId { get; set; }
         
         public virtual Discount Discount { get; set; }
 
         public virtual ICollection<ProductImage> Images { get; set; }
+
+        public Product()
+        {
+            Images = new HashSet<ProductImage>();
+        }
     }
 }

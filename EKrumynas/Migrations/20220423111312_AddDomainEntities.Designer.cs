@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EKrumynas.Migrations
 {
     [DbContext(typeof(EKrumynasDbContext))]
-    [Migration("20220423104806_AddDomainEntities")]
+    [Migration("20220423111312_AddDomainEntities")]
     partial class AddDomainEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -364,6 +364,15 @@ namespace EKrumynas.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AddressLine1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -381,7 +390,9 @@ namespace EKrumynas.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ProfileImage")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

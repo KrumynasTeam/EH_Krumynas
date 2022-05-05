@@ -1,4 +1,4 @@
-using EKrumynas.Data;
+﻿using EKrumynas.Data;
 using EKrumynas.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,15 +26,27 @@ namespace EKrumynas
 
 
             services.AddScoped<IProductService, ProductService>();
-
-            services.AddCors();
+            
+            //services.AddCors();
 
             services.AddControllers();
+
+            // Swagger Service
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EH Krumynas");
+                c.RoutePrefix = string.Empty;
+            });
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

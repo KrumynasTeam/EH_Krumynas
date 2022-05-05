@@ -22,10 +22,12 @@ namespace EKrumynas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EKrumynasDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddAutoMapper(typeof(Startup));
             
             //services.AddCors();
 

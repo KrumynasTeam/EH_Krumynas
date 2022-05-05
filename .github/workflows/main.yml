@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - main
  
 jobs:
   build:
@@ -26,3 +26,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "eh-krumynas-frontend"
           heroku_email: "evaldas.grublys@gmail.com"
+          appdir: "Frontend"

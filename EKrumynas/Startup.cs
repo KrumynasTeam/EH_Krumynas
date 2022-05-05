@@ -26,6 +26,7 @@ namespace EKrumynas
 
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBlogService, BlogService>();
 
             services.AddCors();
 

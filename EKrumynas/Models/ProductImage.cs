@@ -7,6 +7,7 @@ namespace EKrumynas.Models
         [Key]
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public ProductColor Color { get; set; }
         [Required] public string ImagePath { get; set; }
     }
 }

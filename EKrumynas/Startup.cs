@@ -1,4 +1,4 @@
-using EKrumynas.Data;
+﻿using EKrumynas.Data;
 using EKrumynas.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,19 +22,33 @@ namespace EKrumynas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EKrumynasDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddScoped<IProductService, ProductService>();
 
-            services.AddCors();
+            services.AddAutoMapper(typeof(Startup));
+            
+            //services.AddCors();
 
             services.AddControllers();
+
+            // Swagger Service
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EH Krumynas");
+                c.RoutePrefix = string.Empty;
+            });
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

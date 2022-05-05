@@ -28,12 +28,13 @@
     "extends": "react-app"
   },
   "scripts": {
-    "start": "rimraf ./build && react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"node index\"",
+    "heroku-postbuild": "react-scripts build",
     "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "lint": "eslint ./src/"
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "browserslist": {
     "production": [
       ">0.2%",

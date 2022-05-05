@@ -16,12 +16,13 @@ jobs:
           heroku_app_name: "eh-krumynas-backend" #Must be unique in Heroku
           heroku_email: "evaldas.grublys@gmail.com"
           buildpack: "https://github.com/jincod/dotnetcore-buildpack"
-  build:
+  build-web-app:
+    name: React App Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: 'eh-krumynas-frontend'
-          heroku_email: 'evaldas.grublys@gmail.com'
+          heroku_app_name: "eh-krumynas-frontend"
+          heroku_email: "evaldas.grublys@gmail.com"

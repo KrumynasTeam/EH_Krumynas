@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.3",
-    "express": "^4.18.1",
     "jquery": "^3.5.1",
     "merge": "^2.1.1",
     "oidc-client": "^1.9.0",
@@ -29,13 +28,12 @@
     "extends": "react-app"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"node index\"",
-    "heroku-postbuild": "react-scripts build",
+    "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src/"
   },
-  "proxy": "http://localhost:3001",
   "browserslist": {
     "production": [
       ">0.2%",

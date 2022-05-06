@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.DTOs;
 using EKrumynas.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EKrumynas.Services
 {
@@ -17,51 +19,74 @@ namespace EKrumynas.Services
             _context = context;
         }
 
-        public Plant Create(Plant plant)
+        public async Task<Plant> Create(Plant plant)
         {
-            Product product = _context.Products
-                .FirstOrDefault(x => x.Id == plant.Product.Id);
+            Product product = await _context.Products
+                .Include(p => p.Discount)
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(x => x.Id == plant.Product.Id);
 
-            if (product is null) return null;
-            if (product.Type != ProductType.Plant) return null;
+            if (product is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product not found.");
+            }
+
+            if (product.Type != ProductType.Plant)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product should be of plant type");
+            }
+
             plant.Product = product;
 
             _context.Plants.Add(plant);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return plant;
         }
 
-        public Plant DeleteById(int id)
+        public async Task<Plant> DeleteById(int id)
         {
-            Plant found = _context.Plants.FirstOrDefault(x => x.Id == id);
-            if (found is null) return null;
+            Plant found = await _context.Plants
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (found is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product not found.");
+            }
 
             _context.Remove(found);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return found;
         }
 
-        public IList<Plant> GetAll()
+        public async Task<IList<Plant>> GetAll()
         {
-            return _context.Plants
+            return await _context.Plants
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Discount)
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Images)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Plant GetById(int id)
+        public async Task<Plant> GetById(int id)
         {
-            return _context.Plants
+            return await _context.Plants
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Discount)
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Images)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Plant Update(Plant plant)
+        public async Task<Plant> Update(Plant plant)
         {
             throw new System.NotImplementedException();
         }

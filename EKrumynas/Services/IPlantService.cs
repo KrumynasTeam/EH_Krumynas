@@ -1,14 +1,15 @@
 ﻿using EKrumynas.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EKrumynas.Services
 {
     public interface IPlantService
     {
-        IList<Plant> GetAll();
-        Plant GetById(int id);
-        Plant Create(Plant plant);
-        Plant Update(Plant plant);
-        Plant DeleteById(int id);
+        Task<IList<Plant>> GetAll();
+        Task<Plant> GetById(int id);
+        Task<Plant> Create(Plant plant);
+        Task<Plant> Update(Plant plant);
+        Task<Plant> DeleteById(int id);
     }
 }

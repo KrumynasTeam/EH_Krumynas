@@ -1,8 +1,9 @@
-﻿using EKrumynas.Data;
+﻿using AutoWrapper.Wrappers;
+using EKrumynas.Data;
 using EKrumynas.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace EKrumynas.Services
 {
@@ -15,57 +16,76 @@ namespace EKrumynas.Services
             _context = context;
         }
 
-        public Bouquet Create(Bouquet bouquet)
+        public async Task<Bouquet> Create(Bouquet bouquet)
         {
-            Product product = _context.Products
-                .FirstOrDefault(x => x.Id == bouquet.Product.Id);
+            Product product = await _context.Products
+                .Include(p => p.Discount)
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(x => x.Id == bouquet.Product.Id);
 
-            if (product is null) return null;
-            if (product.Type != ProductType.Bouquet) return null;
+            if (product is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product not found.");
+            }
+
+            if (product.Type != ProductType.Bouquet)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product should be of bouquet type");
+            }
+
             bouquet.Product = product;
 
             _context.Bouquets.Add(bouquet);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return bouquet;
         }
 
-        public Bouquet DeleteById(int id)
+        public async Task<Bouquet> DeleteById(int id)
         {
-            Bouquet found = _context.Bouquets
-                .FirstOrDefault(x => x.Id == id);
+            Bouquet found = await _context.Bouquets
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (found is null) return null;
+            if (found is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product not found.");
+            }
 
             _context.Remove(found);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return found;
         }
 
-        public IList<Bouquet> GetAll()
+        public async Task<IList<Bouquet>> GetAll()
         {
-            return _context.Bouquets
+            return await _context.Bouquets
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Discount)
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Images)
                 .Include(b => b.Items)
-                    .ThenInclude(i => i.Plant)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Bouquet GetById(int id)
+        public async Task<Bouquet> GetById(int id)
         {
-            return _context.Bouquets
+            return await _context.Bouquets
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Discount)
                 .Include(p => p.Product)
                     .ThenInclude(pr => pr.Images)
                 .Include(b => b.Items)
-                    .ThenInclude(i => i.Plant)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Bouquet Update(Bouquet bouquet)
+        public async Task<Bouquet> Update(Bouquet bouquet)
         {
             throw new System.NotImplementedException();
         }

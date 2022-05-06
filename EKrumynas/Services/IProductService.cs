@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EKrumynas.DTOs;
 using EKrumynas.Models;
 
@@ -6,10 +7,10 @@ namespace EKrumynas.Services
 {
     public interface IProductService
     {
-        IList<Product> GetAll();
-        Product GetById(int id);
-        Product Create(Product product);
-        Product Update(Product product);
-        Product DeleteById(int id);
+        Task<IList<Product>> GetAll();
+        Task<Product> GetById(int id);
+        Task<Product> Create(Product product);
+        Task<Product> Update(Product product);
+        Task<Product> DeleteById(int id);
     }
 }

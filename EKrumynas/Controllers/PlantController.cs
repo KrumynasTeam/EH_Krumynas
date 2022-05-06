@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using EKrumynas.Services;
 using EKrumynas.DTOs;
 using AutoMapper;
+using System.Threading.Tasks;
+using System;
+using AutoWrapper.Wrappers;
 
 namespace EKrumynas.Controllers
 {
@@ -21,40 +24,78 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        public IList<PlantGetDto> GetAll()
+        public async Task<IList<PlantGetDto>> GetAll()
         {
-            var plants = _plantService.GetAll();
-            var plantGetDtos = _mapper.Map<List<PlantGetDto>>(plants);
+            try
+            {
+                var plants = await _plantService.GetAll();
+                var plantGetDtos = _mapper.Map<List<PlantGetDto>>(plants);
 
-            return plantGetDtos ?? new List<PlantGetDto>();
+                return plantGetDtos ?? new List<PlantGetDto>();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpGet]
         [Route("{id}")]
-        public PlantGetDto GetById(int id)
+        public async Task<PlantGetDto> GetById(int id)
         {
-            var plant = _plantService.GetById(id);
-            var plantGetDto = _mapper.Map<PlantGetDto>(plant);
+            try
+            {
+                var plant = await _plantService.GetById(id);
+                var plantGetDto = _mapper.Map<PlantGetDto>(plant);
 
-            return plantGetDto ?? new PlantGetDto();
+                return plantGetDto ?? new PlantGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public PlantGetDto DeleteById(int id)
+        public async Task<PlantGetDto> DeleteById(int id)
         {
-            var plant = _plantService.DeleteById(id);
-            var plantGetDto = _mapper.Map<PlantGetDto>(plant);
+            try
+            {
+                var plant = await _plantService.DeleteById(id);
+                var plantGetDto = _mapper.Map<PlantGetDto>(plant);
 
-            return plantGetDto ?? new PlantGetDto();
+                return plantGetDto ?? new PlantGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(PlantAddDto plantAddDto)
+        public async Task<IActionResult> Create(PlantAddDto plantAddDto)
         {
-            Plant plant = _mapper.Map<Plant>(plantAddDto);
-            var createdPlant = _plantService.Create(plant);
-            return Ok(createdPlant);
+            try
+            {
+                Plant plant = _mapper.Map<Plant>(plantAddDto);
+                var createdPlant = await _plantService.Create(plant);
+                var plantGetDto = _mapper.Map<PlantGetDto>(createdPlant);
+
+                return Ok(plantGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
     }
 }

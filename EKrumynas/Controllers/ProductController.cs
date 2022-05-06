@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using EKrumynas.Services;
 using EKrumynas.DTOs;
 using AutoMapper;
+using System.Threading.Tasks;
+using System;
+using AutoWrapper.Wrappers;
 
 namespace EKrumynas.Controllers
 {
@@ -21,40 +24,78 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        public IList<ProductGetDto> GetAll()
+        public async Task<IList<ProductGetDto>> GetAll()
         {
-            var products = _productService.GetAll();
-            var productGetDtos = _mapper.Map<List<ProductGetDto>>(products);
+            try
+            {
+                var products = await _productService.GetAll();
+                var productGetDtos = _mapper.Map<List<ProductGetDto>>(products);
 
-            return productGetDtos ?? new List<ProductGetDto>();
+                return productGetDtos ?? new List<ProductGetDto>();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpGet]
         [Route("{id}")]
-        public ProductGetDto GetById(int id)
+        public async Task<ProductGetDto> GetById(int id)
         {
-            var product = _productService.GetById(id);
-            var productGetDto = _mapper.Map<ProductGetDto>(product);
+            try
+            {
+                var product = await _productService.GetById(id);
+                var productGetDto = _mapper.Map<ProductGetDto>(product);
 
-            return productGetDto ?? new ProductGetDto();
+                return productGetDto ?? new ProductGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public ProductGetDto DeleteById(int id)
+        public async Task<ProductGetDto> DeleteById(int id)
         {
-            var product = _productService.DeleteById(id);
-            var productGetDto = _mapper.Map<ProductGetDto>(product);
+            try
+            {
+                var product = await _productService.DeleteById(id);
+                var productGetDto = _mapper.Map<ProductGetDto>(product);
 
-            return productGetDto ?? new ProductGetDto();
+                return productGetDto ?? new ProductGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(ProductAddDto productAddDto)
+        public async Task<IActionResult> Create(ProductAddDto productAddDto)
         {
-            Product product = _mapper.Map<Product>(productAddDto);
-            var createdProduct = _productService.Create(product);
-            return Ok(createdProduct);
+            try
+            {
+                Product product = _mapper.Map<Product>(productAddDto);
+                var createdProduct = await _productService.Create(product);
+                var productGetDto = _mapper.Map<ProductGetDto>(createdProduct);
+
+                return Ok(productGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.DTOs;
 using EKrumynas.Models;
@@ -19,40 +21,49 @@ namespace EKrumynas.Services
             _context = context;
         }
 
-        public Product Create(Product product)
+        public async Task<Product> Create(Product product)
         {
             _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return product;
         }
 
-        public Product DeleteById(int id)
+        public async Task<Product> DeleteById(int id)
         {
-            Product found = _context.Products.FirstOrDefault(x => x.Id == id);
-            if (found is null) return null;
+            Product found = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (found is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Product not found.");
+            }
 
             _context.Remove(found);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return found;
         }
 
-        public IList<Product> GetAll()
+        public async Task<IList<Product>> GetAll()
         {
-            return _context.Products
+            return await _context.Products
                 .Include(p => p.Discount)
                 .Include(p => p.Images)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return _context.Products
+            return await _context.Products
                 .Include(p => p.Discount)
                 .Include(p => p.Images)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Product Update(Product product)
+        public async Task<Product> Update(Product product)
         {
             throw new NotImplementedException();
         }

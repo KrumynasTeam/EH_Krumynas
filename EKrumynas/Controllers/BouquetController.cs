@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using EKrumynas.Services;
 using EKrumynas.DTOs;
 using AutoMapper;
+using System.Threading.Tasks;
+using System;
+using AutoWrapper.Wrappers;
 
 namespace EKrumynas.Controllers
 {
@@ -21,40 +24,79 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        public IList<BouquetGetDto> GetAll()
+        public async Task<IList<BouquetGetDto>> GetAll()
         {
-            var bouquets = _bouquetService.GetAll();
-            var bouquetGetDtos = _mapper.Map<List<BouquetGetDto>>(bouquets);
+            try
+            {
+                var bouquets = await _bouquetService.GetAll();
+                var bouquetGetDtos = _mapper.Map<List<BouquetGetDto>>(bouquets);
 
-            return bouquetGetDtos ?? new List<BouquetGetDto>();
+                return bouquetGetDtos ?? new List<BouquetGetDto>();
+
+            }
+            catch(ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpGet]
         [Route("{id}")]
-        public BouquetGetDto GetById(int id)
+        public async Task<BouquetGetDto> GetById(int id)
         {
-            var bouquet = _bouquetService.GetById(id);
-            var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
+            try
+            {
+                var bouquet = await _bouquetService.GetById(id);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
 
-            return bouquetGetDto ?? new BouquetGetDto();
+                return bouquetGetDto ?? new BouquetGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public BouquetGetDto DeleteById(int id)
+        public async Task<BouquetGetDto> DeleteById(int id)
         {
-            var bouquet = _bouquetService.DeleteById(id);
-            var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
+            try
+            {
+                var bouquet = await _bouquetService.DeleteById(id);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
 
-            return bouquetGetDto ?? new BouquetGetDto();
+                return bouquetGetDto ?? new BouquetGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(BouquetAddDto bouquetAddDto)
+        public async Task<IActionResult> Create(BouquetAddDto bouquetAddDto)
         {
-            Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
-            var createdBouquet = _bouquetService.Create(bouquet);
-            return Ok(createdBouquet);
+            try
+            {
+                Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
+                var createdBouquet = await _bouquetService.Create(bouquet);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(createdBouquet);
+
+                return Ok(bouquetGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
     }
 }

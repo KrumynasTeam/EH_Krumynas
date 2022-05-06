@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using EKrumynas.Services;
 using EKrumynas.DTOs;
 using AutoMapper;
+using System.Threading.Tasks;
+using System;
+using AutoWrapper.Wrappers;
 
 namespace EKrumynas.Controllers
 {
@@ -21,40 +24,78 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        public IList<PotGetDto> GetAll()
+        public async Task<IList<PotGetDto>> GetAll()
         {
-            var pots = _potService.GetAll();
-            var potGetDtos = _mapper.Map<List<PotGetDto>>(pots);
+            try
+            {
+                var pots = await _potService.GetAll();
+                var potGetDtos = _mapper.Map<List<PotGetDto>>(pots);
 
-            return potGetDtos ?? new List<PotGetDto>();
+                return potGetDtos ?? new List<PotGetDto>();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpGet]
         [Route("{id}")]
-        public PotGetDto GetById(int id)
+        public async Task<PotGetDto> GetById(int id)
         {
-            var pot = _potService.GetById(id);
-            var potGetDto = _mapper.Map<PotGetDto>(pot);
+            try
+            {
+                var pot = await _potService.GetById(id);
+                var potGetDto = _mapper.Map<PotGetDto>(pot);
 
-            return potGetDto ?? new PotGetDto();
+                return potGetDto ?? new PotGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public PotGetDto DeleteById(int id)
+        public async Task<PotGetDto> DeleteById(int id)
         {
-            var pot = _potService.DeleteById(id);
-            var potGetDto = _mapper.Map<PotGetDto>(pot);
+            try
+            {
+                var pot = await _potService.DeleteById(id);
+                var potGetDto = _mapper.Map<PotGetDto>(pot);
 
-            return potGetDto ?? new PotGetDto();
+                return potGetDto ?? new PotGetDto();
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(PotAddDto potAddDto)
+        public async Task<IActionResult> Create(PotAddDto potAddDto)
         {
-            Pot pot = _mapper.Map<Pot>(potAddDto);
-            var createdPot = _potService.Create(pot);
-            return Ok(createdPot);
+            try
+            {
+                Pot pot = _mapper.Map<Pot>(potAddDto);
+                var createdPot = await _potService.Create(pot);
+                var potGetDto = _mapper.Map<PotGetDto>(createdPot);
+
+                return Ok(potGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
         }
     }
 }

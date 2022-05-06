@@ -9,42 +9,48 @@ namespace EKrumynas
     {
         public AutoMapperProfile()
         {         
-            CreateMap<ProductAddDto, Product>().ConstructUsing(x => new Product()
+            CreateMap<ProductAddDto, Product>().ConstructUsing(x => new()
             {
                 Name = x.Name,
                 Description = x.Description,
                 Type = (ProductType) Enum.Parse(typeof(ProductType), x.Type, true),
             });
 
-            CreateMap<ProductImageDto, ProductImage>().ConstructUsing(x => new ProductImage()
+            CreateMap<ProductImageDto, ProductImage>().ConstructUsing(x => new ()
             {
                 Color = (ProductColor)Enum.Parse(typeof(ProductColor), x.Color, true),
                 ImagePath = x.ImagePath
             });
 
-            CreateMap<PlantAddDto, Plant>().ConstructUsing(x => new Plant()
+            CreateMap<PlantAddDto, Plant>().ConstructUsing(x => new()
             {
                 Color = (ProductColor)Enum.Parse(typeof(ProductColor), x.Color, true),
-                Price = x.Price
+                Price = x.Price,
+                Product = new() { Id = x.ProductId }
             });
 
-            CreateMap<PotAddDto, Pot>().ConstructUsing(x => new Pot()
+            CreateMap<PotAddDto, Pot>().ConstructUsing(x => new()
             {
                 Color = (ProductColor)Enum.Parse(typeof(ProductColor), x.Color, true),
                 Size = (PotSize)Enum.Parse(typeof(PotSize), x.Size, true),
-                Price = x.Price
+                Price = x.Price,
+                Product = new() { Id = x.ProductId }
             });
 
-            CreateMap<BouquetAddDto, Bouquet>();
-
-            CreateMap<BouquetItemAddDto, BouquetItem>().ConstructUsing(x => new BouquetItem()
+            CreateMap<BouquetAddDto, Bouquet>().ConstructUsing(x => new()
             {
-                Quantity = x.Quantity
+                Product = new() { Id = x.ProductId }
+            });
+
+            CreateMap<BouquetItemAddDto, BouquetItem>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity,
+                PlantId = x.PlantId
             });
 
             CreateMap<ProductImage, ProductImageDto>();
 
-            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new BouquetGetDto()
+            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
             {
                 ProductId = x.Product.Id,
                 Type = x.Product.Type.ToString(),
@@ -55,7 +61,7 @@ namespace EKrumynas
                 b => b.Images, 
                 p => p.MapFrom(p => p.Product.Images));
 
-            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new PotGetDto()
+            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new()
             {
                 ProductId = x.Product.Id,
                 Type = x.Product.Type.ToString(),
@@ -66,7 +72,7 @@ namespace EKrumynas
                 b => b.Images,
                 p => p.MapFrom(p => p.Product.Images));
 
-            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new PlantGetDto()
+            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new()
             {
                 ProductId = x.Product.Id,
                 Type = x.Product.Type.ToString(),
@@ -77,9 +83,13 @@ namespace EKrumynas
                 b => b.Images,
                 p => p.MapFrom(p => p.Product.Images));
 
-            CreateMap<BouquetItem, BouquetItemGetDto>();
+            CreateMap<BouquetItem, BouquetItemGetDto>().ConstructUsing(x => new()
+            {
+                PlantId = x.PlantId,
+                Quantity = x.Quantity
+            });
 
-            CreateMap<Product, ProductGetDto>().ConstructUsing(x => new ProductGetDto()
+            CreateMap<Product, ProductGetDto>().ConstructUsing(x => new()
             {
                 Id = x.Id,
                 Name = x.Name,

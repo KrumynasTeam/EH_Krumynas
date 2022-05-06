@@ -29,6 +29,7 @@ namespace EKrumynas
 
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPotService, PotService>();
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();

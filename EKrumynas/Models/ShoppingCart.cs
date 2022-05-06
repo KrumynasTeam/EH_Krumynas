@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EKrumynas.Models
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CartStatus
     {
         Active,
@@ -13,10 +15,10 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
-        public int? UserId { get; set; }
         public CartStatus Status { get; set; }
 
-        public virtual User User { get; set; }
+#nullable enable
+        public virtual User? User { get; set; }
 
         public virtual ICollection<PlantCartItem> Plants { get; set; }
         public virtual ICollection<PotCartItem> Pots { get; set; }

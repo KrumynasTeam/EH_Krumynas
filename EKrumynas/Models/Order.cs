@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EKrumynas.Models
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OrderStatus
     {
         Ordered,
@@ -10,6 +12,7 @@ namespace EKrumynas.Models
         Completed
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum DeliveryMethod
     {
         Direct,
@@ -22,7 +25,6 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ShoppingCartId { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public OrderStatus Status { get; set; }

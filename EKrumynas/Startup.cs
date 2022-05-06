@@ -1,4 +1,5 @@
-﻿using EKrumynas.Data;
+﻿using AutoMapper;
+using EKrumynas.Data;
 using EKrumynas.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,9 +27,11 @@ namespace EKrumynas
 
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IPotService, PotService>();
+            services.AddScoped<IPlantService, PlantService>();
+            services.AddScoped<IBouquetService, BouquetService>();
 
             services.AddAutoMapper(typeof(Startup));
-            
             //services.AddCors();
 
             services.AddControllers();

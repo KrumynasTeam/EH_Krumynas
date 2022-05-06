@@ -7,8 +7,6 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ProductId { get; set; }
-
         public virtual Product Product { get; set; }
         public virtual ICollection<BouquetItem> Items { get; set; }
 

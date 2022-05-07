@@ -56,13 +56,20 @@ namespace EKrumynas
             services.AddScoped<IManageUserService, ManageUserService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            string authToken = Environment.GetEnvironmentVariable("TOKEN");
+
+            if (string.IsNullOrEmpty(authToken)) {
+                authToken = Configuration.GetSection("AppSettings:Token").Value;
+            }
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(authToken)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };

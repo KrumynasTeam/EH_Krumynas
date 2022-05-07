@@ -17,6 +17,7 @@ jobs:
           heroku_email: "evaldas.grublys@gmail.com"
           buildpack: "https://github.com/jincod/dotnetcore-buildpack"
   build-web-app:
+    needs: build
     name: React App Build
     runs-on: ubuntu-latest
     steps:

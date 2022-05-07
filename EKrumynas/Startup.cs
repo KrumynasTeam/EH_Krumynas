@@ -1,11 +1,18 @@
-﻿using EKrumynas.Data;
+﻿using System.Text;
+using EKrumynas.Data;
 using EKrumynas.Services;
+using EKrumynas.Services.Management;
+using EKrumynas.Services.UserService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace EKrumynas
 {
@@ -18,7 +25,6 @@ namespace EKrumynas
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EKrumynasDbContext>(options =>
@@ -27,6 +33,22 @@ namespace EKrumynas
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IManageUserService, ManageUserService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddAutoMapper(typeof(Startup));
             
@@ -34,14 +56,23 @@ namespace EKrumynas
 
             services.AddControllers();
 
-            // Swagger Service
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+                });
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -63,14 +94,18 @@ namespace EKrumynas
             app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

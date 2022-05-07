@@ -17,11 +17,27 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\User\" />
+    <None Remove="Services\UserService\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Swashbuckle.AspNetCore.Filters" />
+    <None Remove="Controllers\Management\" />
+    <None Remove="Services\Management\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\User\" />
+    <Folder Include="Services\UserService\" />
+    <Folder Include="Controllers\Management\" />
+    <Folder Include="Services\Management\" />
   </ItemGroup>
 </Project>

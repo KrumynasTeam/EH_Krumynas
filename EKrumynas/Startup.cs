@@ -1,4 +1,5 @@
-﻿using EKrumynas.Data;
+﻿using System;
+using EKrumynas.Data;
 using EKrumynas.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,8 +22,25 @@ namespace EKrumynas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup PostgreSQL connection string - localhost or Heroku
+            string connectionString = null;
+            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+            if (string.IsNullOrEmpty(envVar)) {
+                connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
+            } else {
+                var uri = new Uri(envVar);
+                var username = uri.UserInfo.Split(':')[0];
+                var password = uri.UserInfo.Split(':')[1];
+                connectionString =
+                "; Database=" + uri.AbsolutePath.Substring(1) +
+                "; Username=" + username +
+                "; Password=" + password +
+                "; Port=" + uri.Port + ";";
+            }
+
             services.AddDbContext<EKrumynasDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(connectionString));
 
 
             services.AddScoped<IProductService, ProductService>();

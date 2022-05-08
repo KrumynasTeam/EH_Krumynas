@@ -36,6 +36,7 @@
     <None Remove="Migrations\" />
     <None Remove="Services\Utils\" />
     <None Remove="AutoWrapper.Core" />
+    <None Remove="Controllers\User\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />
@@ -45,5 +46,6 @@
     <Folder Include="Services\Management\" />
     <Folder Include="Migrations\" />
     <Folder Include="Services\Utils\" />
+    <Folder Include="Controllers\User\" />
   </ItemGroup>
 </Project>

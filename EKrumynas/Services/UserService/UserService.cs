@@ -69,11 +69,6 @@ namespace EKrumynas.Services.UserService
         {
             User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == userSession.UserId);
 
-            if (foundUser == null)
-            {
-                throw new NotImplementedException();
-            }
-
             _context.Remove(foundUser);
             await _context.SaveChangesAsync();
 

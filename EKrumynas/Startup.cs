@@ -50,11 +50,12 @@ namespace EKrumynas
             services.AddDbContext<EKrumynasDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IManageUserService, ManageUserService>();
+
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPotService, PotService>();
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();

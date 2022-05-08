@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
@@ -31,9 +32,16 @@ namespace EKrumynas.Services.Management
         {
             User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
 
-            // Return error if user not found
+            if (foundUser is null)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: String.Format("User with id={0} not found.", user.Id)
+                );
+            }
 
-            if (user.MergeAll) {
+            if (user.MergeAll)
+            {
                 foundUser.FirstName = user.FirstName;
                 foundUser.LastName = user.LastName;
                 if (user.Username != null) foundUser.Username = user.Username;
@@ -43,7 +51,9 @@ namespace EKrumynas.Services.Management
                 foundUser.AddressLine1 = user.AddressLine1;
                 foundUser.AddressLine2 = user.AddressLine2;
                 if (user.Username != null) foundUser.Role = (Role)user.Role;
-            } else {
+            }
+            else
+            {
                 if (user.FirstName != null) foundUser.FirstName = user.FirstName;
                 if (user.LastName != null) foundUser.LastName = user.LastName;
                 if (user.Username != null) foundUser.Username = user.Username;
@@ -65,9 +75,12 @@ namespace EKrumynas.Services.Management
         {
             User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (foundUser == null)
+            if (foundUser is null)
             {
-                throw new NotImplementedException();
+                throw new ApiException(
+                    statusCode: 400,
+                    message: String.Format("User with id={0} not found.", id)
+                );
             }
 
             _context.Remove(foundUser);

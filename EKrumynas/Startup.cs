@@ -37,14 +37,14 @@ namespace EKrumynas
             if (string.IsNullOrEmpty(envVar)) {
                 connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
             } else {
-                var uri = new Uri(envVar);
-                var username = uri.UserInfo.Split(':')[0];
-                var password = uri.UserInfo.Split(':')[1];
-                connectionString =
-                "; Database=" + uri.AbsolutePath.Substring(1) +
-                "; Username=" + username +
-                "; Password=" + password +
-                "; Port=" + uri.Port + ";";
+                bool isUrl = Uri.TryCreate(envVar, UriKind.Absolute, out Uri url);
+                if (isUrl)
+                {
+                    connectionString = $"Server={url.Host};Port={url.Port};Database={url.LocalPath[1..]};User Id={url.UserInfo.Split(':')[0]};Password={url.UserInfo.Split(':')[1]};";
+                } else
+                {
+                    connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
+                }
             }
 
             services.AddDbContext<EKrumynasDbContext>(options =>

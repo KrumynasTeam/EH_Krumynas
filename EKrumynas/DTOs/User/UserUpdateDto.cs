@@ -17,6 +17,8 @@
         public string? AddressLine2 { get; set; } = null;
 
         public string? Password { get; set; } = null;
+
+        public bool MergeAll { get; set; } = false;
     }
 }
 

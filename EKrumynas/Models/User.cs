@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace EKrumynas.Models
 {
+    [DataContract(Name = "Role")]
     public enum Role
     {
         [Description("USER")]
-        USER,
+        [EnumMember]
+        USER = 0,
         [Description("ADMIN")]
-        ADMIN
+        [EnumMember]
+        ADMIN = 1
     }
 
     public class User
@@ -23,7 +27,7 @@ namespace EKrumynas.Models
         [Required] public byte[] PasswordHash { get; set; }
         [Required] public byte[] PasswordSalt { get; set; }
         public string ProfileImage { get; set; }
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string Country { get; set; }
         public string Street { get; set; }

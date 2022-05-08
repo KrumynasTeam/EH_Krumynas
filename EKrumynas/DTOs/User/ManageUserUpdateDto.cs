@@ -19,7 +19,9 @@ namespace EKrumynas.DTOs.User
         public string? AddressLine1 { get; set; } = null;
         public string? AddressLine2 { get; set; } = null;
 
-        public Role Role { get; set; }
+        public Role? Role { get; set; } = null;
+
+        public bool MergeAll { get; set; } = false;
     }
 }
 

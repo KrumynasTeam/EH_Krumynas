@@ -32,6 +32,8 @@
     <None Remove="Swashbuckle.AspNetCore.Filters" />
     <None Remove="Controllers\Management\" />
     <None Remove="Services\Management\" />
+    <None Remove="Migrations\" />
+    <None Remove="Services\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />
@@ -39,5 +41,7 @@
     <Folder Include="Services\UserService\" />
     <Folder Include="Controllers\Management\" />
     <Folder Include="Services\Management\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Services\Utils\" />
   </ItemGroup>
 </Project>

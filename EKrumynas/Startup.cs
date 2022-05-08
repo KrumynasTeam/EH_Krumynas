@@ -48,7 +48,6 @@ namespace EKrumynas
             services.AddDbContext<EKrumynasDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -76,8 +75,6 @@ namespace EKrumynas
             });
 
             services.AddAutoMapper(typeof(Startup));
-            
-            //services.AddCors();
 
             services.AddControllers();
 

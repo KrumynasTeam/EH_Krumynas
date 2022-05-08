@@ -13,10 +13,10 @@ export default class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <NavMenu/>
+        <NavMenu displayName={'xzz'}/>
         <Container>
           <Routes>
-            <Route exact path='/' element={<Home/>} />
+            <Route path='/' element={<Home/>} />
             <Route path='/flowers' element={<AllProducts/>} />
           </Routes>
         </Container>

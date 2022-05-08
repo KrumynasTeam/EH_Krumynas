@@ -1,10 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById("root") as HTMLDivElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+reportWebVitals();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

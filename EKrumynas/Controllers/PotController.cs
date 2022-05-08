@@ -12,26 +12,26 @@ namespace EKrumynas.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class PotController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IPotService _potService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public PotController(IPotService potService, IMapper mapper)
         {
-            _productService = productService;
+            _potService = potService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IList<ProductGetDto>> GetAll()
+        public async Task<IList<PotGetDto>> GetAll()
         {
             try
             {
-                var products = await _productService.GetAll();
-                var productGetDtos = _mapper.Map<List<ProductGetDto>>(products);
+                var pots = await _potService.GetAll();
+                var potGetDtos = _mapper.Map<List<PotGetDto>>(pots);
 
-                return productGetDtos ?? new List<ProductGetDto>();
+                return potGetDtos ?? new List<PotGetDto>();
             }
             catch (ArgumentException)
             {
@@ -43,14 +43,14 @@ namespace EKrumynas.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ProductGetDto> GetById(int id)
+        public async Task<PotGetDto> GetById(int id)
         {
             try
             {
-                var product = await _productService.GetById(id);
-                var productGetDto = _mapper.Map<ProductGetDto>(product);
+                var pot = await _potService.GetById(id);
+                var potGetDto = _mapper.Map<PotGetDto>(pot);
 
-                return productGetDto ?? new ProductGetDto();
+                return potGetDto ?? new PotGetDto();
             }
             catch (ArgumentException)
             {
@@ -62,14 +62,14 @@ namespace EKrumynas.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ProductGetDto> DeleteById(int id)
+        public async Task<PotGetDto> DeleteById(int id)
         {
             try
             {
-                var product = await _productService.DeleteById(id);
-                var productGetDto = _mapper.Map<ProductGetDto>(product);
+                var pot = await _potService.DeleteById(id);
+                var potGetDto = _mapper.Map<PotGetDto>(pot);
 
-                return productGetDto ?? new ProductGetDto();
+                return potGetDto ?? new PotGetDto();
             }
             catch (ArgumentException)
             {
@@ -80,15 +80,15 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductAddDto productAddDto)
+        public async Task<IActionResult> Create(PotAddDto potAddDto)
         {
             try
             {
-                Product product = _mapper.Map<Product>(productAddDto);
-                var createdProduct = await _productService.Create(product);
-                var productGetDto = _mapper.Map<ProductGetDto>(createdProduct);
+                Pot pot = _mapper.Map<Pot>(potAddDto);
+                var createdPot = await _potService.Create(pot);
+                var potGetDto = _mapper.Map<PotGetDto>(createdPot);
 
-                return Ok(productGetDto);
+                return Ok(potGetDto);
             }
             catch (ArgumentException)
             {

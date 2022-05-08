@@ -19,6 +19,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+    <PackageReference Include="AutoWrapper.Core" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
@@ -34,6 +35,7 @@
     <None Remove="Services\Management\" />
     <None Remove="Migrations\" />
     <None Remove="Services\Utils\" />
+    <None Remove="AutoWrapper.Core" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />

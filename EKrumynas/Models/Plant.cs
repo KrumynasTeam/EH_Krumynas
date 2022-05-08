@@ -6,7 +6,6 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ProductId { get; set; }
         public ProductColor Color { get; set; }
         public decimal Price { get; set; }
 

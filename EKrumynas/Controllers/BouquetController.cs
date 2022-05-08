@@ -12,28 +12,29 @@ namespace EKrumynas.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class BouquetController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IBouquetService _bouquetService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public BouquetController(IBouquetService bouquetService, IMapper mapper)
         {
-            _productService = productService;
+            _bouquetService = bouquetService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IList<ProductGetDto>> GetAll()
+        public async Task<IList<BouquetGetDto>> GetAll()
         {
             try
             {
-                var products = await _productService.GetAll();
-                var productGetDtos = _mapper.Map<List<ProductGetDto>>(products);
+                var bouquets = await _bouquetService.GetAll();
+                var bouquetGetDtos = _mapper.Map<List<BouquetGetDto>>(bouquets);
 
-                return productGetDtos ?? new List<ProductGetDto>();
+                return bouquetGetDtos ?? new List<BouquetGetDto>();
+
             }
-            catch (ArgumentException)
+            catch(ArgumentException)
             {
                 throw new ApiException(
                     statusCode: 400,
@@ -43,14 +44,14 @@ namespace EKrumynas.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ProductGetDto> GetById(int id)
+        public async Task<BouquetGetDto> GetById(int id)
         {
             try
             {
-                var product = await _productService.GetById(id);
-                var productGetDto = _mapper.Map<ProductGetDto>(product);
+                var bouquet = await _bouquetService.GetById(id);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
 
-                return productGetDto ?? new ProductGetDto();
+                return bouquetGetDto ?? new BouquetGetDto();
             }
             catch (ArgumentException)
             {
@@ -62,14 +63,14 @@ namespace EKrumynas.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ProductGetDto> DeleteById(int id)
+        public async Task<BouquetGetDto> DeleteById(int id)
         {
             try
             {
-                var product = await _productService.DeleteById(id);
-                var productGetDto = _mapper.Map<ProductGetDto>(product);
+                var bouquet = await _bouquetService.DeleteById(id);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
 
-                return productGetDto ?? new ProductGetDto();
+                return bouquetGetDto ?? new BouquetGetDto();
             }
             catch (ArgumentException)
             {
@@ -80,15 +81,15 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductAddDto productAddDto)
+        public async Task<IActionResult> Create(BouquetAddDto bouquetAddDto)
         {
             try
             {
-                Product product = _mapper.Map<Product>(productAddDto);
-                var createdProduct = await _productService.Create(product);
-                var productGetDto = _mapper.Map<ProductGetDto>(createdProduct);
+                Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
+                var createdBouquet = await _bouquetService.Create(bouquet);
+                var bouquetGetDto = _mapper.Map<BouquetGetDto>(createdBouquet);
 
-                return Ok(productGetDto);
+                return Ok(bouquetGetDto);
             }
             catch (ArgumentException)
             {

@@ -6,10 +6,8 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
-        public int BouquetId { get; set; }
-        public int? PlantId { get; set; }
         public int Quantity { get; set; }
-
-        public virtual Plant Plant { get; set; }
+        public int BouquetId { get; set; }
+        public int PlantId { get; set; }
     }
 }

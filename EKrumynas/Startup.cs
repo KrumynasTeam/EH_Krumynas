@@ -1,6 +1,8 @@
-﻿
 using System;
+using AutoMapper;
+using AutoWrapper;
 using EKrumynas.Data;
+using EKrumynas.Middleware;
 using EKrumynas.Services;
 using EKrumynas.Services.Management;
 using EKrumynas.Services.UserService;
@@ -54,6 +56,9 @@ namespace EKrumynas
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IManageUserService, ManageUserService>();
+            services.AddScoped<IPotService, PotService>();
+            services.AddScoped<IPlantService, PlantService>();
+            services.AddScoped<IBouquetService, BouquetService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -76,7 +81,6 @@ namespace EKrumynas
             });
 
             services.AddAutoMapper(typeof(Startup));
-            
             //services.AddCors();
 
             services.AddControllers();
@@ -97,14 +101,12 @@ namespace EKrumynas
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "EH Krumynas");
                 c.RoutePrefix = string.Empty;
             });
-
 
             if (env.IsDevelopment())
             {
@@ -125,6 +127,11 @@ namespace EKrumynas
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseApiResponseAndExceptionWrapper<ResponseWrapper>(
+                new AutoWrapperOptions() { 
+                    ShowIsErrorFlagForSuccessfulResponse = true, 
+                    ShowStatusCode = true });
 
             app.UseRouting();
 

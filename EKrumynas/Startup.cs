@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AutoMapper;
 using AutoWrapper;
 using EKrumynas.Data;
@@ -80,10 +80,6 @@ namespace EKrumynas
             });
 
             services.AddAutoMapper(typeof(Startup));
-<<<<<<< HEAD
-=======
-            //services.AddCors();
->>>>>>> e6a1373af5b9300fac4b71c323109806157fe5f5
 
             services.AddControllers();
 

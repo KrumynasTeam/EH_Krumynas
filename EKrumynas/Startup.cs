@@ -1,15 +1,21 @@
-using System;
+﻿using System;
 using AutoMapper;
 using AutoWrapper;
 using EKrumynas.Data;
 using EKrumynas.Middleware;
 using EKrumynas.Services;
+using EKrumynas.Services.Management;
+using EKrumynas.Services.UserService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace EKrumynas
 {
@@ -22,7 +28,6 @@ namespace EKrumynas
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Setup PostgreSQL connection string - localhost or Heroku
@@ -32,19 +37,22 @@ namespace EKrumynas
             if (string.IsNullOrEmpty(envVar)) {
                 connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
             } else {
-                var uri = new Uri(envVar);
-                var username = uri.UserInfo.Split(':')[0];
-                var password = uri.UserInfo.Split(':')[1];
-                connectionString =
-                "; Database=" + uri.AbsolutePath.Substring(1) +
-                "; Username=" + username +
-                "; Password=" + password +
-                "; Port=" + uri.Port + ";";
+                bool isUrl = Uri.TryCreate(envVar, UriKind.Absolute, out Uri url);
+                if (isUrl)
+                {
+                    connectionString = $"Server={url.Host};Port={url.Port};Database={url.LocalPath[1..]};User Id={url.UserInfo.Split(':')[0]};Password={url.UserInfo.Split(':')[1]};";
+                } else
+                {
+                    connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
+                }
             }
 
             services.AddDbContext<EKrumynasDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IManageUserService, ManageUserService>();
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBlogService, BlogService>();
@@ -52,16 +60,44 @@ namespace EKrumynas
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            string authToken = Environment.GetEnvironmentVariable("TOKEN");
+
+            if (string.IsNullOrEmpty(authToken)) {
+                authToken = Configuration.GetSection("AppSettings:Token").Value;
+            }
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(authToken)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddAutoMapper(typeof(Startup));
-            //services.AddCors();
 
             services.AddControllers();
 
-            // Swagger Service
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+                });
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
@@ -84,8 +120,8 @@ namespace EKrumynas
             app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
 
             app.UseHttpsRedirection();
@@ -97,6 +133,10 @@ namespace EKrumynas
                     ShowStatusCode = true });
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

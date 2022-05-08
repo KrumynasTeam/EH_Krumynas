@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EKrumynas.DTOs;
+using EKrumynas.DTOs.User;
 using EKrumynas.Models;
 using System;
 
@@ -8,7 +9,21 @@ namespace EKrumynas
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
-        {         
+        {
+            CreateMap<User, UserGetDto>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Email = x.Email,
+                ProfileImage = x.ProfileImage,
+                CreatedAt = x.CreatedAt,
+                Country = x.Country,
+                Street = x.Street,
+                AddressLine1 = x.AddressLine1,
+                AddressLine2 = x.AddressLine2
+            });
+            
             CreateMap<ProductAddDto, Product>().ConstructUsing(x => new()
             {
                 Name = x.Name,

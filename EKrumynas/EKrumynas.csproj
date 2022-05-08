@@ -3,7 +3,6 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-	  <PackageReference Include="AutoWrapper.Core" Version="4.5.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
@@ -18,11 +17,35 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+    <PackageReference Include="AutoWrapper.Core" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\User\" />
+    <None Remove="Services\UserService\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Swashbuckle.AspNetCore.Filters" />
+    <None Remove="Controllers\Management\" />
+    <None Remove="Services\Management\" />
+    <None Remove="Migrations\" />
+    <None Remove="Services\Utils\" />
+    <None Remove="AutoWrapper.Core" />
+    <None Remove="Controllers\User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\User\" />
+    <Folder Include="Services\UserService\" />
+    <Folder Include="Controllers\Management\" />
+    <Folder Include="Services\Management\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Services\Utils\" />
+    <Folder Include="Controllers\User\" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System;
 using AutoWrapper.Wrappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EKrumynas.Controllers
 {
@@ -61,7 +62,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "ADMIN")]
         [Route("{id}")]
         public async Task<BouquetGetDto> DeleteById(int id)
         {
@@ -80,7 +81,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create(BouquetAddDto bouquetAddDto)
         {
             try

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using EKrumynas.Services;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EKrumynas.Controllers
 {
@@ -24,7 +25,7 @@ namespace EKrumynas.Controllers
 
             return blogs ?? new List<BlogPost>();
         }
-        
+
         [HttpGet]
         [Route("{id}")]
         public BlogPost GetById(int id)
@@ -34,7 +35,7 @@ namespace EKrumynas.Controllers
             return blog ?? new BlogPost();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "ADMIN")]
         public IActionResult Create(BlogPost blog)
         {
             var createdBlog = _blogService.Create(blog);

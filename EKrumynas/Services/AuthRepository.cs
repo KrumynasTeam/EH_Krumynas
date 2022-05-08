@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,17 +23,18 @@ namespace EKrumynas.Services
             _configuration = configuration;
         }
 
-        public async Task<string> Login(string username, string password)
+        public async Task<string> Login(string usernameOrEmail, string password)
         {
             string response = string.Empty;
-            User user = await _context.Users.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
-            if (user == null)
+            User user = await _context.Users.FirstOrDefaultAsync(x =>
+                x.Username.ToLower().Equals(usernameOrEmail.ToLower()) || x.Email.ToLower().Equals(usernameOrEmail.ToLower())
+            );
+            if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
-                return "User not found.";
-            }
-            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                return "Wrong password.";
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect username or password."
+                );
             }
 
             return CreateToken(user);
@@ -40,9 +42,19 @@ namespace EKrumynas.Services
 
         public async Task<string> Register(User user, string password)
         {
-            if (await UserExists(user.Username) || await UserExists(user.Email))
+            if (await UserExists(user.Username))
             {
-                return "User with registered email or username already exists.";
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Username is already in use."
+                );
+            }
+            if (await UserExists(user.Email))
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Email is already in use."
+                );
             }
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);

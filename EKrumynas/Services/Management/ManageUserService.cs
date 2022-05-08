@@ -45,6 +45,7 @@ namespace EKrumynas.Services.Management
                 foundUser.FirstName = user.FirstName;
                 foundUser.LastName = user.LastName;
                 if (user.Username != null) foundUser.Username = user.Username;
+                foundUser.Email = user.Email;
                 foundUser.ProfileImage = user.ProfileImage;
                 foundUser.Country = user.Country;
                 foundUser.Street = user.Street;
@@ -57,6 +58,7 @@ namespace EKrumynas.Services.Management
                 if (user.FirstName != null) foundUser.FirstName = user.FirstName;
                 if (user.LastName != null) foundUser.LastName = user.LastName;
                 if (user.Username != null) foundUser.Username = user.Username;
+                if (user.Email != null) foundUser.Email = user.Email;
                 if (user.ProfileImage != null) foundUser.ProfileImage = user.ProfileImage;
                 if (user.Country != null) foundUser.Country = user.Country;
                 if (user.Street != null) foundUser.Street = user.Street;

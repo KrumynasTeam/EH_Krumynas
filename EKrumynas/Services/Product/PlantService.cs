@@ -88,7 +88,56 @@ namespace EKrumynas.Services
 
         public async Task<Plant> Update(Plant plant)
         {
-            throw new System.NotImplementedException();
+            _context.Update(plant);
+            await _context.SaveChangesAsync();
+
+            return plant;
+        }
+
+        public async Task<IList<ItemVariants<Product, Plant>>> GetAllByProduct()
+        {
+            IList<Product> products = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Plant)
+                .ToListAsync();
+
+            IList<ItemVariants<Product, Plant>> variants =
+                new List<ItemVariants<Product, Plant>>();
+
+            foreach (Product product in products)
+            {
+                IList<Plant> plants = await _context.Plants
+                    .Where(p => p.Product.Id == product.Id)
+                    .ToListAsync();
+
+                variants.Add(new ItemVariants<Product, Plant>
+                {
+                    Item = product,
+                    Variants = plants
+                });
+            }
+
+            return variants;
+        }
+
+        public async Task<ItemVariants<Product, Plant>> GetByProductId(int id)
+        {
+            Product product = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Plant)
+                .FirstOrDefaultAsync(pr => pr.Id == id);
+
+            IList<Plant> plants = await _context.Plants
+                .Where(p => p.Product.Id == id)
+                .ToListAsync();
+
+            return new ItemVariants<Product, Plant>()
+            {
+                Item = product,
+                Variants = plants
+            };
         }
     }
 }

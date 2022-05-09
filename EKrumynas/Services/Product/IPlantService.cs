@@ -8,6 +8,8 @@ namespace EKrumynas.Services
     {
         Task<IList<Plant>> GetAll();
         Task<Plant> GetById(int id);
+        Task<ItemVariants<Product, Plant>> GetByProductId(int id);
+        Task<IList<ItemVariants<Product, Plant>>> GetAllByProduct();
         Task<Plant> Create(Plant plant);
         Task<Plant> Update(Plant plant);
         Task<Plant> DeleteById(int id);

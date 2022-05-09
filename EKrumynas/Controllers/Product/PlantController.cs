@@ -98,5 +98,66 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
+
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(int id, PlantAddDto plantAddDto)
+        {
+            try
+            {
+                Plant plant = _mapper.Map<Plant>(plantAddDto);
+                plant.Id = id;
+                var updatedPlant = await _plantService.Update(plant);
+                var plantGetDto = _mapper.Map<ProductGetDto>(updatedPlant);
+
+                return Ok(plantGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpGet]
+        [Route("variant")]
+        public async Task<IActionResult> GetAllByProduct()
+        {
+            try
+            {
+                var variants = await _plantService.GetAllByProduct();
+                List<ItemVariants<ProductGetDto, PlantGetDto>> variantsDtos =
+                    _mapper.Map<List<ItemVariants<ProductGetDto, PlantGetDto>>>(variants);
+
+                return Ok(variantsDtos ?? new List<ItemVariants<ProductGetDto, PlantGetDto>>());
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpGet]
+        [Route("variant/{productId}")]
+        public async Task<IActionResult> GetAllByProductId(int productId)
+        {
+            try
+            {
+                var variants = await _plantService.GetByProductId(productId);
+                ItemVariants<ProductGetDto, PlantGetDto> variantsDtos =
+                    _mapper.Map<ItemVariants<ProductGetDto, PlantGetDto>>(variants);
+
+                return Ok(variantsDtos ?? new ItemVariants<ProductGetDto, PlantGetDto>());
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
     }
 }

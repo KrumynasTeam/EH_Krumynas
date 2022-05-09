@@ -98,5 +98,26 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
+
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(int id, ProductAddDto productAddDto)
+        {
+            try
+            {
+                Product product = _mapper.Map<Product>(productAddDto);
+                product.Id = id;
+                var updatedProduct = await _productService.Update(product);
+                var productGetDto = _mapper.Map<ProductGetDto>(updatedProduct);
+
+                return Ok(productGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
     }
 }

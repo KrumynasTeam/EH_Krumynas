@@ -2,6 +2,7 @@
 using EKrumynas.DTOs;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
+using EKrumynas.Services;
 using System;
 
 namespace EKrumynas
@@ -63,40 +64,10 @@ namespace EKrumynas
                 PlantId = x.PlantId
             });
 
-            CreateMap<ProductImage, ProductImageDto>();
-
-            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images, 
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
+            CreateMap<ProductImage, ProductImageDto>();        
+            CreateMap<Bouquet, BouquetGetDto>();
+            CreateMap<Pot, PotGetDto>();
+            CreateMap<Plant, PlantGetDto>();
 
             CreateMap<BouquetItem, BouquetItemGetDto>().ConstructUsing(x => new()
             {
@@ -113,6 +84,9 @@ namespace EKrumynas
                 Discount = x.Discount
             });
 
+            CreateMap<ItemVariants<Product, Pot>, ItemVariants<ProductGetDto, PotGetDto>>();
+            CreateMap<ItemVariants<Product, Plant>, ItemVariants<ProductGetDto, PlantGetDto>>();
+            CreateMap<ItemVariants<Product, Bouquet>, ItemVariants<ProductGetDto, BouquetGetDto>>();
         }
     }
 }

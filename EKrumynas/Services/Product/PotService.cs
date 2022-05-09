@@ -86,9 +86,57 @@ namespace EKrumynas.Services
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<Pot> Update(Pot pot)
+        public async Task<Pot> Update(Pot pot)
         {
-            throw new System.NotImplementedException();
+            _context.Update(pot);
+            await _context.SaveChangesAsync();
+
+            return pot;
+        }
+
+        public async Task<IList<ItemVariants<Product, Pot>>> GetAllByProduct()
+        {
+            IList<Product> products = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Pot)
+                .ToListAsync();
+
+            IList<ItemVariants<Product, Pot>> variants = 
+                new List<ItemVariants<Product, Pot>>();
+
+            foreach(Product product in products)
+            {
+                IList<Pot> pots = await _context.Pots
+                    .Where(p => p.Product.Id == product.Id)
+                    .ToListAsync();
+
+                variants.Add(new ItemVariants<Product, Pot> { 
+                    Item = product,
+                    Variants = pots
+                });
+            }
+
+            return variants;
+        }
+
+        public async Task<ItemVariants<Product, Pot>> GetByProductId(int id)
+        {
+            Product product = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Pot)
+                .FirstOrDefaultAsync(pr => pr.Id == id);
+
+            IList<Pot> pots = await _context.Pots
+                .Where(p => p.Product.Id == id)
+                .ToListAsync();
+
+            return new ItemVariants<Product, Pot>()
+            {
+                Item = product,
+                Variants = pots
+            };
         }
     }
 }

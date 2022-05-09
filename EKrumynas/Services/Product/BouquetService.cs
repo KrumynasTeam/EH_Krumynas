@@ -3,6 +3,7 @@ using EKrumynas.Data;
 using EKrumynas.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EKrumynas.Services
@@ -87,7 +88,58 @@ namespace EKrumynas.Services
 
         public async Task<Bouquet> Update(Bouquet bouquet)
         {
-            throw new System.NotImplementedException();
+            _context.Update(bouquet);
+            await _context.SaveChangesAsync();
+
+            return bouquet;
+        }
+
+        public async Task<IList<ItemVariants<Product, Bouquet>>> GetAllByProduct()
+        {
+            IList<Product> products = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Bouquet)
+                .ToListAsync();
+
+            IList<ItemVariants<Product, Bouquet>> variants =
+                new List<ItemVariants<Product, Bouquet>>();
+
+            foreach (Product product in products)
+            {
+                IList<Bouquet> bouquets = await _context.Bouquets
+                    .Include(b => b.Items)
+                    .Where(b => b.Product.Id == product.Id)
+                    .ToListAsync();
+
+                variants.Add(new ItemVariants<Product, Bouquet>
+                {
+                    Item = product,
+                    Variants = bouquets
+                });
+            }
+
+            return variants;
+        }
+
+        public async Task<ItemVariants<Product, Bouquet>> GetByProductId(int id)
+        {
+            Product product = await _context.Products
+                .Include(pr => pr.Discount)
+                .Include(pr => pr.Images)
+                .Where(pr => pr.Type == ProductType.Bouquet)
+                .FirstOrDefaultAsync(pr => pr.Id == id);
+
+            IList<Bouquet> bouquets = await _context.Bouquets
+                .Include(b => b.Items)
+                .Where(b => b.Product.Id == id)
+                .ToListAsync();
+
+            return new ItemVariants<Product, Bouquet>()
+            {
+                Item = product,
+                Variants = bouquets
+            };
         }
     }
 }

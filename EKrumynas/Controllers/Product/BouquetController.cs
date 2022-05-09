@@ -99,5 +99,66 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
+
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(int id, BouquetAddDto bouquetAddDto)
+        {
+            try
+            {
+                Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
+                bouquet.Id = id;
+                var updatedBouquet = await _bouquetService.Update(bouquet);
+                var bouquetGetDto = _mapper.Map<ProductGetDto>(updatedBouquet);
+
+                return Ok(bouquetGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpGet]
+        [Route("variant")]
+        public async Task<IActionResult> GetAllByProduct()
+        {
+            try
+            {
+                var variants = await _bouquetService.GetAllByProduct();
+                List<ItemVariants<ProductGetDto, BouquetGetDto>> variantsDtos =
+                    _mapper.Map<List<ItemVariants<ProductGetDto, BouquetGetDto>>>(variants);
+
+                return Ok(variantsDtos ?? new List<ItemVariants<ProductGetDto, BouquetGetDto>>());
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpGet]
+        [Route("variant/{productId}")]
+        public async Task<IActionResult> GetAllByProductId(int productId)
+        {
+            try
+            {
+                var variants = await _bouquetService.GetByProductId(productId);
+                ItemVariants<ProductGetDto, BouquetGetDto> variantsDtos =
+                    _mapper.Map<ItemVariants<ProductGetDto, BouquetGetDto>>(variants);
+
+                return Ok(variantsDtos ?? new ItemVariants<ProductGetDto, BouquetGetDto>());
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ type Image = {
   imagePath: string;
 }
 
-export const AllProducts = ( ) => {
+export const AllProducts = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);

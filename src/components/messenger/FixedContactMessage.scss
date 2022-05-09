@@ -1,0 +1,11 @@
+.positionInBottom {
+    position: -webkit-sticky !important;
+    position: fixed !important;
+    bottom: 95px !important;
+    right: 30px !important;
+}
+
+.image {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    border-radius: 50%;
+}

@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import './Login.scss';
 
-export const FormLine = ({ type, setInputValue, inputValue, placeholder, isRequired }) => (
+export const FormLine = ({ type, setInputValue, inputValue, placeholder, isRequired, isAutoComplete }) => (
     <input
         type={type}
         value={inputValue}
@@ -11,6 +11,7 @@ export const FormLine = ({ type, setInputValue, inputValue, placeholder, isRequi
         onInput={e => (e.target as HTMLInputElement).setCustomValidity('') }
         onChange={e => setInputValue(e.target.value)}
         required={isRequired}
+        autoComplete={isAutoComplete}
     />
 );
 
@@ -52,11 +53,11 @@ export const LoginScreen = () => {
                 <form onSubmit={sendRequest}>
                     <div className="row">
                         <label>Username</label>
-                        <FormLine type="text" inputValue={username} setInputValue={setUsername} placeholder='Enter your username' isRequired={true} />
+                        <FormLine type="text" inputValue={username} setInputValue={setUsername} placeholder='Enter your username' isRequired={true}  isAutoComplete={"true"} />
                     </div>
                     <div className="row">
                         <label>Password</label>
-                        <FormLine type="password" inputValue={password} setInputValue={setPassword} placeholder='Enter your password' isRequired={true} />
+                        <FormLine type="password" inputValue={password} setInputValue={setPassword} placeholder='Enter your password' isRequired={true}  isAutoComplete={"true"} />
                     </div>
                     <div id="button" className="row">
                         <button type="submit" name="submit" disabled={isLoading}>Log in</button>

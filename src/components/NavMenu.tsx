@@ -21,6 +21,9 @@ export const NavMenu = () => {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!isCollapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/image" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Image Upload</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Home</NavLink>
               </NavItem>
               <NavItem>

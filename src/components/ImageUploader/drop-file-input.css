@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
+
+.drop-file-main {
+    --body-bg: #f5f8ff;
+    --box-bg: #fff;
+    --input-bg: #f5f8ff;
+    --txt-color: #2f2d2f;
+    --txt-second-color: #ccc;
+    --border-color: #4267b2;
+    --box-shadow: rgba(149, 157, 165, .2) 0px 8px 24px;
+}
+
+.drop-file-input {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--input-bg);
+}
+
+.drop-file-input input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.drop-file-input:hover,
+.drop-file-input.dragover {
+    opacity: 0.6;
+}
+
+.drop-file-input__label {
+    text-align: center;
+    color: var(--txt-second-color);
+    font-weight: 600;
+    padding: 10px;
+}
+
+.drop-file-input__label img {
+    width: 80px;
+    margin: 10px;
+}
+
+.drop-file-preview {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.drop-file-preview p {
+    font-weight: 500;
+}
+
+.drop-file-preview__title {
+    align-self: center;
+    text-decoration: overline;
+}
+
+.drop-file-preview__item {
+    align-self: center;
+    justify-self: stretch;
+    margin-bottom: 10px;
+    background-color: var(--input-bg);
+    border-radius: 20px;
+}
+
+.drop-file-preview__item img {
+    max-width: 300px;
+    max-height: 300px;
+    padding:1px;
+    border:1px solid #021a40;
+}
+
+.drop-file-preview__item__info {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.drop-file-preview__item:hover ,drop-file-preview__item__defl {
+    opacity: 1;
+}
+
+
+
+/* image overlay */
+
+.container_upload {
+    position: relative;
+    border: none;
+    background-color: white;
+    padding: 0%;
+}
+
+.image_upload {
+    display: block;
+    width: auto;
+    height: auto;
+}
+
+.overlay_upload {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.container_upload:hover .overlay_upload {
+    opacity: 1;
+}
+
+.text_upload {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}

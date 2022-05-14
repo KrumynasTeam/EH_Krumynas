@@ -8,6 +8,7 @@ import { UserProvider } from './components/contexts/UserContext';
 import { LoginScreen } from './components/Login/LoginScreen';
 import { RegisterScreen } from './components/Register/RegisterScreen';
 import { FixedContactMessage } from './components/messenger/FixedContactMessage';
+import { UploadImageExample } from './components/UploadImageExample';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
               <Route path='/flowers' element={<AllProducts/>} />
               <Route path='/login' element={<LoginScreen/>} />
               <Route path='/signup' element={<RegisterScreen/>} />
+              <Route path='/image' element={<UploadImageExample/>} />
             </Routes>
       </BrowserRouter>
       <FixedContactMessage/>

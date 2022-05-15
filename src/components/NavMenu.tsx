@@ -29,6 +29,9 @@ export const NavMenu = () => {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/flowers" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Flowers</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/blogs" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Blogs</NavLink>
+              </NavItem>
               { GetToken() == null ? (
               <>
               <NavItem>

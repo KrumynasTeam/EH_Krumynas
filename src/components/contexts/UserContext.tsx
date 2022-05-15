@@ -24,6 +24,7 @@ type UserContextType = {
   Register: (email: string, username: string, password: string) => void;
   Logout: () => void;
   GetToken: () => string | null;
+  GetRole: () => number | null;
 }
 
 export const UserContext = createContext<UserContextType>(
@@ -125,8 +126,17 @@ export const UserProvider = (props: { children: any }) => {
     return s;
   };
 
+  const GetRole = () => {
+    let foundToken = localStorage.getItem('token');
+    UpdateUserData(foundToken);
+    if(user == null){
+      return null;
+    }
+    return user.role;
+  }
+
   return (
-    <UserContext.Provider value={{ user, token, error, isLoading, Login, Register, Logout, GetToken }}>
+    <UserContext.Provider value={{ user, token, error, isLoading, Login, Register, Logout, GetToken, GetRole }}>
       {props.children}
     </UserContext.Provider>
   );

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn, MDBCardFooter } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom'
 import { Blog } from './BlogsList';
 import { Trash3Fill } from 'react-bootstrap-icons';
 import { UserContext } from '../contexts/UserContext';
+import { Button, Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap';
 
 
 function BlogCard({blog} : {blog: Blog}) {
@@ -29,25 +29,25 @@ function BlogCard({blog} : {blog: Blog}) {
         window.location.reload();
     }
 
-    return <MDBCard style={{ maxWidth: '22rem', marginTop: '1rem', marginRight: '1rem'}}>
-    <MDBCardBody>
-        <MDBCardTitle>{blog.title}</MDBCardTitle>
-        <MDBCardText>
+    return <Card style={{ maxWidth: '22rem', marginTop: '1rem', marginRight: '1rem'}}>
+    <CardBody>
+        <CardTitle>{blog.title}</CardTitle>
+        <CardText>
             {blog.content.substring(0, 100)}...
-        </MDBCardText>
+        </CardText>
         <Link to={`/blog/${blog.id}`}>
-            <MDBBtn>Read more</MDBBtn>
+            <Button>Read more</Button>
         </Link>
-        </MDBCardBody>
-        <MDBCardFooter className='text-muted'>
+        </CardBody>
+        <CardFooter className='text-muted'>
             <div>
                 {toShortDateString(blog.createdAt)}
                 {role === 1 ? 
                 <button style={{float: 'right'}}><Trash3Fill onClick={() => handleDeleteClick(blog.id)} /></button> : 
                 ''}
             </div>
-        </MDBCardFooter>
-    </MDBCard>;
+        </CardFooter>
+    </Card>;
 }
 
 export default BlogCard

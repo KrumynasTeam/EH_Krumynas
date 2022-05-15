@@ -9,6 +9,9 @@ import { LoginScreen } from './components/Login/LoginScreen';
 import { RegisterScreen } from './components/Register/RegisterScreen';
 import { FixedContactMessage } from './components/messenger/FixedContactMessage';
 import { UploadImageExample } from './components/UploadImageExample';
+import BlogsList from './components/Blog/BlogsList';
+import CreateBlog from './components/Blog/CreateBlog';
+import BlogDetails from './components/Blog/BlogDetails';
 
 const App = () => {
   return (
@@ -21,6 +24,9 @@ const App = () => {
               <Route path='/login' element={<LoginScreen/>} />
               <Route path='/signup' element={<RegisterScreen/>} />
               <Route path='/image' element={<UploadImageExample/>} />
+              <Route path='/blogs' element={<BlogsList/>} />
+              <Route path='blog/:id' element={<BlogDetails/>} />
+              <Route path="/blogs/createBlog" element={<CreateBlog/>} />
             </Routes>
       </BrowserRouter>
       <FixedContactMessage/>

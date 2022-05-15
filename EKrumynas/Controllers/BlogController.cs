@@ -41,5 +41,20 @@ namespace EKrumynas.Controllers
             var createdBlog = _blogService.Create(blog);
             return Ok(createdBlog);
         }
+
+        [HttpDelete, Authorize(Roles = "ADMIN")]
+        [Route("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var blog = _blogService.GetById(id);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            _blogService.Delete(blog);
+            return Ok();
+        }
     }
 }

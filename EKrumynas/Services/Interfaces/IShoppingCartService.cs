@@ -9,7 +9,9 @@ namespace EKrumynas.Services.Interfaces
         Task<IList<ShoppingCart>> GetAll();
         Task<ShoppingCart> GetCartById(int id);
         Task<ShoppingCart> CreateCart(ShoppingCart cart);
-        Task<ShoppingCart> UpdateCart(int cartId, ShoppingCartItem cart);
+        Task<ShoppingCart> UpdateCart(int cartId, PotCartItem pot);
+        Task<ShoppingCart> UpdateCart(int cartId, PlantCartItem plant);
+        Task<ShoppingCart> UpdateCart(int cartId, BouquetCartItem bouquet);
         Task<ShoppingCart> DeleteById(int id);
         Task<ShoppingCart> DeleteItemById(int cartId, int id);
     }

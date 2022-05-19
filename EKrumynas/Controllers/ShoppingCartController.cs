@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoWrapper.Wrappers;
 using EKrumynas.DTOs;
+using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.Models;
 using EKrumynas.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -119,14 +120,54 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("{cartId}")]
-        public async Task<IActionResult> AddItem(int cartId, ShoppingCartItemAddDto shoppingCartItemDto)
+        public async Task<IActionResult> AddPot(int cartId, PotCartItemAddDto potCartItemAddDto)
         {
             try
             {
-                ShoppingCartItem shoppingCartItem = _mapper.Map<ShoppingCartItem>(shoppingCartItemDto);
-                var newShoppingCart = await _shoppingCartService.UpdateCart(cartId, shoppingCartItem);
+                PotCartItem pot = _mapper.Map<PotCartItem>(potCartItemAddDto);
+                var newShoppingCart = await _shoppingCartService.UpdateCart(cartId, pot);
+                var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(newShoppingCart);
+
+                return Ok(shoppingCartGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpPut]
+        [Route("{cartId}")]
+        public async Task<IActionResult> AddPlant(int cartId, PlantCartItemAddDto plantCartItemAddDto)
+        {
+            try
+            {
+                PlantCartItem plant = _mapper.Map<PlantCartItem>(plantCartItemAddDto);
+                var newShoppingCart = await _shoppingCartService.UpdateCart(cartId, plant);
+                var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(newShoppingCart);
+
+                return Ok(shoppingCartGetDto);
+            }
+            catch (ArgumentException)
+            {
+                throw new ApiException(
+                    statusCode: 400,
+                    message: "Incorrect request data");
+            }
+        }
+
+        [HttpPut]
+        [Route("{cartId}")]
+        public async Task<IActionResult> AddBouquet(int cartId, BouquetCartItemAddDto bouquetCartItemAddDto)
+        {
+            try
+            {
+                BouquetCartItem bouquet = _mapper.Map<BouquetCartItem>(bouquetCartItemAddDto);
+                var newShoppingCart = await _shoppingCartService.UpdateCart(cartId, bouquet);
                 var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(newShoppingCart);
 
                 return Ok(shoppingCartGetDto);

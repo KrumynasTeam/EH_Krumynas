@@ -36,7 +36,7 @@ namespace EKrumynas.Services.Management
             {
                 throw new ApiException(
                     statusCode: 400,
-                    message: String.Format("User with id={0} not found.", user.Id)
+                    message: string.Format("User with id='{0}' and username='{1}' not found.", user.Id, user.Username)
                 );
             }
 
@@ -81,7 +81,7 @@ namespace EKrumynas.Services.Management
             {
                 throw new ApiException(
                     statusCode: 400,
-                    message: String.Format("User with id={0} not found.", id)
+                    message: string.Format("User with id={0} not found.", id)
                 );
             }
 

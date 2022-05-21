@@ -6,7 +6,7 @@ import { UserContext } from './contexts/UserContext';
 
 export const NavMenu = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const {Logout, GetToken} = useContext(UserContext);
+  const {Logout, token} = useContext(UserContext);
 
   const toggleNavbar = () => {
     setIsCollapsed(!isCollapsed);
@@ -21,24 +21,35 @@ export const NavMenu = () => {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!isCollapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/image" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Image Upload</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Home</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/flowers" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Flowers</NavLink>
               </NavItem>
-              { GetToken() == null ? (
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/blogs" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Blogs</NavLink>
+              </NavItem>
+              { token == null ? (
               <>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/login" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Log In</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/signup" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Sign Up</NavLink>
-              </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/login" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Log In</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/signup" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>Sign Up</NavLink>
+                </NavItem>
               </>
               ) : (
-              <NavItem>
-                <NavLink className="text-dark" style={{cursor: 'pointer'}} onClick={() => setTimeout(() => {setIsCollapsed(true); Logout()}, 50)}>Log out</NavLink>
-              </NavItem>
+              <>
+                <NavItem>
+                  <NavLink className="text-dark" style={{cursor: 'pointer'}} onClick={() => setTimeout(() => {setIsCollapsed(true); Logout()}, 50)}>Log out</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/account" onClick={() => setTimeout(() => setIsCollapsed(true), 50)}>My Account</NavLink>
+                </NavItem>
+              </>
               )}
             </ul>
           </Collapse>

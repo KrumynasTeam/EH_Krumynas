@@ -9,6 +9,7 @@ namespace EKrumynas.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class BlogController : ControllerBase
     {
         private readonly IBlogService _blogService;
@@ -35,11 +36,28 @@ namespace EKrumynas.Controllers
             return blog ?? new BlogPost();
         }
 
-        [HttpPost, Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Create(BlogPost blog)
         {
             var createdBlog = _blogService.Create(blog);
             return Ok(createdBlog);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public IActionResult Delete(int id)
+        {
+            var blog = _blogService.GetById(id);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            _blogService.Delete(blog);
+            return Ok();
         }
     }
 }

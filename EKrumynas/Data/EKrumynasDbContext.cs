@@ -1,4 +1,5 @@
 ﻿using EKrumynas.Models;
+using EKrumynas.Models.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 namespace EKrumynas.Data
@@ -22,6 +23,6 @@ namespace EKrumynas.Data
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Order> Orders { get; set; }
-        
+        public DbSet<ActivityRecord> ActivityRecords { get; set; }
     }
 }

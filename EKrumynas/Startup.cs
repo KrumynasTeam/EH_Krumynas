@@ -4,6 +4,7 @@ using AutoWrapper;
 using EKrumynas.Data;
 using EKrumynas.Middleware;
 using EKrumynas.Services;
+using EKrumynas.Services.Interfaces;
 using EKrumynas.Services.Management;
 using EKrumynas.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -59,6 +60,7 @@ namespace EKrumynas
             services.AddScoped<IPotService, PotService>();
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -137,6 +139,8 @@ namespace EKrumynas
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<DatabaseLogger>();
 
             app.UseEndpoints(endpoints =>
             {

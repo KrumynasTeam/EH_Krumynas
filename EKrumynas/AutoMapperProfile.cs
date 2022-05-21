@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EKrumynas.DTOs;
+using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
 using EKrumynas.Services;
@@ -64,6 +65,63 @@ namespace EKrumynas
                 PlantId = x.PlantId
             });
 
+            CreateMap<ShoppingCartAddDto, ShoppingCart>().ConstructUsing(x => new()
+            {
+                User = new() { Id = x.UserId }
+            });
+
+            CreateMap<PotCartItemAddDto, PotCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
+            CreateMap<PlantCartItemAddDto, PlantCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
+            CreateMap<BouquetCartItemAddDto, BouquetCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
+            CreateMap<ProductImage, ProductImageDto>();
+
+            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
+            {
+                ProductId = x.Product.Id,
+                Type = x.Product.Type.ToString(),
+                Name = x.Product.Name,
+                Description = x.Product.Description,
+                Discount = x.Product.Discount,
+            }).ForMember(
+                b => b.Images, 
+                p => p.MapFrom(p => p.Product.Images));
+
+            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new()
+            {
+                ProductId = x.Product.Id,
+                Type = x.Product.Type.ToString(),
+                Name = x.Product.Name,
+                Description = x.Product.Description,
+                Discount = x.Product.Discount,
+            }).ForMember(
+                b => b.Images,
+                p => p.MapFrom(p => p.Product.Images));
+
+            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new()
+            {
+                ProductId = x.Product.Id,
+                Type = x.Product.Type.ToString(),
+                Name = x.Product.Name,
+                Description = x.Product.Description,
+                Discount = x.Product.Discount,
+            }).ForMember(
+                b => b.Images,
+                p => p.MapFrom(p => p.Product.Images));
             CreateMap<ProductImage, ProductImageDto>();        
             CreateMap<Bouquet, BouquetGetDto>();
             CreateMap<Pot, PotGetDto>();
@@ -84,6 +142,27 @@ namespace EKrumynas
                 Discount = x.Discount
             });
 
+            CreateMap<ShoppingCart, ShoppingCartGetDto>().ConstructUsing(x => new()
+            {
+                CartId = x.Id,
+                UserId = x.User.Id,
+                Status = x.Status.ToString()
+            });
+
+            CreateMap<PotCartItem, PotCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
+
+            CreateMap<PlantCartItem, PlantCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
+
+            CreateMap<BouquetCartItem, BouquetCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
             CreateMap<ItemVariants<Product, Pot>, ItemVariants<ProductGetDto, PotGetDto>>();
             CreateMap<ItemVariants<Product, Plant>, ItemVariants<ProductGetDto, PlantGetDto>>();
             CreateMap<ItemVariants<Product, Bouquet>, ItemVariants<ProductGetDto, BouquetGetDto>>();

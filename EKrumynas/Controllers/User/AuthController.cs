@@ -4,11 +4,13 @@ using EKrumynas.Services;
 using Microsoft.AspNetCore.Routing;
 using System.Threading.Tasks;
 using EKrumynas.DTOs.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EKrumynas.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;

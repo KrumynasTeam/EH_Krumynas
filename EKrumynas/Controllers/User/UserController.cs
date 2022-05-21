@@ -11,7 +11,6 @@ namespace EKrumynas.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	[Authorize(Roles = "ADMIN,USER")]
 	public class UserController : ControllerBase
 	{
 		private readonly IMapper _mapper;
@@ -24,6 +23,7 @@ namespace EKrumynas.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "ADMIN,USER")]
 		public async Task<IActionResult> Get()
 		{
 			User user = await _userService.Get();

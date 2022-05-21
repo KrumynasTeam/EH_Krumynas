@@ -14,8 +14,7 @@ export type Blog = {
 function BlogsList() {
     const [isLoading, setIsLoading] = useState(false);
     const [blogs, setBlogs] = useState<Blog[]>([]);
-    const {GetRole} = useContext(UserContext);
-    const role = GetRole();
+    const {user, token} = useContext(UserContext);
 
     function renderCard (blog : Blog){
         return(
@@ -34,7 +33,10 @@ function BlogsList() {
 
     useEffect(() => {
         const fetchData = async () => {
-          const response = await fetch(process.env.REACT_APP_API_URL + 'Blog');
+          const response = await fetch(process.env.REACT_APP_API_URL + 'Blog', {
+            method: 'GET',
+            headers: token != null ? {'Authorization': token} : {}
+          });
           const data = await response.json();
     
           setBlogs(data.result as Blog[]);
@@ -51,7 +53,7 @@ function BlogsList() {
 
     return  <div style={{margin: '2rem'}}>
                 <h1>Our Blogs</h1>
-                {role === 1 ? <Link to="createBlog"><Button>Create New</Button></Link> : ''}
+                {user?.role === 1 ? <Link to="createBlog"><Button>Create New</Button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}
             </div>
 }

@@ -16,14 +16,9 @@ export const FormLine = ({ type, setInputValue, inputValue, placeholder, isRequi
 );
 
 export const LoginScreen = () => {
-    const {Login, token, error, isLoading} = useContext(UserContext);
+    const {Login, error, isLoading} = useContext(UserContext);
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
-    useEffect(() => {
-        if (token != null)
-            window.location.href = '/';
-    }, [token])
 
     const sendRequest = (e) => {
         e.preventDefault();

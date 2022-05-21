@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using EKrumynas.Data;
@@ -17,23 +18,30 @@ namespace EKrumynas.Services
     {
         private readonly EKrumynasDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly Regex _emailRegex;
+        private readonly Regex _usernameRegex;
+        private readonly Regex _passwordRegex;
+
         public AuthRepository(EKrumynasDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+            _emailRegex = new Regex(@"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
+            _usernameRegex = new Regex("^[A-Za-z0-9]{1,6}"); // TODO
+            _passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$");
         }
 
         public async Task<string> Login(string usernameOrEmail, string password)
         {
-            string response = string.Empty;
             User user = await _context.Users.FirstOrDefaultAsync(x =>
                 x.Username.ToLower().Equals(usernameOrEmail.ToLower()) || x.Email.ToLower().Equals(usernameOrEmail.ToLower())
             );
+
             if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new ApiException(
-                    statusCode: 400,
-                    message: "Incorrect username or password."
+                    statusCode: 404,
+                    message: "Incorrect username/email or password."
                 );
             }
 
@@ -42,20 +50,13 @@ namespace EKrumynas.Services
 
         public async Task<string> Register(User user, string password)
         {
-            if (await UserExists(user.Username))
-            {
-                throw new ApiException(
-                    statusCode: 400,
-                    message: "Username is already in use."
-                );
-            }
+            ValidateInputs(user.Email, user.Username, password);
+
+            if (user.Username.ToLower().Equals("anonymous") || await UserExists(user.Username))
+                ThrowBadRequestApiException("Username is already in use.");
+
             if (await UserExists(user.Email))
-            {
-                throw new ApiException(
-                    statusCode: 400,
-                    message: "Email is already in use."
-                );
-            }
+                ThrowBadRequestApiException("Email is already in use.");
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -70,10 +71,29 @@ namespace EKrumynas.Services
         public async Task<bool> UserExists(string usernameOrEmail)
         {
             if (await _context.Users.AnyAsync(x => x.Username == usernameOrEmail || x.Email == usernameOrEmail))
-            {
                 return true;
-            }
+
             return false;
+        }
+
+        private void ValidateInputs(string email, string username, string password)
+        {
+            if (!_emailRegex.IsMatch(email))
+                ThrowBadRequestApiException("Invalid email address.");
+
+            //if (!_usernameRegex.IsMatch(username))
+                //ThrowBadRequestApiException("Username must be between 6-12 characters only of letters and numbers.");
+
+            if (!_passwordRegex.IsMatch(password))
+                ThrowBadRequestApiException("Password must be between 8-16 characters long and contain one upper letter, lower letter and number.");
+        }
+
+        private void ThrowBadRequestApiException(string message)
+        {
+            throw new ApiException(
+                statusCode: 400,
+                message: message
+            );
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

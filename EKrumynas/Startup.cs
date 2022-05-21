@@ -138,6 +138,8 @@ namespace EKrumynas
 
             app.UseAuthorization();
 
+            app.UseMiddleware<DatabaseLogger>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

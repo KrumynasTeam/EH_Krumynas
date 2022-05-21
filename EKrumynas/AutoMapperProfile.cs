@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EKrumynas.DTOs;
+using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
 using System;
@@ -63,6 +64,29 @@ namespace EKrumynas
                 PlantId = x.PlantId
             });
 
+            CreateMap<ShoppingCartAddDto, ShoppingCart>().ConstructUsing(x => new()
+            {
+                User = new() { Id = x.UserId }
+            });
+
+            CreateMap<PotCartItemAddDto, PotCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
+            CreateMap<PlantCartItemAddDto, PlantCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
+            CreateMap<BouquetCartItemAddDto, BouquetCartItem>().ConstructUsing(x => new()
+            {
+                Id = x.Id,
+                Quantity = x.Quantity
+            });
+
             CreateMap<ProductImage, ProductImageDto>();
 
             CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
@@ -113,6 +137,27 @@ namespace EKrumynas
                 Discount = x.Discount
             });
 
+            CreateMap<ShoppingCart, ShoppingCartGetDto>().ConstructUsing(x => new()
+            {
+                CartId = x.Id,
+                UserId = x.User.Id,
+                Status = x.Status.ToString()
+            });
+
+            CreateMap<PotCartItem, PotCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
+
+            CreateMap<PlantCartItem, PlantCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
+
+            CreateMap<BouquetCartItem, BouquetCartItemGetDto>().ConstructUsing(x => new()
+            {
+                Quantity = x.Quantity
+            });
         }
     }
 }

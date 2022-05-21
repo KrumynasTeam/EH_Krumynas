@@ -40,7 +40,6 @@
     <None Remove="Models\Middleware\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="DTOs\User\" />
     <Folder Include="Services\UserService\" />
     <Folder Include="Controllers\Management\" />

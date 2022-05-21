@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import { UserContext } from '../contexts/UserContext';
 import { Blog } from './BlogsList';
 
 function BlogDetails() {
+    const {token} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
     const {id} = useParams();
@@ -19,7 +21,10 @@ function BlogDetails() {
 
     useEffect(() => {
         const fetchData = async () => {
-          const response = await fetch(process.env.REACT_APP_API_URL + 'Blog/' + id);
+          const response = await fetch(process.env.REACT_APP_API_URL + 'Blog/' + id, {
+            method: 'GET',
+            headers: token != null ? {'Authorization': token} : {}
+          });
           const data = await response.json();
     
           setBlog(data.result as Blog);

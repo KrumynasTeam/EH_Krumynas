@@ -13,22 +13,22 @@ namespace EKrumynas.Services.UserService
 	public class UserService : IUserService
 	{
         private readonly EKrumynasDbContext _context;
-        private readonly UserSession userSession;
+        private readonly UserSession _userSession;
 
         public UserService(EKrumynasDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
-            userSession = new UserSession(httpContextAccessor);
+            _userSession = new UserSession(httpContextAccessor);
         }
 
         public async Task<User> Get()
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == userSession.UserId);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == _userSession.UserId);
         }
 
         public async Task<User> Update(UserUpdateDto user)
         {
-            User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == userSession.UserId);
+            User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == _userSession.UserId);
 
             if (user.MergeAll)
             {
@@ -67,7 +67,7 @@ namespace EKrumynas.Services.UserService
 
         public async Task<User> Delete()
         {
-            User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == userSession.UserId);
+            User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == _userSession.UserId);
 
             _context.Remove(foundUser);
             await _context.SaveChangesAsync();

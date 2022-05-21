@@ -4,9 +4,8 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { UserContext } from '../contexts/UserContext';
 
 function CreateBlog() {
+    const {token} = useContext(UserContext);
     let navigate = useNavigate()
-    const {GetToken} = useContext(UserContext);
-    const token = GetToken();
 
     function handleSubmit(e){
         e.preventDefault();

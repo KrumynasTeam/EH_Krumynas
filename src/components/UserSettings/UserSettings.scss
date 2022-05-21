@@ -1,0 +1,198 @@
+body > #root > div {
+    height: 100vh;
+}
+
+.center-text {
+    text-align: center;
+    font-size: 100%;
+    background: rgb(34,193,195);
+    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
+    font-family: "work sans";
+    padding-top: 1%;
+}
+
+#userSettingsForm{
+    width: 90%;
+    margin: 0px auto;
+    
+}
+
+.user-row{
+    display: flex;
+    flex-direction: row;
+    padding-top: 0rem;
+    width: 100%;
+    margin-left: 0rem;
+    background-color: transparent;
+    align-items: inherit;
+    background-color: rgba(187,187,187,0.6);
+}
+
+.user-row .leftPanel{
+    background-color: white;
+    max-height: 610px;
+    padding: 0px;
+    position:sticky;
+    display: block;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.user-row .rightPanel{
+    background-color: white;
+    height: auto;
+    min-height: 800px;
+}
+
+.rightPanel .header{
+    background-color: rgb(245, 245, 245);
+    padding: 30px;
+    padding-bottom: 35px;
+    margin-left: -11px;
+    margin-right: -11px;
+}
+
+.rightPanel .header-title{
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.rightPanel .header .header-choices{
+    float: left;
+    text-align: left;
+    padding: 10px;
+    margin-top: -20px;
+    margin-left: -7px;
+}
+
+.rightPanel .header .choice{
+    float: left;
+    margin: 10px;
+}
+
+.panelBox{
+  box-sizing: border-box;
+  border: 10px solid transparent;
+  background-clip: padding-box;
+}
+
+.leftPanel .profileImage{
+    position: relative;
+    align-self: center;
+    background-color: grey;
+    margin: auto;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 5px white;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+}
+
+.profileImage:hover{
+    background-color: rgb(34,193,195, 0.4);
+    box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+    transition: box-shadow 0.2s ease-in;
+}
+
+.profileImage:focus{
+    box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7);
+    outline: none;
+}
+
+.profileImage:-webkit-input-placeholder{
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+}
+
+.profileImage:hover::-webkit-input-placeholder,
+.profileImage:focus::-webkit-input-placeholder{
+    opacity: 0;
+}
+
+.user-row input{
+    width: 50%;
+    box-sizing: border-box;
+    border: none;
+    font-size: 1.3rem;
+    margin-left: 1.5rem;
+    padding-bottom: 1rem;
+    box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+    transition: box-shadow 0.2s ease-in;
+}
+
+.user-row input:focus{
+    box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7);
+    outline: none;
+}
+
+.user-row input::-webkit-input-placeholder{
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+}
+
+.user-row input:hover::-webkit-input-placeholder,
+.user-row input:focus::-webkit-input-placeholder{
+    opacity: 0;
+}
+
+.user-row label{
+    align-self: start;
+    padding-left: 2.4rem !important;
+    padding-bottom: 0.5rem;
+    color: rgba(187,187,187,0.9);
+}
+
+.user-row button{
+    border-radius: 0px;
+    width: 95%;
+    height: 40px;
+    margin-left: 0px;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 500;
+    background: rgb(34,193,195);
+    background: linear-gradient(45deg, rgba(34,193,195,1) 20%,     rgb(220, 217, 109) 90%);
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+}
+
+.user-row .rightPanel button{
+    width: 200px;
+}
+
+.update-info-button{
+    float: left;
+}
+
+.user-row button:hover{
+    opacity: 0.8;
+}
+
+.left-panel-additional-text {
+    padding: 10px;
+    text-align: left;
+    border: 5px bold black;
+    background: 'rgb(225, 225, 225)';
+    border-radius: 1px solid black;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.disabled-link{
+    cursor: default;
+    pointer-events: none;        
+    text-decoration: none;
+    color: rgba(34,193,195,1);
+}

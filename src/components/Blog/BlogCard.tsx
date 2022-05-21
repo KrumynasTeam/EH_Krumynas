@@ -7,9 +7,7 @@ import { Button, Card, CardBody, CardFooter, CardText, CardTitle } from 'reactst
 
 
 function BlogCard({blog} : {blog: Blog}) {
-    const {GetRole, GetToken} = useContext(UserContext);
-    const role = GetRole();
-    const token = GetToken();
+    const {user, token} = useContext(UserContext);
 
     function toShortDateString(date : Date){
         return new Date(date).toLocaleDateString('lt-LT', {
@@ -22,9 +20,7 @@ function BlogCard({blog} : {blog: Blog}) {
     async function handleDeleteClick(blogId : number){
         await fetch(process.env.REACT_APP_API_URL + 'Blog/' + blogId, {
             method: 'DELETE',
-            headers: {
-                'Authorization': token
-            }
+            headers: token != null ? {'Authorization': token} : {}
         });
         window.location.reload();
     }
@@ -42,7 +38,7 @@ function BlogCard({blog} : {blog: Blog}) {
         <CardFooter className='text-muted'>
             <div>
                 {toShortDateString(blog.createdAt)}
-                {role === 1 ? 
+                {user?.role === 1 ? 
                 <button style={{float: 'right'}}><Trash3Fill onClick={() => handleDeleteClick(blog.id)} /></button> : 
                 ''}
             </div>

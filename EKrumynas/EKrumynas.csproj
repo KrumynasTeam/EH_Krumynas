@@ -37,6 +37,7 @@
     <None Remove="Services\Utils\" />
     <None Remove="AutoWrapper.Core" />
     <None Remove="Controllers\User\" />
+    <None Remove="Models\Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />
@@ -47,5 +48,6 @@
     <Folder Include="Migrations\" />
     <Folder Include="Services\Utils\" />
     <Folder Include="Controllers\User\" />
+    <Folder Include="Models\Middleware\" />
   </ItemGroup>
 </Project>

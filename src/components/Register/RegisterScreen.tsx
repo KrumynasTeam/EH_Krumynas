@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Register.scss';
 import { UserContext } from '../contexts/UserContext';
 
@@ -54,7 +54,7 @@ export const RegisterScreen = () => {
                     </div>
                     <div className="row">
                         <label>Username</label>
-                        <FormLine type="text" inputValue={username} setInputValue={setUsername} placeholder='Enter your username' regex="^[a-zA-Z0-9]{6,12}$" onInvalidMessage="Must be between 6-12 characters of letter and numbers." isRequired={true} isAutoComplete={"true"} />
+                        <FormLine type="text" inputValue={username} setInputValue={setUsername} placeholder='Enter your username' regex="^[a-zA-Z0-9]{6,12}$" onInvalidMessage="Must be between 6-12 characters only of letters and numbers." isRequired={true} isAutoComplete={"true"} />
                     </div>
                     <div className="row">
                         <label>Password</label>

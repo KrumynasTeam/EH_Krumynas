@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './custom.scss'
 import { Home } from './components/Home';
-import { AllProducts } from './components/AllProducts';
+import { AllProducts } from './components/product/AllProducts';
 import { NavMenu } from './components/NavMenu';
 import { UserProvider } from './components/contexts/UserContext';
 import { LoginScreen } from './components/Login/LoginScreen';

@@ -46,7 +46,7 @@ export const UserSettingsScreen = () => {
                                 </div>
                             </div>
                             <div style={{margin: '20px'}}>
-                            <form onSubmit={() => console.log('e')}>
+                            <form onSubmit={() => 1 == 1}>
                                 <div className="container-float">
                                     <div>
                                         <div className="col-6 float-left">

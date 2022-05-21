@@ -42,13 +42,10 @@ export const UserProvider = (props: { children: any }) => {
   const defaultConnectionError = "Could not establish connection to server. Please try again!";
 
   useEffect(() => {
-    console.log('jungiasi');
     let _user: User = user || JSON.parse(localStorage.getItem('user'));
     setUser(_user);
-    console.log('User: ' + _user);
     let _token = token || localStorage.getItem('token');
     setToken(_token);
-    console.log('Token: ' + _token);
   }, [isLoggedIn])
 
   const UpdateUserData = async (_token?:string) => {
@@ -71,7 +68,7 @@ export const UserProvider = (props: { children: any }) => {
       }
     })
     .then(() => setIsLoading(false))
-    .catch(err => console.log(err));
+    .catch(() => setError(defaultConnectionError));
   }
 
   const Login = async (usernameOrEmail: string, password: string) => {

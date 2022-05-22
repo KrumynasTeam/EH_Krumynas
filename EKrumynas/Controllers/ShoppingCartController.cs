@@ -121,7 +121,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/pot")]
         public async Task<IActionResult> AddPot(int cartId, PotCartItemAddDto potCartItemAddDto)
         {
             try
@@ -141,7 +141,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/plant")]
         public async Task<IActionResult> AddPlant(int cartId, PlantCartItemAddDto plantCartItemAddDto)
         {
             try
@@ -161,7 +161,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/bouquet")]
         public async Task<IActionResult> AddBouquet(int cartId, BouquetCartItemAddDto bouquetCartItemAddDto)
         {
             try

@@ -90,38 +90,6 @@ namespace EKrumynas
 
             CreateMap<ProductImage, ProductImageDto>();
 
-            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images, 
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
             CreateMap<ProductImage, ProductImageDto>();        
             CreateMap<Bouquet, BouquetGetDto>();
             CreateMap<Pot, PotGetDto>();

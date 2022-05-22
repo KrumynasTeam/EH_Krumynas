@@ -7,6 +7,8 @@ namespace EKrumynas.Services
     public interface IPlantService
     {
         Task<IList<Plant>> GetAll();
+        Task<ItemVariants<Product, Plant>> GetByProductId(int id);
+        Task<IList<ItemVariants<Product, Plant>>> GetAllByProduct();
         Task<Plant> GetById(int id);
         Task<Plant> Create(Plant plant);
         Task<Plant> Update(Plant plant);

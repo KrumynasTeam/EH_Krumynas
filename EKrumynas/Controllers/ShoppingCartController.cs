@@ -4,6 +4,7 @@ using EKrumynas.DTOs;
 using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.Models;
 using EKrumynas.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace EKrumynas.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("[controller]")]
     public class ShoppingCartController : ControllerBase
     {
@@ -121,7 +123,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/pot")]
         public async Task<IActionResult> AddPot(int cartId, PotCartItemAddDto potCartItemAddDto)
         {
             try
@@ -141,7 +143,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/plant")]
         public async Task<IActionResult> AddPlant(int cartId, PlantCartItemAddDto plantCartItemAddDto)
         {
             try
@@ -161,7 +163,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut]
-        [Route("{cartId}")]
+        [Route("{cartId}/bouquet")]
         public async Task<IActionResult> AddBouquet(int cartId, BouquetCartItemAddDto bouquetCartItemAddDto)
         {
             try

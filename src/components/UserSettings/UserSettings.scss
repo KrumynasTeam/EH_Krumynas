@@ -209,17 +209,11 @@ Label {
     color: white;
     font-weight: 500;
     background: rgb(34,193,195);
-    background: linear-gradient(45deg, rgba(34,193,195,1) 35px, rgb(32, 217, 220) 0%);
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
     border: 0px;
     cursor: pointer;
     transition: opacity 0.25s ease-out;
 }
-
-// font-size: 1.1rem;
-// color: white;
-// font-weight: 500;
-// background: rgb(4, 210, 152);
-// border: 0px;
 
 .user-row .rightPanel button{
     width: 200px;

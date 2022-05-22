@@ -13,8 +13,8 @@ namespace EKrumynas.Services.Interfaces
         Task<ShoppingCart> UpdateCart(int cartId, PotCartItem pot);
         Task<ShoppingCart> UpdateCart(int cartId, PlantCartItem plant);
         Task<ShoppingCart> UpdateCart(int cartId, BouquetCartItem bouquet);
-        Task<ShoppingCart> UpdateCartStatus (int cartId, int status);
+        Task<ShoppingCart> UpdateCartStatus (int cartId, string status);
         Task<ShoppingCart> DeleteById(int id);
-        Task<ShoppingCart> DeleteItemById(int cartId, string id);
+        Task<ShoppingCart> DeleteItemById(int cartId, int id);
     }
 }

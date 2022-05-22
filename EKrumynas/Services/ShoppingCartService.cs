@@ -3,6 +3,7 @@ using EKrumynas.Data;
 using EKrumynas.Models;
 using EKrumynas.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -72,6 +73,19 @@ namespace EKrumynas.Services
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task<IList<ShoppingCart>> GetCartByStatus(string status)
+        {
+            return await _context.ShoppingCarts
+                .Include(p => p.Plants)
+                    .ThenInclude(plq => plq.Quantity)
+                .Include(p => p.Pots)
+                    .ThenInclude(pq => pq.Quantity)
+                .Include(p => p.Bouquets)
+                    .ThenInclude(bq => bq.Quantity)
+                .Include(s => s.Status == (CartStatus)Enum.Parse(typeof(CartStatus), status))
+                .ToListAsync();
+        }
+
         public async Task<ShoppingCart> UpdateCart(int cartId, PotCartItem pot)
         {
             ShoppingCart cart = await _context.ShoppingCarts
@@ -127,6 +141,11 @@ namespace EKrumynas.Services
             await _context.SaveChangesAsync();
 
             return cart;
+        }
+
+        public Task<ShoppingCart> UpdateCartStatus(int cartId, int status)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

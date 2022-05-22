@@ -4,6 +4,7 @@ using EKrumynas.DTOs;
 using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.Models;
 using EKrumynas.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "ADMIN")]
         [Route("{id}")]
         public async Task<ShoppingCartGetDto> GetById(int id)
         {
@@ -60,7 +61,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "ADMIN")]
         [Route("{id}")]
         public async Task<ShoppingCartGetDto> DeleteById(int id)
         {
@@ -80,7 +81,7 @@ namespace EKrumynas.Controllers
                 }
             }
         }
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "ADMIN")]
         [Route("/{cartId}/{itemId}")]
         public async Task<ShoppingCartGetDto> DeleteItemById(int cartId, int itemId)
         {
@@ -101,7 +102,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create(ShoppingCartAddDto shoppingCartAddDto)
         {
             try
@@ -120,8 +121,8 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("{cartId}")]
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{cartId}/pot")]
         public async Task<IActionResult> AddPot(int cartId, PotCartItemAddDto potCartItemAddDto)
         {
             try
@@ -140,8 +141,8 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("{cartId}")]
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{cartId}/plant")]
         public async Task<IActionResult> AddPlant(int cartId, PlantCartItemAddDto plantCartItemAddDto)
         {
             try
@@ -160,8 +161,8 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("{cartId}")]
+        [HttpPut, Authorize(Roles = "ADMIN")]
+        [Route("{cartId}/bouquet")]
         public async Task<IActionResult> AddBouquet(int cartId, BouquetCartItemAddDto bouquetCartItemAddDto)
         {
             try

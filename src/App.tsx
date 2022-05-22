@@ -11,6 +11,9 @@ import BlogsList from './components/Blog/BlogsList';
 import CreateBlog from './components/Blog/CreateBlog';
 import BlogDetails from './components/Blog/BlogDetails';
 import { UserSettingsScreen } from './components/UserSettings/UserSettingsScreen';
+//import  Footer  from './components/Layout/Footer/Footer';
+import './components/Layout/layout.scss';
+//import NavBar from './components/Layout/Navbar';
 
 const App = () => {
   return (

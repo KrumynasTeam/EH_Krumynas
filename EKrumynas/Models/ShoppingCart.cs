@@ -8,9 +8,7 @@ namespace EKrumynas.Models
     public enum CartStatus
     {
         Active,
-        Inactive,
-        InProgress, //ordered cart in progress
-        Finished //finished orders
+        Inactive
     }
 
     public class ShoppingCart

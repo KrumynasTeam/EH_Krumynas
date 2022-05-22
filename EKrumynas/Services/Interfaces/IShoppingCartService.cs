@@ -15,6 +15,6 @@ namespace EKrumynas.Services.Interfaces
         Task<ShoppingCart> UpdateCart(int cartId, BouquetCartItem bouquet);
         Task<ShoppingCart> UpdateCartStatus (int cartId, int status);
         Task<ShoppingCart> DeleteById(int id);
-        Task<ShoppingCart> DeleteItemById(int cartId, int id);
+        Task<ShoppingCart> DeleteItemById(int cartId, string id);
     }
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 namespace EKrumynas.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("[controller]")]
     public class ShoppingCartController : ControllerBase
     {
@@ -42,7 +43,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpGet, Authorize(Roles = "ADMIN")]
+        [HttpGet]
         [Route("{id}")]
         public async Task<ShoppingCartGetDto> GetById(int id)
         {
@@ -61,7 +62,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpDelete, Authorize(Roles = "ADMIN")]
+        [HttpDelete]
         [Route("{id}")]
         public async Task<ShoppingCartGetDto> DeleteById(int id)
         {
@@ -81,7 +82,7 @@ namespace EKrumynas.Controllers
                 }
             }
         }
-        [HttpDelete, Authorize(Roles = "ADMIN")]
+        [HttpDelete]
         [Route("/{cartId}/{itemId}")]
         public async Task<ShoppingCartGetDto> DeleteItemById(int cartId, int itemId)
         {
@@ -102,7 +103,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPost, Authorize(Roles = "ADMIN")]
+        [HttpPost]
         public async Task<IActionResult> Create(ShoppingCartAddDto shoppingCartAddDto)
         {
             try
@@ -121,7 +122,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut, Authorize(Roles = "ADMIN")]
+        [HttpPut]
         [Route("{cartId}/pot")]
         public async Task<IActionResult> AddPot(int cartId, PotCartItemAddDto potCartItemAddDto)
         {
@@ -141,7 +142,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut, Authorize(Roles = "ADMIN")]
+        [HttpPut]
         [Route("{cartId}/plant")]
         public async Task<IActionResult> AddPlant(int cartId, PlantCartItemAddDto plantCartItemAddDto)
         {
@@ -161,7 +162,7 @@ namespace EKrumynas.Controllers
             }
         }
 
-        [HttpPut, Authorize(Roles = "ADMIN")]
+        [HttpPut]
         [Route("{cartId}/bouquet")]
         public async Task<IActionResult> AddBouquet(int cartId, BouquetCartItemAddDto bouquetCartItemAddDto)
         {

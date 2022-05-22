@@ -2,6 +2,78 @@ body > #root > div {
     height: 100vh;
 }
 
+.input-div-right,
+.input-div{
+    min-width: 200px;
+}
+
+@media (min-width:1025px) {
+    .custom-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: auto;
+        margin-right: 70px;
+    }
+}
+
+@media (max-width:1199px) {
+    .custom-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: auto;
+        margin-right: 70px;
+    }
+}
+
+.user-row input{
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    font-size: 1.3rem;
+    margin-left: 1.5rem;
+    padding-bottom: 1rem;
+    box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+    transition: box-shadow 0.2s ease-in;
+    border: 1px solid rgba(187,187,187,0.2);
+    box-sizing: unset;
+    background-clip: unset;
+}
+
+.user-row input:focus{
+    box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7);
+    outline: none;
+}
+
+.user-row input::-webkit-input-placeholder{
+    opacity: 0.4;
+    transition: opacity 0.25s ease-out;
+}
+
+.user-row input:hover::-webkit-input-placeholder,
+.user-row input:focus::-webkit-input-placeholder{
+    opacity: 0;
+}
+
+.user-row label{
+    align-self: start;
+    padding-left: 2.4rem !important;
+    padding-bottom: 0.5rem;
+    color: rgba(81, 81, 81, 0.9);
+    margin-left: 30px;
+}
+
+Label {
+    margin-left: -5px;
+    margin-bottom: -5px !important;
+}
+
+.user-row label {
+    min-width: 100px;
+    box-sizing: unset;
+}
+
 .center-text {
     text-align: center;
     font-size: 100%;
@@ -9,12 +81,6 @@ body > #root > div {
     background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
     font-family: "work sans";
     padding-top: 1%;
-}
-
-#userSettingsForm{
-    width: 90%;
-    margin: 0px auto;
-    
 }
 
 .user-row{
@@ -42,21 +108,43 @@ body > #root > div {
 .user-row .rightPanel{
     background-color: white;
     height: auto;
-    min-height: 800px;
+    min-height: 500px;
 }
 
-.rightPanel .header{
-    background-color: rgb(245, 245, 245);
-    padding: 30px;
-    padding-bottom: 35px;
-    margin-left: -11px;
-    margin-right: -11px;
+@media (min-width: 768px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 35px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
+}
+
+@media (max-width: 767px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 100px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 100px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
 }
 
 .rightPanel .header-title{
     text-align: left;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .rightPanel .header .header-choices{
@@ -112,39 +200,6 @@ body > #root > div {
     opacity: 0;
 }
 
-.user-row input{
-    width: 50%;
-    box-sizing: border-box;
-    border: none;
-    font-size: 1.3rem;
-    margin-left: 1.5rem;
-    padding-bottom: 1rem;
-    box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
-    transition: box-shadow 0.2s ease-in;
-}
-
-.user-row input:focus{
-    box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7);
-    outline: none;
-}
-
-.user-row input::-webkit-input-placeholder{
-    opacity: 1;
-    transition: opacity 0.25s ease-out;
-}
-
-.user-row input:hover::-webkit-input-placeholder,
-.user-row input:focus::-webkit-input-placeholder{
-    opacity: 0;
-}
-
-.user-row label{
-    align-self: start;
-    padding-left: 2.4rem !important;
-    padding-bottom: 0.5rem;
-    color: rgba(187,187,187,0.9);
-}
-
 .user-row button{
     border-radius: 0px;
     width: 95%;
@@ -154,18 +209,24 @@ body > #root > div {
     color: white;
     font-weight: 500;
     background: rgb(34,193,195);
-    background: linear-gradient(45deg, rgba(34,193,195,1) 20%,     rgb(220, 217, 109) 90%);
+    background: linear-gradient(45deg, rgba(34,193,195,1) 35px, rgb(32, 217, 220) 0%);
     border: 0px;
     cursor: pointer;
     transition: opacity 0.25s ease-out;
 }
+
+// font-size: 1.1rem;
+// color: white;
+// font-weight: 500;
+// background: rgb(4, 210, 152);
+// border: 0px;
 
 .user-row .rightPanel button{
     width: 200px;
 }
 
 .update-info-button{
-    float: left;
+    display: inline;
 }
 
 .user-row button:hover{

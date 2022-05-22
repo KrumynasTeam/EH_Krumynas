@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
 
-type User = {
+export type User = {
   id: number,
   firstName?: string;
   lastName?: string;
@@ -24,9 +24,8 @@ type UserContextType = {
   Login: (usernameOrEmail: string, password: string) => void;
   Register: (email: string, username: string, password: string) => void;
   Logout: () => void;
-  GetToken: () => string | null;
-  GetUser: () => User | null;
-  GetRole: () => number | null;
+  UpdateProfileImage: (url: string | null) => void;
+  UpdateUserData: (token: string | null, redirect: boolean | null) => void;
 }
 
 export const UserContext = createContext<UserContextType>(
@@ -48,7 +47,7 @@ export const UserProvider = (props: { children: any }) => {
     setToken(_token);
   }, [isLoggedIn])
 
-  const UpdateUserData = async (_token?:string) => {
+  const UpdateUserData = async (_token?:string, redirect?: boolean) => {
     setIsLoading(true);
     await fetch(process.env.REACT_APP_API_URL + 'User', {
       method: 'GET',
@@ -64,7 +63,8 @@ export const UserProvider = (props: { children: any }) => {
         setError(null);
         localStorage.setItem('user', JSON.stringify(data.result));
         setIsLoggedIn(true);
-        window.location.href = '/';
+        if (redirect)
+          window.location.href = '/';
       }
     })
     .then(() => setIsLoading(false))
@@ -94,7 +94,7 @@ export const UserProvider = (props: { children: any }) => {
       }
     })
     .then((retrievedToken) => {
-      return UpdateUserData(retrievedToken);
+      return UpdateUserData(retrievedToken, true);
     })
     .catch(() => {
       setIsLoading(false);
@@ -126,7 +126,7 @@ export const UserProvider = (props: { children: any }) => {
       }
     })
     .then((retrievedToken) => {
-      return UpdateUserData(retrievedToken);
+      return UpdateUserData(retrievedToken, true);
     })
     .catch(() => {
       setIsLoading(false);
@@ -136,32 +136,46 @@ export const UserProvider = (props: { children: any }) => {
 
   const Logout = async () => {
     setIsLoading(true);
-    setUser(null);
     localStorage.clear();
+    setUser(null);
     setToken(null);
     setIsLoading(false);
     window.location.reload();
   };
 
-  const GetToken = () => {
-    return token || localStorage.getItem('token');
+  const UpdateProfileImage = async (url: string | null) => {
+    setIsLoading(true);
+    await fetch(process.env.REACT_APP_API_URL + 'User',
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        "profileImage": (url == null ? "" : url),
+        "mergeAll": false
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.isError === true) {
+        setError(data.error.message);
+      } else {
+        setError(null);
+        localStorage.setItem('user', JSON.stringify(data.result));
+        setUser(data.result);
+        setIsLoading(false);
+      }
+    })
+    .catch(() => {
+      setIsLoading(false);
+      setError(defaultConnectionError);
+    });
   };
 
-  const GetUser = () => {
-    return user || JSON.parse(localStorage.getItem('user'));
-  }
-
-  const GetRole = () => {
-    let foundToken = localStorage.getItem('token');
-    UpdateUserData(foundToken);
-    if(user == null){
-      return null;
-    }
-    return user.role;
-  }
-
   return (
-    <UserContext.Provider value={{ user, token, error, isLoading, isLoggedIn, Login, Register, Logout, GetToken, GetUser, GetRole }}>
+    <UserContext.Provider value={{ user, token, error, isLoading, isLoggedIn, Login, Register, Logout, UpdateProfileImage, UpdateUserData }}>
       {props.children}
     </UserContext.Provider>
   );

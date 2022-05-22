@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
@@ -34,7 +34,18 @@ namespace EKrumynas.Services.UserService
             {
                 foundUser.FirstName = user.FirstName;
                 foundUser.LastName = user.LastName;
-                if (user.Username != null) foundUser.Username = user.Username;
+
+                if (user.Username != null)
+                {
+                    if (await _context.Users.FirstOrDefaultAsync(x => x.Username == user.Username) == null)
+                    {
+                        foundUser.Username = user.Username;
+                    } else {
+                        throw new ApiException(statusCode: 400,
+                            message: "Username is already in use.");
+                    }
+                }
+                
                 foundUser.ProfileImage = user.ProfileImage;
                 foundUser.Country = user.Country;
                 foundUser.Street = user.Street;
@@ -43,7 +54,18 @@ namespace EKrumynas.Services.UserService
             } else {
                 if (user.FirstName != null) foundUser.FirstName = user.FirstName;
                 if (user.LastName != null) foundUser.LastName = user.LastName;
-                if (user.Username != null) foundUser.Username = user.Username;
+
+                if (user.Username != null)
+                {
+                    if (await _context.Users.FirstOrDefaultAsync(x => x.Username == user.Username) == null)
+                    {
+                        foundUser.Username = user.Username;
+                    } else {
+                        throw new ApiException(statusCode: 400,
+                            message: "Username is already in use.");
+                    }
+                }
+
                 if (user.ProfileImage != null) foundUser.ProfileImage = user.ProfileImage;
                 if (user.Country != null) foundUser.Country = user.Country;
                 if (user.Street != null) foundUser.Street = user.Street;

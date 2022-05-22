@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using AutoMapper;
 using AutoWrapper;
 using EKrumynas.Data;
 using EKrumynas.Middleware;
+using EKrumynas.Middleware.DI;
 using EKrumynas.Services;
 using EKrumynas.Services.Interfaces;
 using EKrumynas.Services.Management;
@@ -16,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace EKrumynas
@@ -140,7 +145,7 @@ namespace EKrumynas
 
             app.UseAuthorization();
 
-            app.UseMiddleware<DatabaseLogger>();
+            ConfigureJsonMiddleware(app);
 
             app.UseEndpoints(endpoints =>
             {
@@ -148,6 +153,17 @@ namespace EKrumynas
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+        }
+
+        private void ConfigureJsonMiddleware(IApplicationBuilder app)
+        {
+            var jsonServices = JObject.Parse(File.ReadAllText("appsettings.json"))["Middleware"];
+            var requiredServices = JsonConvert.DeserializeObject<List<MiddlewareSwitch>>(jsonServices.ToString());
+
+            foreach (var service in requiredServices)
+            {
+                app.UseMiddleware(Type.GetType(service.ServiceType));
+            }
         }
     }
 }

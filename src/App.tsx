@@ -11,14 +11,14 @@ import BlogsList from './components/Blog/BlogsList';
 import CreateBlog from './components/Blog/CreateBlog';
 import BlogDetails from './components/Blog/BlogDetails';
 import { UserSettingsScreen } from './components/UserSettings/UserSettingsScreen';
-//import  Footer  from './components/Layout/Footer/Footer';
+import  Footer  from './components/Layout/Footer/Footer';
 import './components/Layout/layout.scss';
-//import NavBar from './components/Layout/Navbar';
+import NavBar from './components/Layout/Navbar';
 
 const App = () => {
   return (
     <BrowserRouter>
-        <NavMenu />
+        <NavBar/>
           <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='/flowers' element={<AllProducts/>} />
@@ -30,6 +30,7 @@ const App = () => {
             <Route path='blog/:id' element={<BlogDetails/>} />
             <Route path="/blogs/createBlog" element={<CreateBlog/>} />
           </Routes>
+          <Footer/>
     </BrowserRouter>
   );
 }

@@ -44,7 +44,7 @@ namespace EKrumynas.Services
 
         public Task<ShoppingCart> DeleteItemById(int cartId, int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<IList<ShoppingCart>> GetAll()

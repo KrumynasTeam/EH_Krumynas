@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
 import './Navbar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuffer } from '@fortawesome/free-brands-svg-icons';
+import { faSeedling } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
@@ -48,7 +48,7 @@ const NavBar = () => {
                         </Nav.Item>
 
                         <Navbar.Brand as={Link} to="/" onClick={scrollTop} className="navBrn">
-                            <FontAwesomeIcon icon={faBuffer} className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
+                            <FontAwesomeIcon icon={faSeedling} className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                         </Navbar.Brand>
 
                         <Nav.Item>

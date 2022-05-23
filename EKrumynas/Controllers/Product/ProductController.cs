@@ -24,6 +24,7 @@ namespace EKrumynas.Controllers
             _mapper = mapper;
         }
 
+        /*
         [HttpGet]
         public async Task<IList<ProductGetDto>> GetAll()
         {
@@ -41,7 +42,7 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
-
+        
         [HttpGet]
         [Route("{id}")]
         public async Task<ProductGetDto> GetById(int id)
@@ -60,9 +61,9 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
-
+        
         [HttpDelete, Authorize(Roles = "ADMIN")]
-        [Route("{id}")]
+        [Route("{productId}")]
         public async Task<ProductGetDto> DeleteById(int id)
         {
             try
@@ -100,7 +101,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut, Authorize(Roles = "ADMIN")]
-        [Route("{id}")]
+        [Route("{productId}")]
         public async Task<IActionResult> Update(int id, ProductAddDto productAddDto)
         {
             try
@@ -119,5 +120,6 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
+        */
     }
 }

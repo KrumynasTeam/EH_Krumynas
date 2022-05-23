@@ -19,39 +19,28 @@ namespace EKrumynas.Services
             _context = context;
         }
 
-        public async Task<Plant> Create(Plant plant)
+        public async Task<ItemVariants<Product, Plant>> Create(ItemVariants<Product, Plant> plant)
         {
-            Product product = await _context.Products
-                .Include(p => p.Discount)
-                .Include(p => p.Images)
-                .FirstOrDefaultAsync(x => x.Id == plant.Product.Id);
+            plant.Item.Type = ProductType.Plant;
 
-            if (product is null)
+            _context.Products.Add(plant.Item);
+            await _context.SaveChangesAsync();
+
+            foreach (Plant varient in plant.Variants)
             {
-                throw new ApiException(
-                    statusCode: 400,
-                    message: "Product not found.");
+                varient.Product = plant.Item;
+                _context.Plants.Add(varient);
             }
 
-            if (product.Type != ProductType.Plant)
-            {
-                throw new ApiException(
-                    statusCode: 400,
-                    message: "Product should be of plant type");
-            }
-
-            plant.Product = product;
-
-            _context.Plants.Add(plant);
             await _context.SaveChangesAsync();
 
             return plant;
         }
 
-        public async Task<Plant> DeleteById(int id)
+        public async Task<ItemVariants<Product, Plant>> DeleteByProductId(int productId)
         {
-            Plant found = await _context.Plants
-                .FirstOrDefaultAsync(x => x.Id == id);
+            Product found = await _context.Products
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             if (found is null)
             {
@@ -60,10 +49,26 @@ namespace EKrumynas.Services
                     message: "Product not found.");
             }
 
-            _context.Remove(found);
+            IList<Plant> foundVarients = await _context.Plants
+                .Where(p => p.Product.Id == productId)
+                .ToArrayAsync();
+
+            _context.Products.Remove(found);
+
+            foreach (Plant varient in foundVarients)
+            {
+                _context.Plants.Remove(varient);
+            }
+
             await _context.SaveChangesAsync();
 
-            return found;
+            ItemVariants<Product, Plant> variants = new()
+            {
+                Item = found,
+                Variants = foundVarients
+            };
+
+            return variants;
         }
 
         public async Task<IList<Plant>> GetAll()
@@ -86,9 +91,30 @@ namespace EKrumynas.Services
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Plant> Update(Plant plant)
+        public async Task<ItemVariants<Product, Plant>> Update(ItemVariants<Product, Plant> plant)
         {
-            _context.Update(plant);
+            var ids = plant.Variants
+                .Select(p => p.Id)
+                .ToList();
+
+            List<Plant> oldVariants = await _context.Plants
+                .Where(p => p.Product.Id == plant.Item.Id
+                    && !ids.Contains(p.Id))
+                .ToListAsync();
+
+            List<ProductImage> oldImages = await _context.ProductImages
+                .Where(p => p.ProductId == plant.Item.Id)
+                .ToListAsync();
+
+            _context.ProductImages.RemoveRange(oldImages);
+            _context.Plants.RemoveRange(oldVariants);
+
+            foreach (var variant in plant.Variants)
+            {
+                variant.Product = plant.Item;
+                if (variant.Id == 0) _context.Plants.Add(variant);
+            }
+            _context.Products.Update(plant.Item);
             await _context.SaveChangesAsync();
 
             return plant;

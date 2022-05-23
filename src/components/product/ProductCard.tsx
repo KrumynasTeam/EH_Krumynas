@@ -1,8 +1,5 @@
 import React from 'react'
-
-//"https://cdn.shopify.com/s/files/1/0150/6262/products/the-sill_planter-and-stand_variant_pallas_white.jpg", 
-//"https://vilniusflowers.lt/wp-content/uploads/2019/09/100-red-roses-bouquet.jpg",
-//"https://cdn.sanity.io/images/y346iw48/production/246670f4c0ec5477155de24925237900d35fae59-1200x1553.jpg?w=640&auto=format"
+import { Button } from "reactstrap";
 
 function getPriceString(product: { variants: any[]; }){
     var minPrice = Infinity;
@@ -24,13 +21,14 @@ function getPriceString(product: { variants: any[]; }){
     }
   }
 
-function ProductCard({product, click}) {
+function ProductCard({product, click, enableAdminMode, onEditClick}) {
     return (
-        <div className='card'>
-            <img src={product.item.images[0].imagePath}/>
+        <div className='product-card'>
+            {enableAdminMode ? <Button onClick={() => onEditClick(product)} id='product-card-edit-button'></Button> : ''}
+            <img src={product.item.images[0].imagePath} alt={product.item.name}/>
             <p className='name'>{product.item.name}</p>
             <p className='price'>Price: {getPriceString(product)}</p>
-            <button type="button" onClick={() => click(product)} name="add">Add to Cart</button>
+            <Button type="button" onClick={() => click(product)} name="add">Add to Cart</Button>
         </div>
     )
 }

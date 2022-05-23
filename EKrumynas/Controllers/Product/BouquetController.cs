@@ -24,6 +24,7 @@ namespace EKrumynas.Controllers
             _mapper = mapper;
         }
 
+        /*
         [HttpGet]
         public async Task<IList<BouquetGetDto>> GetAll()
         {
@@ -61,17 +62,17 @@ namespace EKrumynas.Controllers
                     message: "Incorrect request data");
             }
         }
-
+        */
         [HttpDelete, Authorize(Roles = "ADMIN")]
         [Route("{id}")]
-        public async Task<BouquetGetDto> DeleteById(int id)
+        public async Task<ItemVariants<ProductGetDto, BouquetGetDto>> DeleteByProductId(int productId)
         {
             try
             {
-                var bouquet = await _bouquetService.DeleteById(id);
-                var bouquetGetDto = _mapper.Map<BouquetGetDto>(bouquet);
+                var bouquet = await _bouquetService.DeleteByProductId(productId);
+                var bouquetGetDto = _mapper.Map<ItemVariants<ProductGetDto, BouquetGetDto>>(bouquet);
 
-                return bouquetGetDto ?? new BouquetGetDto();
+                return bouquetGetDto ?? new ItemVariants<ProductGetDto, BouquetGetDto>();
             }
             catch (ArgumentException)
             {
@@ -82,13 +83,14 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPost, Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Create(BouquetAddDto bouquetAddDto)
+        public async Task<IActionResult> Create(ItemVariants<ProductAddDto, BouquetAddDto> bouquetAddDto)
         {
             try
             {
-                Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
+                ItemVariants<Product, Bouquet> bouquet = _mapper.Map<ItemVariants<Product, Bouquet>>(bouquetAddDto);
+
                 var createdBouquet = await _bouquetService.Create(bouquet);
-                var bouquetGetDto = _mapper.Map<BouquetGetDto>(createdBouquet);
+                var bouquetGetDto = _mapper.Map<ItemVariants<ProductGetDto, BouquetGetDto>>(createdBouquet);
 
                 return Ok(bouquetGetDto);
             }
@@ -101,15 +103,16 @@ namespace EKrumynas.Controllers
         }
 
         [HttpPut, Authorize(Roles = "ADMIN")]
-        [Route("{id}")]
-        public async Task<IActionResult> Update(int id, BouquetAddDto bouquetAddDto)
+        [Route("{productId}")]
+        public async Task<IActionResult> Update(int productId, ItemVariants<ProductUpdateDto, BouquetUpdateDto> bouquetUpdateDto)
         {
             try
             {
-                Bouquet bouquet = _mapper.Map<Bouquet>(bouquetAddDto);
-                bouquet.Id = id;
+                ItemVariants<Product, Bouquet> bouquet = _mapper.Map<ItemVariants<Product, Bouquet>>(bouquetUpdateDto);
+                bouquet.Item.Id = productId;
+                bouquet.Item.Type = ProductType.Bouquet;
                 var updatedBouquet = await _bouquetService.Update(bouquet);
-                var bouquetGetDto = _mapper.Map<ProductGetDto>(updatedBouquet);
+                var bouquetGetDto = _mapper.Map<ItemVariants<ProductGetDto, BouquetGetDto>>(updatedBouquet);
 
                 return Ok(bouquetGetDto);
             }
@@ -122,7 +125,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        [Route("variant")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllByProduct()
         {
             try
@@ -142,7 +145,8 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
-        [Route("variant/{productId}")]
+        [AllowAnonymous]
+        [Route("{productId}")]
         public async Task<IActionResult> GetAllByProductId(int productId)
         {
             try

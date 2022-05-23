@@ -1,18 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import ProductCard from './ProductCard';
+import CreateProductForm from './NewProduct'
 import './Product.scss';
-import { Collapse } from 'reactstrap';
-import { MDBBtn,
-  MDBModal,
-  MDBModalDialog,
-  MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
-  MDBModalBody,
-  MDBModalFooter
-} from 'mdb-react-ui-kit';
+import { Collapse, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 
 type Product = {
   id: number;
@@ -63,32 +57,22 @@ const emptyImage: Image = {
   imagePath: 'None'
 }
 
-const emptyProduct: Product = {
-  id: -1,
-  type: 'None',
-  name: 'None',
-  description: 'None',
-  discount: null,
-  images: [emptyImage]
-};
-
-const emptyVariant: ProductVariant = {
-  item: emptyProduct,
-  variants: []
-}
-
 const colors = ['White', 'Black', 'Red', 'Green', 'Blue', 'Pink', 'Purple'];
 const sizes = ['Small', 'Medium', 'Large'];
 
 export const AllProducts = () => {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [retrieveData, setRetrieveData] = useState(true);
+  const {token, user} = useContext(UserContext);
+  const [showAdminMode, setShowAdminMode] = useState(true);
 
   const [products, setProducts] = useState<ProductVariant[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductVariant[]>([]);
   const [productFilter, setProductFilter] = useState<Filter>(InitialFilter);
   const [showProductModal, setShowProductModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<ProductVariant>(emptyVariant);
+  const [selectedProduct, setSelectedProduct] = useState<ProductVariant>(null);
+  const [showCreateProductForm, setShowCreateProductForm] = useState(false);
 
   const [showFilters, setShowFilters] = useState(true);
   const [showCollection, setShowCollection] = useState(true);
@@ -131,35 +115,49 @@ export const AllProducts = () => {
   },[productFilter, products]);
 
   useEffect(() => {
+    if(selectedProduct === null) return;
     setSelectedProductQuantity(1);
-    if(selectedProduct.variants.length < 1){
+    
+    if(selectedProduct.variants.length === 0){
       return;
     }
 
     if(selectedProduct.item.type === 'Pot'){
-      setSelectedProductSize(selectedProduct.variants[0].size);
+      setSelectedProductSize(selectedProduct.variants[0].size)
     }else{
-      var productColors = [...new Set(selectedProduct.variants.map(v => v.color))];
-      setSelectedProductSizeColors(productColors);
+      if(selectedProductSize == null) setSelectedProductSize("")
+      else setSelectedProductSize(null);
     }
-    setSelectedProductColor(selectedProduct.variants[0].color);
+
   }, [selectedProduct])
 
   useEffect(() => {
-    var sizeColors = selectedProduct.variants.filter(
-      v => v.size === selectedProductSize).map(
-        v => v.color);
-    
-    setSelectedProductSizeColors(sizeColors);
-  }, [selectedProductSize, selectedProduct])
+    if(selectedProduct === null || selectedProduct.variants.length < 1){
+      return;
+    }
+
+    if(selectedProduct.item.type === 'Pot'){
+      console.log('colors!');
+      var sizeColors = selectedProduct.variants.filter(
+        v => v.size === selectedProductSize).map(
+          v => v.color);
+
+      setSelectedProductSizeColors(sizeColors);
+      setSelectedProductColor(sizeColors[0])
+    }else{
+      var productColors = [...new Set(selectedProduct.variants.map(v => v.color))];
+      setSelectedProductSizeColors(productColors);
+      setSelectedProductColor(productColors[0])
+    }
+  }, [selectedProductSize])
 
   useEffect(() => {
     const fetchData = async () => {
-      const plant_response = await fetch(process.env.REACT_APP_API_URL + 'Plant/variant');
+      const plant_response = await fetch(process.env.REACT_APP_API_URL + 'Plant');
       const plant_data = await plant_response.json()
-      const pot_response = await fetch(process.env.REACT_APP_API_URL + 'Pot/variant');
+      const pot_response = await fetch(process.env.REACT_APP_API_URL + 'Pot');
       const pot_data = await pot_response.json()
-      const bouquet_response = await fetch(process.env.REACT_APP_API_URL + 'Bouquet/variant');
+      const bouquet_response = await fetch(process.env.REACT_APP_API_URL + 'Bouquet');
       const bouquet_data = await bouquet_response.json()
 
       var plants = plant_data.result as ProductVariant[]
@@ -173,7 +171,8 @@ export const AllProducts = () => {
           o => Math.max(
             ...o.variants.map(
               v => v.price))));
-
+      
+      maxPrice = Math.max(0, maxPrice);
       changePriceRange('Max', maxPrice);
 
       setProducts(productVariants);
@@ -181,9 +180,12 @@ export const AllProducts = () => {
       setIsLoading(false);
     }
 
-    setIsLoading(true);
-    fetchData();
-  },[])
+    if(retrieveData){
+      setIsLoading(true);
+      fetchData();
+      setRetrieveData(false);
+    }
+  },[retrieveData])
 
   const openProductModal = (product: ProductVariant) => {
     setSelectedProduct(product);
@@ -224,6 +226,7 @@ export const AllProducts = () => {
         o => Math.max(
           ...o.variants.map(
             v => v.price))));
+    newFilter.price.max = Math.max(0, newFilter.price.max);
 
     newFilter.size = [];
     setProductFilter(newFilter);
@@ -240,14 +243,40 @@ export const AllProducts = () => {
   }
 
   const getSelectedPrice = () => {
-    var selectedVariant = selectedProduct.variants.find(
-      v => v.size === selectedProductSize && v.color === selectedProductColor)
-
+    if(selectedProduct.item.type === 'Pot'){
+      var selectedVariant = selectedProduct.variants.find(
+        v => v.size === selectedProductSize && v.color === selectedProductColor)
+    }else{
+      var selectedVariant = selectedProduct.variants.find(
+        v => v.color === selectedProductColor)
+    }
+    
     if(selectedVariant === undefined){
-      return "Unavailable";
+      return "";
     }
 
-    return String(selectedVariant.price * selectedProductQuantity) + '€';
+    return String(Math.round(selectedVariant.price * selectedProductQuantity * 100) / 100) + '€';
+  }
+
+  const handleProductModalClose = () => {
+    setShowProductModal(false);
+    setSelectedProduct(null);
+  }
+
+  const handleProductFormClose = () => {
+    setSelectedProduct(null);
+    setShowCreateProductForm(false);
+  }
+
+  const handleProductEdit = (product: ProductVariant) => {
+    setSelectedProduct(product);
+    setShowCreateProductForm(true);
+  }
+
+  const onFormResponse = () => {
+    setSelectedProduct(null);
+    setRetrieveData(true)
+    setShowCreateProductForm(false);
   }
 
   if(isLoading){
@@ -262,36 +291,41 @@ export const AllProducts = () => {
 
   return(
   <>
-    <MDBModal show={showProductModal} setShow={setShowProductModal} tabIndex={-1}>
-      <MDBModalDialog centered size='lg'>
-          <MDBModalContent className='modal-rect'>
-            <MDBModalHeader>
-              <MDBModalTitle>{selectedProduct.item.name}</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={(() => setShowProductModal(false))}></MDBBtn>
-            </MDBModalHeader>
-            <MDBModalBody className='modal-body'>
-              <div>
+    <CreateProductForm onResponse={onFormResponse} isOpen={showCreateProductForm} onAction={handleProductFormClose} Product={selectedProduct}/>
+    <Modal contentClassName='product-modal-rect' toggle={handleProductModalClose} isOpen={showProductModal}>
+      {selectedProduct !== null && showProductModal ?
+          <div>
+            <ModalHeader id="product-modal-header">
+              <label>{selectedProduct.item.name}</label>
+              <Button id='close-product-modal-button' className='btn-close' color='none' onClick={handleProductModalClose}></Button>
+            </ModalHeader>
+            <ModalBody className='product-modal-body'>
+              <div className='product-modal-product-image'>
                 <img src={selectedProduct.item.images[0].imagePath} sizes='200x200'/>
               </div>
-              <div className='modal-product-info-column'>
-                <div className='modal-product-info'>
+              <div className='product-modal-product-info-column'>
+                <div className='product-modal-product-info'>
                   <label>Description: </label>
                   <p>{selectedProduct.item.description}</p>
-                  <div style={selectedProduct.item.type === 'Pot' ? {} : {display: 'none'}}>
-                    <label>Size:</label>
-                    <div className='product-details-select-container'>
-                      {[...new Set(selectedProduct.variants.map(v => v.size))].map(s => 
-                        <button key={s} className='size-select-button' onClick={() => setSelectedProductSize(s)} style={selectedProductSize === s ? {border: '1px solid white'} : {}}>{s}</button>
-                      )}
+                  {selectedProduct.item.type === 'Pot' ?
+                    <div>
+                      <label>Size:</label>
+                      <div className='product-details-select-container'>
+                        {[...new Set(selectedProduct.variants.map(v => v.size))].map(s => 
+                          <Button key={s} className='size-select-button' onClick={() => setSelectedProductSize(s)} style={selectedProductSize === s ? {border: '1px solid white'} : {}}>{s}</Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                    :
+                    <></>
+                  }
                   <div>
                     <label>Color:</label>
                       <div className='product-details-select-container'>
                         {selectedProductSizeColors.map(c => 
                           <div key={c} className='color-select-rect' 
-                               style={selectedProductColor === c ? {backgroundColor: c, border: '2px solid lightgreen'} : {backgroundColor: c, border: '1px solid white'}}
-                               onClick={() => setSelectedProductColor(c)}/>
+                                style={selectedProductColor === c ? {backgroundColor: c, border: '2px solid lightgreen'} : {backgroundColor: c, border: '1px solid white'}}
+                                onClick={() => setSelectedProductColor(c)}/>
                         )}
                       
                       </div>
@@ -299,16 +333,20 @@ export const AllProducts = () => {
                   <div className='quantity-price-field'>
                     <label>Quantity: </label>
                     <input type='number' value={selectedProductQuantity} onChange={(e) => setSelectedProductQuantity(Number(e.target.value))}/>
+                  </div>
+                  <div className='quantity-price-field'>
                     <label>Price: {getSelectedPrice()}</label>
                   </div>
                 </div>
-                <button type="button">Add to Cart</button>
+                <Button type="button" onClick={() => handleProductModalClose()}>Add to Cart</Button>
               </div>
-            </MDBModalBody>
-            <MDBModalFooter/>
-          </MDBModalContent>
-        </MDBModalDialog>
-    </MDBModal>
+            </ModalBody>
+            <ModalFooter/>
+          </div>
+          :
+          <></>
+        }
+    </Modal>
     <div className='product-container'>
       <div className='filters'>
         <div className='filter-options'>
@@ -390,18 +428,29 @@ export const AllProducts = () => {
             </div>
             <hr/>
             <div className='filter-clear'>
-              <label onClick={() => clearFilters()}>Clear filters X</label><br/>
+              <label id='filter-clear-label' onClick={() => clearFilters()}>Clear filters X</label><br/>
+              {user?.role === 1 ? 
+                <div id='toggle-admin-mode' className='filter-select-container'>
+                  <label>Toggle admin mode</label>
+                  <input className='filter-select-checkbox' type='checkbox' checked={showAdminMode} onChange={() => setShowAdminMode(!showAdminMode)}/>
+                </div>
+              : ''}
             </div>
           </Collapse>
         </div>
       </div>
       <section className='cards'>
-        {filteredProducts.map(product => <ProductCard key={product.item.id} product={product} click={openProductModal}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+10} product={product} click={openProductModal}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+20} product={product} click={openProductModal}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+30} product={product} click={openProductModal}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+40} product={product} click={openProductModal}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+50} product={product} click={openProductModal}/> )}
+        {showAdminMode ? 
+          <div onClick={() => setShowCreateProductForm(true)} id='add-product-card' className='product-card' key={0}>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png'/>
+          </div> 
+          : ''}
+        {filteredProducts.map(product => <ProductCard key={product.item.id} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
+        {filteredProducts.map(product => <ProductCard key={product.item.id+10} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
+        {filteredProducts.map(product => <ProductCard key={product.item.id+20} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
+        {filteredProducts.map(product => <ProductCard key={product.item.id+30} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
+        {filteredProducts.map(product => <ProductCard key={product.item.id+40} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
+        {filteredProducts.map(product => <ProductCard key={product.item.id+50} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
       </section>
     </div>
   </>

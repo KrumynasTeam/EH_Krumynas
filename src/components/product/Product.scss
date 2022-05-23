@@ -1,7 +1,8 @@
 .product-container{
     display: flex;
     flex-direction: row;
-    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,     rgb(17, 17, 17) 100%);
+    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
+    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
     color: white;
     margin-bottom: 10px;
     position:fixed;
@@ -53,11 +54,16 @@
     margin-right: 10%;
     margin-bottom: 100px;
     font-size: x-large;
-    color: rgb(196, 196, 196);
+    color: white;
 }
 
-.filter-clear:hover{
+#filter-clear-label:hover{
     color: white;
+    text-decoration: underline;
+}
+
+#toggle-admin-mode{
+    margin-top: 10px;
 }
 
 .filter-list{
@@ -68,7 +74,7 @@
     justify-content: space-between;
     flex-direction: column;
     font-size: large;
-    color: rgb(196, 196, 196);
+    color: white;
 }
 
 .filter-options input{
@@ -86,36 +92,40 @@
     justify-content: flex-start;
 }
 
-.card{
+.product-card{
     flex: 1;
     height: 450px;
     min-width: 300px;
     max-width: 300px;
-    box-shadow: 0 8px 8px 0 rgba(0,0,0,0.8);
+    //box-shadow: 0 8px 8px 0 rgba(0,0,0,0.8);
     transition: 0.3s;
-    border-radius: 5px;
+    //border-radius: 5px;
     margin: 10px;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgb(132, 144, 146) 0%, rgb(61, 61, 65) 100%);
+    //background: linear-gradient(135deg, rgb(132, 144, 146) 0%, rgb(61, 61, 65) 100%);
+    background: white;
     margin-right: 5px;
+    position: relative;
 }
 
-.card img{
+.product-card img{
     margin: 5px;
-    height: 70%;
+    height: 65%;
+    flex: 65%;
     background-color: white;
-    border-radius: 5px;
+    //border-radius: 5px;
+    max-height: none;
 }
 
-.card .price{
+.product-card .price{
     margin-left: 10px;
     margin-right: 10px;
     font-size: medium;
     height: 10px;
 }
 
-.card .name{
+.product-card .name{
     margin: 0;
     margin-left: 10px;
     margin-right: 10px;
@@ -126,68 +136,101 @@
     text-overflow: ellipsis;
 }
 
-.card button {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 20px;
-    height: 30px;
-    font-size: medium;
-    border-radius: 5px;
-}
+.product-card button {
+    margin: 20px 5px 10px 5px;
+    height: 40px;
+    //font-size: medium;
+    //border-radius: 5px;
 
-.modal-rect{
-    background: linear-gradient(135deg, rgb(72, 74, 82) 0%,     rgba(29,29,29,1) 100%);
+    border-radius: 0px;
+    font-size: 1.3rem;
     color: white;
+    font-weight: 500;
+    background: rgb(34,193,195);
+    background: linear-gradient(45deg, rgba(34,193,195,1) 20%,rgb(220, 217, 109) 90%);
+    //background: linear-gradient(45deg, rgb(201, 206, 206) 20%,rgb(78, 78, 76) 90%);
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
 }
 
-.modal-body{
+.product-card button:hover{
+    opacity: 0.8;
+}
+
+#product-card-edit-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 85%;
+    
+    //margin-left: 100%;
+}
+
+.product-modal-rect{
+    color: white;
+    background: linear-gradient(135deg, rgb(72, 74, 82) 0%,rgba(29,29,29,1) 100%);
+    //width: 100%;
+    //height: 100%;
+}
+
+.product-modal-body{
+    width: 60vw;
+    //height: 60vh;
     display: flex;
     flex-direction: row;
-    font-size: x-large;
+    font-size: large;
 }
 
-.modal-body > div{
-    flex: 1;
-}
-
-.modal-title {
+.product-modal-title {
     margin-left: 2.5%;
     font-size: xx-large;
 }
 
-.modal-body img{
-    width: 90%;
+.product-modal-body img{
+    //width: 90%;
+    width: auto;
     height: 100%;
     margin-left: 5%;
     border-radius: 5px;
     margin-bottom: 10%;
+    max-height: none;
+    max-width: 90%;
+    //max-width: 500px;
+    max-height: 600px;
 }
 
-.modal-footer {
+.product-modal-footer {
     border-top: 0 none;
 }
 
-.modal-product-info-column{
+.product-modal-product-info-column{
+    flex: 40%;
     display: flex;
     flex-direction: column;
 }
 
-.modal-product-info{
+.product-modal-product-info{
     flex: 9;
     display: flex;
     flex-direction: column;
 }
 
-.modal-product-info > p{
-    flex: 2;
-    font-size: large;
+.product-modal-product-image{
+    flex: 60%;
 }
 
-.modal-product-info > div{
+.product-modal-product-info > p{
+    flex: 2;
+    font-size: medium;
+}
+
+.product-modal-product-info > div{
     flex: 1;
 }
 
-.modal-body button{
+.product-modal-body button{
     font-size: medium;
     border-radius: 5px;
     margin-left: 10%;
@@ -196,7 +239,8 @@
 }
 
 .spinner-container{
-    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,     rgb(17, 17, 17) 100%);
+    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
+    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
     width: 100%;
     position:fixed;
 }
@@ -274,7 +318,7 @@
     margin: 0;
     margin-right: 15%;
     background: none;
-    border: 1px solid gray;
+    border: 1px solid white;
     color: white;
 }
 
@@ -289,7 +333,7 @@ button{
 }
 
 .filter-list label:hover{
-    color: white;
+    text-decoration: underline;
 }
 
 .color-select-rect:hover, .color-clear-rect:hover{
@@ -301,13 +345,14 @@ button{
     margin: 10px 10% 20px 10%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    //justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .size-select-button{
     background: none;
     color: white;
-    border: 1px solid gray;
+    border: 1px solid white;
     padding: 10px;
 }
 
@@ -324,13 +369,33 @@ button{
     margin-left: 10px;
     margin-right: 10px;
     background: none;
-    border: 1px solid gray;
+    border: 1px solid white;
     color: white;
     height: 50px;
 }
 
 .quantity-price-field > label{
     margin-top: 5px;
+}
+
+#add-product-card > img{
+    margin: 10px;
+    height: 50px;
+}
+
+#close-product-modal-button{
+    margin-left: 90%;
+    margin-top: 2px;
+    color: white;
+}
+
+#product-modal-header > *{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
 }
 
 @media (max-height: 860px) {
@@ -360,7 +425,7 @@ button{
         margin-left: 15%;
     }
 
-    .modal-body{
+    .modal-body, .product-modal-body{
         flex-direction: column;
     }
 }

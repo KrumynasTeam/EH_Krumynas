@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EKrumynas.Models
 {
@@ -24,8 +25,12 @@ namespace EKrumynas.Models
         [Required] public string LastName { get; set; }
         [Required] public string Username { get; set; }
         [Required] public string Email { get; set; }
-        [Required] public byte[] PasswordHash { get; set; }
-        [Required] public byte[] PasswordSalt { get; set; }
+        [JsonIgnore]
+        [Required]
+        public byte[] PasswordHash { get; set; }
+        [JsonIgnore]
+        [Required]
+        public byte[] PasswordSalt { get; set; }
         public string ProfileImage { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

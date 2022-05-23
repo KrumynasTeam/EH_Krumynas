@@ -6,7 +6,7 @@ namespace EKrumynas.DTOs.ShoppingCart
 {
     public class ShoppingCartAddDto
     {
-        [Required] public int UserId { get; set; }
+        public int UserId { get; set; }
 
         [Required] public virtual List<ProductImageDto> Images { get; set; }
         [Required] public virtual ICollection<PotCartItemAddDto> PotItems { get; set; }

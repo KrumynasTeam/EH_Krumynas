@@ -32,6 +32,13 @@ public class BlogService : IBlogService
         return blog;
     }
 
+    public BlogPost Update(BlogPost blog)
+    {
+        _context.BlogPosts.Update(blog);
+        _context.SaveChanges();
+        return blog;
+    }
+
     public BlogPost Delete(BlogPost blog)
     {
         _context.BlogPosts.Remove(blog);

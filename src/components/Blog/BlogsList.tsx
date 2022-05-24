@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { UserContext } from '../contexts/UserContext';
 import BlogCard from './BlogCard';
+import {Scrollbar} from "react-scrollbars-custom"
 
 export type Blog = {
     id: number,
     title: string,
     content: string,
-    createdAt: Date
+    createdAt: Date,
+    imageUrl: string
 }
 
 function BlogsList() {
@@ -24,9 +26,10 @@ function BlogsList() {
   
     function renderBlogsList (blogs : Blog[]){
       return (
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
+              <Scrollbar style={{ display: "flex", flexWrap: "wrap" , justifyContent: 'center', textAlign: 'left',
+                        maxHeight: '80vh', maxWidth:'60vw', alignSelf:'center', marginTop: '10px'}}>
               {blogs.map(renderCard)}
-          </div>
+              </Scrollbar>
           
       );
     }
@@ -51,7 +54,7 @@ function BlogsList() {
         return <div>Loading...</div>
     }
 
-    return  <div style={{margin: '2rem'}}>
+    return  <div style={{margin: '2rem', justifyContent: 'center', textAlign: 'center', display: 'flex', flexDirection:'column'}}>
                 <h1>Our Blogs</h1>
                 {user?.role === 1 ? <Link to="createBlog"><Button>Create New</Button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}

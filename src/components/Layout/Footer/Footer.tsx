@@ -45,7 +45,7 @@ const Footer = () => {
                 <FooterCol key="3" menuItems={ourServices} title="OUR SERVICES"/>
                 <FooterCol key="4" menuItems={otherLinks} title="OTHER LINKS"/>
                 <Col >
-                <Row>
+                <Row className="footer-row">
                     <div className="d-flex fContactInfo fContactInfo3 align-items-center">
                         <FontAwesomeIcon icon={faMapMarkedAlt} className="fContactIcon"/>
                         <a href = "https://goo.gl/maps/b3kqPtDt8exJUXqC9" target="_blank">
@@ -54,7 +54,7 @@ const Footer = () => {
                         </a>
                     </div>
                 </Row>
-                <Row>
+                <Row className="footer-row">
                     <div className="d-flex fContactInfo fContactInfo3 align-items-center">
                         <FontAwesomeIcon icon={faMobileAlt} className="fContactIcon"/>
                         <a>
@@ -62,7 +62,7 @@ const Footer = () => {
                         </a>
                     </div>
                 </Row>
-                <Row>
+                <Row className="footer-row">
                     <div className="d-flex fContactInfo fContactInfo3 align-items-center">
                         <FontAwesomeIcon icon={faMailBulk} className="fContactIcon"/>
                         <a>

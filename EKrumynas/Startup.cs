@@ -66,6 +66,7 @@ namespace EKrumynas
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

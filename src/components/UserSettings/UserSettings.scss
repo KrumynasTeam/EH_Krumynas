@@ -64,11 +64,6 @@ body > #root > div {
     margin-left: 30px;
 }
 
-Label {
-    margin-left: -5px;
-    margin-bottom: -5px !important;
-}
-
 .user-row label {
     min-width: 100px;
     box-sizing: unset;
@@ -111,31 +106,31 @@ Label {
     min-height: 500px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 991px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 100px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1399px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 100px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
+}
+
+@media (min-width: 1400px) {
     .rightPanel .header{
         background-color: rgb(245, 245, 245);
         padding: 30px;
         padding-bottom: 35px;
-        margin-left: -11px;
-        margin-right: -11px;
-    }
-}
-
-@media (max-width: 767px) {
-    .rightPanel .header{
-        background-color: rgb(245, 245, 245);
-        padding: 30px;
-        padding-bottom: 100px;
-        margin-left: -11px;
-        margin-right: -11px;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-    .rightPanel .header{
-        background-color: rgb(245, 245, 245);
-        padding: 30px;
-        padding-bottom: 100px;
         margin-left: -11px;
         margin-right: -11px;
     }

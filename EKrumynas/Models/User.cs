@@ -9,12 +9,10 @@ namespace EKrumynas.Models
     [DataContract(Name = "Role")]
     public enum Role
     {
-        [Description("USER")]
-        [EnumMember]
-        USER = 0,
-        [Description("ADMIN")]
-        [EnumMember]
-        ADMIN = 1
+        [Description("USER"), EnumMember]
+        USER,
+        [Description("ADMIN"), EnumMember]
+        ADMIN
     }
 
     public class User

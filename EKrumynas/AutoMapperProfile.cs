@@ -3,6 +3,8 @@ using EKrumynas.DTOs;
 using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
+using EKrumynas.Models.OrderDetails;
+using EKrumynas.Services;
 using System;
 
 namespace EKrumynas
@@ -11,25 +13,44 @@ namespace EKrumynas
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserGetDto>().ConstructUsing(x => new()
+            CreateMap<BouquetCartItem, BouquetCartItemSnapshot>().ConstructUsing(x => new()
             {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                ProfileImage = x.ProfileImage,
-                CreatedAt = x.CreatedAt,
-                Country = x.Country,
-                Street = x.Street,
-                AddressLine1 = x.AddressLine1,
-                AddressLine2 = x.AddressLine2
+                Name = x.Bouquet.Product.Name,
+                Description = x.Bouquet.Product.Description,
+                Quantity = x.Quantity,
+                Price = (decimal)0.0 // TODO: add total bouquet price
             });
+
+            CreateMap<PlantCartItem, PlantCartItemSnapshot>().ConstructUsing(x => new()
+            {
+                Name = x.Plant.Product.Name,
+                Description = x.Plant.Product.Description,
+                Color = x.Plant.Color,
+                Quantity = x.Quantity,
+                Price = x.Plant.Price
+            });
+
+            CreateMap<PotCartItem, PotCartItemSnapshot>().ConstructUsing(x => new()
+            {
+                Name = x.Pot.Product.Name,
+                Description = x.Pot.Product.Description,
+                Color = x.Pot.Color,
+                Size = x.Pot.Size,
+                Quantity = x.Quantity,
+                Price = x.Pot.Price
+            });
+
+            CreateMap<ShoppingCart, ShoppingCartSnapshot>().ConstructUsing(x => new()
+            {
+                Id = 0
+            });
+
+            CreateMap<User, UserGetDto>();
             
             CreateMap<ProductAddDto, Product>().ConstructUsing(x => new()
             {
                 Name = x.Name,
-                Description = x.Description,
-                Type = (ProductType) Enum.Parse(typeof(ProductType), x.Type, true),
+                Description = x.Description
             });
 
             CreateMap<ProductImageDto, ProductImage>().ConstructUsing(x => new ()
@@ -41,16 +62,14 @@ namespace EKrumynas
             CreateMap<PlantAddDto, Plant>().ConstructUsing(x => new()
             {
                 Color = (ProductColor)Enum.Parse(typeof(ProductColor), x.Color, true),
-                Price = x.Price,
-                Product = new() { Id = x.ProductId }
+                Price = x.Price
             });
 
             CreateMap<PotAddDto, Pot>().ConstructUsing(x => new()
             {
                 Color = (ProductColor)Enum.Parse(typeof(ProductColor), x.Color, true),
                 Size = (PotSize)Enum.Parse(typeof(PotSize), x.Size, true),
-                Price = x.Price,
-                Product = new() { Id = x.ProductId }
+                Price = x.Price
             });
 
             CreateMap<BouquetAddDto, Bouquet>().ConstructUsing(x => new()
@@ -88,39 +107,10 @@ namespace EKrumynas
             });
 
             CreateMap<ProductImage, ProductImageDto>();
-
-            CreateMap<Bouquet, BouquetGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images, 
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Pot, PotGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
-
-            CreateMap<Plant, PlantGetDto>().ConstructUsing(x => new()
-            {
-                ProductId = x.Product.Id,
-                Type = x.Product.Type.ToString(),
-                Name = x.Product.Name,
-                Description = x.Product.Description,
-                Discount = x.Product.Discount,
-            }).ForMember(
-                b => b.Images,
-                p => p.MapFrom(p => p.Product.Images));
+    
+            CreateMap<Bouquet, BouquetGetDto>();
+            CreateMap<Pot, PotGetDto>();
+            CreateMap<Plant, PlantGetDto>();
 
             CreateMap<BouquetItem, BouquetItemGetDto>().ConstructUsing(x => new()
             {
@@ -158,6 +148,22 @@ namespace EKrumynas
             {
                 Quantity = x.Quantity
             });
+            CreateMap<ItemVariants<Product, Pot>, ItemVariants<ProductGetDto, PotGetDto>>();
+            CreateMap<ItemVariants<Product, Plant>, ItemVariants<ProductGetDto, PlantGetDto>>();
+            CreateMap<ItemVariants<Product, Bouquet>, ItemVariants<ProductGetDto, BouquetGetDto>>();
+
+            CreateMap<ItemVariants<ProductAddDto, PotAddDto>, ItemVariants<Product, Pot>>();
+            CreateMap<ItemVariants<ProductAddDto, PlantAddDto>, ItemVariants<Product, Plant>>();
+            CreateMap<ItemVariants<ProductAddDto, BouquetAddDto>, ItemVariants<Product, Bouquet>>();
+
+            CreateMap<ProductUpdateDto, Product>();
+            CreateMap<PotUpdateDto, Pot>();
+            CreateMap<PlantUpdateDto, Plant>();
+            CreateMap<BouquetUpdateDto, Bouquet>();
+
+            CreateMap<ItemVariants<ProductUpdateDto, PotUpdateDto>, ItemVariants<Product, Pot>>();
+            CreateMap<ItemVariants<ProductUpdateDto, PlantUpdateDto>, ItemVariants<Product, Plant>>();
+            CreateMap<ItemVariants<ProductUpdateDto, BouquetUpdateDto>, ItemVariants<Product, Bouquet>>();
         }
     }
 }

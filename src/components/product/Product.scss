@@ -14,9 +14,11 @@ html, body{
 }
 
 .filters{
+    top: 100px;
     position: fixed;
     margin-top: 10px;
     min-width: 300px;
+    width: 300px;
 }
 
 #filter-collapse-check{
@@ -89,7 +91,7 @@ html, body{
 }
 
 .cards{
-    margin-left: 15%;
+    margin-left: 300px;
     flex: 5;
     display: flex;
     flex-wrap: wrap;
@@ -410,11 +412,21 @@ button{
     }
 
     .filters{
-        overflow-y: scroll;
+        //overflow-y: scroll;
+        margin-right: 10px;
+        width: auto;
+        overflow-y: hidden;
+        position: relative;
+        top: 0;
+    }
+
+    .filter-clear{
+        margin-bottom: 20px;
     }
 
     .cards{
-        justify-content: space-around;
+        justify-content: center;
+        margin-left: 0;
     }
 
     .product-container{

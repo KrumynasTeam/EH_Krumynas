@@ -31,6 +31,7 @@ nav {
     font-size: 1.1rem;
     font-family: 'work sans';
 }
+
 .mainNav .nav-link:after {
     content: '';
     display: block;
@@ -40,6 +41,7 @@ nav {
     background: transparent;
     transition: width .5s ease, background-color .5s ease;
 }
+
 .mainNav .nav-link:hover:after {
     width: 100%;
     background: #4C25F5;

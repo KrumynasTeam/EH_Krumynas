@@ -1,15 +1,20 @@
 .product-container{
     display: flex;
     flex-direction: row;
-    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
     background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
     color: white;
-    margin-bottom: 10px;
-    position:fixed;
-    width: 100%;
+    min-height: 100vh;
+    height: 100% !important;
+    overflow-x: hidden;
+}
+
+html, body{
+    min-height: 100%;
+    height: 100%;
 }
 
 .filters{
+    position: fixed;
     margin-top: 10px;
     min-width: 300px;
 }
@@ -84,11 +89,11 @@
 }
 
 .cards{
+    margin-left: 15%;
     flex: 5;
     display: flex;
     flex-wrap: wrap;
-    overflow-y: scroll;
-    margin-bottom: 100px;
+    height: 100%;
     justify-content: flex-start;
 }
 
@@ -97,14 +102,12 @@
     height: 450px;
     min-width: 300px;
     max-width: 300px;
-    //box-shadow: 0 8px 8px 0 rgba(0,0,0,0.8);
+    box-shadow: 0 8px 8px 0 rgba(0,0,0,0.8);
     transition: 0.3s;
-    //border-radius: 5px;
     margin: 10px;
     display: flex;
     flex-direction: column;
-    //background: linear-gradient(135deg, rgb(132, 144, 146) 0%, rgb(61, 61, 65) 100%);
-    background: white;
+    background: black;
     margin-right: 5px;
     position: relative;
 }
@@ -114,7 +117,6 @@
     height: 65%;
     flex: 65%;
     background-color: white;
-    //border-radius: 5px;
     max-height: none;
 }
 
@@ -136,22 +138,23 @@
     text-overflow: ellipsis;
 }
 
-.product-card button {
-    margin: 20px 5px 10px 5px;
+.product-card button, .product-modal-body button {
+    margin: 20px 5px 5px 5px;
     height: 40px;
-    //font-size: medium;
-    //border-radius: 5px;
 
     border-radius: 0px;
     font-size: 1.3rem;
     color: white;
     font-weight: 500;
     background: rgb(34,193,195);
-    background: linear-gradient(45deg, rgba(34,193,195,1) 20%,rgb(220, 217, 109) 90%);
-    //background: linear-gradient(45deg, rgb(201, 206, 206) 20%,rgb(78, 78, 76) 90%);
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
     border: 0px;
     cursor: pointer;
     transition: opacity 0.25s ease-out;
+
+    &:hover{
+        opacity: 0.8;
+    }
 }
 
 .product-card button:hover{
@@ -164,20 +167,15 @@
     position: absolute;
     margin-top: 5%;
     margin-left: 85%;
-    
-    //margin-left: 100%;
 }
 
 .product-modal-rect{
     color: white;
-    background: linear-gradient(135deg, rgb(72, 74, 82) 0%,rgba(29,29,29,1) 100%);
-    //width: 100%;
-    //height: 100%;
+    background: black;
 }
 
 .product-modal-body{
     width: 60vw;
-    //height: 60vh;
     display: flex;
     flex-direction: row;
     font-size: large;
@@ -189,15 +187,14 @@
 }
 
 .product-modal-body img{
-    //width: 90%;
     width: auto;
+    flex: auto;
     height: 100%;
     margin-left: 5%;
     border-radius: 5px;
     margin-bottom: 10%;
     max-height: none;
     max-width: 90%;
-    //max-width: 500px;
     max-height: 600px;
 }
 
@@ -206,7 +203,7 @@
 }
 
 .product-modal-product-info-column{
-    flex: 40%;
+    flex: 50%;
     display: flex;
     flex-direction: column;
 }
@@ -232,17 +229,20 @@
 
 .product-modal-body button{
     font-size: medium;
-    border-radius: 5px;
     margin-left: 10%;
     margin-right: 10%;
     flex: 1;
+}
+
+.modal-open{
+    padding: 0 !important; 
 }
 
 .spinner-container{
     background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
     background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
     width: 100%;
-    position:fixed;
+    height: 100vh;
 }
 
 .spinner-border{
@@ -379,7 +379,7 @@ button{
 }
 
 #add-product-card > img{
-    margin: 10px;
+    margin: 5px;
     height: 50px;
 }
 
@@ -390,7 +390,7 @@ button{
 }
 
 #product-modal-header > *{
-    display: flex;
+    //display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin-left: 10px;

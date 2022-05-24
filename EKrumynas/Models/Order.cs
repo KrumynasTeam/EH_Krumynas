@@ -29,6 +29,7 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
+        [Range(0.0, double.MaxValue, ErrorMessage = "Total {0} must be greater than {1}.")]
         public decimal Total { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -45,8 +46,5 @@ namespace EKrumynas.Models
         #nullable enable
         public virtual User? User { get; set; }
         #nullable disable
-
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
     }
 }

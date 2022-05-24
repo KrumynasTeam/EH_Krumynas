@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace EKrumynas.Models
 {
@@ -33,8 +30,9 @@ namespace EKrumynas.Models
         [Required] public string Name { get; set; }
         [Required] public string Description { get; set; }
 
-#nullable enable
+        #nullable enable
         public virtual Discount? Discount { get; set; }
+        #nullable disable
 
         public virtual ICollection<ProductImage> Images { get; set; }
 

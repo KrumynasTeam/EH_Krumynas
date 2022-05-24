@@ -38,7 +38,7 @@ namespace EKrumynas
         {
             // Setup PostgreSQL connection string - localhost or Heroku
             string connectionString = null;
-            string envVar = Environment.GetEnvironmentVariable("HEROKU_POSTGRESQL_NAVY_URL");
+            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
 
             if (string.IsNullOrEmpty(envVar)) {
                 connectionString = Configuration.GetConnectionString("MainDatabaseConnection");

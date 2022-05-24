@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './custom.scss'
 import { Home } from './components/Home';
-import { AllProducts } from './components/AllProducts';
+import { AllProducts } from './components/product/AllProducts';
 import { NavMenu } from './components/NavMenu';
 import { LoginScreen } from './components/Login/LoginScreen';
 import { RegisterScreen } from './components/Register/RegisterScreen';
@@ -11,14 +11,18 @@ import BlogsList from './components/Blog/BlogsList';
 import CreateBlog from './components/Blog/CreateBlog';
 import BlogDetails from './components/Blog/BlogDetails';
 import { UserSettingsScreen } from './components/UserSettings/UserSettingsScreen';
+import  Footer  from './components/Layout/Footer/Footer';
+import './components/Layout/layout.scss';
+import NavBar from './components/Layout/Navbar';
 import { UserContext } from './components/contexts/UserContext';
+
 
 const App = () => {
   const {user} = useContext(UserContext);
 
   return (
     <BrowserRouter>
-        <NavMenu />
+        <NavBar/>
           <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='/flowers' element={<AllProducts/>} />
@@ -30,6 +34,7 @@ const App = () => {
             <Route path='blog/:id' element={<BlogDetails/>} />
             <Route path="/blogs/createBlog" element={user?.role === 1 ? <CreateBlog/> : <Home/>} />
           </Routes>
+          <Footer/>
     </BrowserRouter>
   );
 }

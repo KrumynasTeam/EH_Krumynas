@@ -65,7 +65,10 @@ namespace EKrumynas.Services
 
         public async Task<Product> Update(Product product)
         {
-            throw new NotImplementedException();
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+
+            return product;
         }
     }
 }

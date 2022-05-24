@@ -1,0 +1,431 @@
+.product-container{
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
+    color: white;
+    min-height: 100vh;
+    height: 100% !important;
+    overflow-x: hidden;
+}
+
+html, body{
+    min-height: 100%;
+    height: 100%;
+}
+
+.filters{
+    position: fixed;
+    margin-top: 10px;
+    min-width: 300px;
+}
+
+#filter-collapse-check{
+    margin-top: 20px;
+}
+
+.filter-options hr{
+    background-color: white;
+    color: white;
+    height: 3px;
+}
+
+.filter-header{
+    margin: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    justify-content: space-between;
+    font-size: xx-large;
+}
+
+.filter-category{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.filter-category-header{
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: x-large;
+}
+
+.filter-clear{
+    margin: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 100px;
+    font-size: x-large;
+    color: white;
+}
+
+#filter-clear-label:hover{
+    color: white;
+    text-decoration: underline;
+}
+
+#toggle-admin-mode{
+    margin-top: 10px;
+}
+
+.filter-list{
+    margin: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    font-size: large;
+    color: white;
+}
+
+.filter-options input{
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.cards{
+    margin-left: 15%;
+    flex: 5;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: flex-start;
+}
+
+.product-card{
+    flex: 1;
+    height: 450px;
+    min-width: 300px;
+    max-width: 300px;
+    box-shadow: 0 8px 8px 0 rgba(0,0,0,0.8);
+    transition: 0.3s;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    background: black;
+    margin-right: 5px;
+    position: relative;
+}
+
+.product-card img{
+    margin: 5px;
+    height: 65%;
+    flex: 65%;
+    background-color: white;
+    max-height: none;
+}
+
+.product-card .price{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: medium;
+    height: 10px;
+}
+
+.product-card .name{
+    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: x-large;
+    height: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card button, .product-modal-body button {
+    margin: 20px 5px 5px 5px;
+    height: 40px;
+
+    border-radius: 0px;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 500;
+    background: rgb(34,193,195);
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+
+    &:hover{
+        opacity: 0.8;
+    }
+}
+
+.product-card button:hover{
+    opacity: 0.8;
+}
+
+#product-card-edit-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 85%;
+}
+
+.product-modal-rect{
+    color: white;
+    background: black;
+}
+
+.product-modal-body{
+    width: 60vw;
+    display: flex;
+    flex-direction: row;
+    font-size: large;
+}
+
+.product-modal-title {
+    margin-left: 2.5%;
+    font-size: xx-large;
+}
+
+.product-modal-body img{
+    width: auto;
+    flex: auto;
+    height: 100%;
+    margin-left: 5%;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    max-height: none;
+    max-width: 90%;
+    max-height: 600px;
+}
+
+.product-modal-footer {
+    border-top: 0 none;
+}
+
+.product-modal-product-info-column{
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-modal-product-info{
+    flex: 9;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-modal-product-image{
+    flex: 60%;
+}
+
+.product-modal-product-info > p{
+    flex: 2;
+    font-size: medium;
+}
+
+.product-modal-product-info > div{
+    flex: 1;
+}
+
+.product-modal-body button{
+    font-size: medium;
+    margin-left: 10%;
+    margin-right: 10%;
+    flex: 1;
+}
+
+.modal-open{
+    padding: 0 !important; 
+}
+
+.spinner-container{
+    background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
+    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
+    width: 100%;
+    height: 100vh;
+}
+
+.spinner-border{
+    margin-top: 20%;
+    width: 50px;
+    height: 50px;
+}
+
+.color-select-rect{
+    margin: 5px;
+    margin-left: 0;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+}
+
+.color-clear-rect{
+    margin: 5px;
+    margin-left: 0;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid white;
+    text-align: center;
+    display: table;
+    overflow: hidden;
+}
+
+.color-clear-rect-cell{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.color-clear-label{
+    height: 20px;
+    width: 20px;
+    font-size: large;
+}
+
+.color-container{
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.filter-container{
+    margin: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-select-container{
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filter-select-label{
+    flex: 1;
+    margin-top: 7px;
+}
+
+.filter-select-number{
+    flex: 1;
+    margin: 0;
+    margin-right: 15%;
+    background: none;
+    border: 1px solid white;
+    color: white;
+}
+
+.filter-select-checkbox{
+    flex: 1;
+    margin: 0;
+    margin-left: 5%;
+}
+
+button{
+    border: none;
+}
+
+.filter-list label:hover{
+    text-decoration: underline;
+}
+
+.color-select-rect:hover, .color-clear-rect:hover{
+    border: 2px solid lightgreen !important;
+}
+
+.product-details-select-container{
+    align-items: center;
+    margin: 10px 10% 20px 10%;
+    display: flex;
+    flex-direction: row;
+    //justify-content: space-around;
+    justify-content: space-evenly;
+}
+
+.size-select-button{
+    background: none;
+    color: white;
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.quantity-price-field{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.quantity-price-field input{
+    min-width: 30%;
+    width: 30%;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: none;
+    border: 1px solid white;
+    color: white;
+    height: 50px;
+}
+
+.quantity-price-field > label{
+    margin-top: 5px;
+}
+
+#add-product-card > img{
+    margin: 5px;
+    height: 50px;
+}
+
+#close-product-modal-button{
+    margin-left: 90%;
+    margin-top: 2px;
+    color: white;
+}
+
+#product-modal-header > *{
+    //display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+@media (max-height: 860px) {
+    .filters{
+        overflow-y: scroll;
+    }
+}
+
+@media (max-width: 1000px){
+    .filters .cards{
+      flex: auto;
+    }
+
+    .filters{
+        overflow-y: scroll;
+    }
+
+    .cards{
+        justify-content: space-around;
+    }
+
+    .product-container{
+        flex-direction: column;
+    }
+
+    .filter-category{
+        margin-left: 15%;
+    }
+
+    .modal-body, .product-modal-body{
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,157 @@
+.create-product-form-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    
+}
+
+.create-product-basic-information-container{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.create-product-basic-information-container-grid{
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.create-product-basic-information-container-grid > h2 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row: 1;
+}
+
+#basic-info-a{
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#product-name-input {
+    height: 30%;
+}
+
+#product-description-input{
+    height: 60%;
+}
+
+#basic-info-b{
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#basic-info-c{
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#basic-info-c > img {
+    min-width: 200px;
+    min-height: 200px;
+} 
+
+#basic-info-c > button{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.create-product-container{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#add-variant-section{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.create-product-variants-container{
+    width: 100%;
+}
+
+.create-product-actions-container{
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#delete-product-button, #delete-product-button-div{
+    flex: 50%;
+    height: 40px;
+    margin-right: 50%;
+}
+
+#delete-product-button{
+    background-color: red;
+}
+
+.product-form-action-button{
+    flex: 25%;
+    height: 40px;
+    margin-left: 5%;
+}
+
+.product-variant-list{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product-variant-row{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    //border: 1px solid black;
+}
+
+.product-variant-row-cell{
+    width: 100%;
+    border: 1px solid black;
+    margin-left: 1px;
+    display: flex;
+    justify-content: center;
+}
+
+.product-variant-row-cell > button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 30px;
+    width: 50%;
+}
+
+.create-product-form-container h2 {
+    font-size: medium;
+}
+
+.add-variant-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#type-select-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#product-form-error-message{
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    color: red;
+}

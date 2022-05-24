@@ -10,7 +10,7 @@ namespace EKrumynas.Data
         public EKrumynasDbContext(DbContextOptions<EKrumynasDbContext> options) : base(options)
         {
         }
-        
+
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
@@ -28,7 +28,7 @@ namespace EKrumynas.Data
 
         public DbSet<ShoppingCartSnapshot> ShoppingCartSnapshot { get; set; }
         public DbSet<BouquetCartItemSnapshot> BouquetCartItemSnapshots { get; set; }
-        public DbSet<PlantCartItemSnapshot> PlantCartItemSnapshots{ get; set; }
+        public DbSet<PlantCartItemSnapshot> PlantCartItemSnapshots { get; set; }
         public DbSet<PotCartItemSnapshot> PotCartItemSnapshot { get; set; }
     }
 }

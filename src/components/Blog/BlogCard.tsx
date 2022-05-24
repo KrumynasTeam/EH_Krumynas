@@ -18,7 +18,6 @@ function BlogCard({blog} : {blog: Blog}) {
       }
     
     async function handleDeleteClick(blogId : number){
-        console.log('in handle delete click')
         await fetch(process.env.REACT_APP_API_URL + 'Blog/' + blogId, {
             method: 'DELETE',
             headers: token != null ? {'Authorization': token} : {}

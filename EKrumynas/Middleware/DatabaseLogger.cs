@@ -7,7 +7,6 @@ using System.Security.Claims;
 using EKrumynas.Models.Middleware;
 using System.IO;
 using System.Text.Json;
-using Newtonsoft.Json.Linq;
 using EKrumynas.DTOs.User;
 
 namespace EKrumynas.Middleware

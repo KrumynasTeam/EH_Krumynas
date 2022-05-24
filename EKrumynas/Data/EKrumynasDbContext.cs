@@ -1,5 +1,6 @@
 ﻿using EKrumynas.Models;
 using EKrumynas.Models.Middleware;
+using EKrumynas.Models.OrderDetails;
 using Microsoft.EntityFrameworkCore;
 
 namespace EKrumynas.Data
@@ -24,5 +25,10 @@ namespace EKrumynas.Data
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ActivityRecord> ActivityRecords { get; set; }
+
+        public DbSet<ShoppingCartSnapshot> ShoppingCartSnapshot { get; set; }
+        public DbSet<BouquetCartItemSnapshot> BouquetCartItemSnapshots { get; set; }
+        public DbSet<PlantCartItemSnapshot> PlantCartItemSnapshots{ get; set; }
+        public DbSet<PotCartItemSnapshot> PotCartItemSnapshot { get; set; }
     }
 }

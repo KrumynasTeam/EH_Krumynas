@@ -7,7 +7,7 @@ namespace EKrumynas.DTOs.ShoppingCart
     public class ShoppingCartGetDto
     {
         [Required] public int CartId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Required] public string Status { get; set; }
         public Discount Discount { get; set; }
 

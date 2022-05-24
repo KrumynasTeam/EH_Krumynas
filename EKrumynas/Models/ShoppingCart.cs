@@ -17,8 +17,9 @@ namespace EKrumynas.Models
         public int Id { get; set; }
         public CartStatus Status { get; set; }
 
-#nullable enable
+        #nullable enable
         public virtual User? User { get; set; }
+        #nullable disable
 
         public virtual ICollection<PlantCartItem> Plants { get; set; }
         public virtual ICollection<PotCartItem> Pots { get; set; }

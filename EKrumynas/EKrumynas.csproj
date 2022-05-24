@@ -39,6 +39,8 @@
     <None Remove="Controllers\User\" />
     <None Remove="Models\Middleware\" />
     <None Remove="Middleware\DI\" />
+    <None Remove="DTOs\Order\" />
+    <None Remove="Models\OrderDetails\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\User\" />
@@ -50,5 +52,7 @@
     <Folder Include="Controllers\User\" />
     <Folder Include="Models\Middleware\" />
     <Folder Include="Middleware\DI\" />
+    <Folder Include="DTOs\Order\" />
+    <Folder Include="Models\OrderDetails\" />
   </ItemGroup>
 </Project>

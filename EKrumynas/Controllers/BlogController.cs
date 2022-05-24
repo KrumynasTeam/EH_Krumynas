@@ -20,6 +20,7 @@ namespace EKrumynas.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "USER")]
         public IList<BlogPost> GetAll()
         {
             var blogs = _blogService.GetAll();
@@ -29,6 +30,7 @@ namespace EKrumynas.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "USER")]
         public BlogPost GetById(int id)
         {
             var blog = _blogService.GetById(id);
@@ -42,6 +44,14 @@ namespace EKrumynas.Controllers
         {
             var createdBlog = _blogService.Create(blog);
             return Ok(createdBlog);
+        }
+        
+        [HttpPut]
+        [Authorize(Roles = "ADMIN")]
+        public IActionResult Update(BlogPost blog)
+        {
+            var updatedBlog = _blogService.Update(blog);
+            return Ok(updatedBlog);
         }
 
         [HttpDelete]

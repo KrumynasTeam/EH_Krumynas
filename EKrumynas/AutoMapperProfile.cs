@@ -3,6 +3,7 @@ using EKrumynas.DTOs;
 using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.DTOs.User;
 using EKrumynas.Models;
+using EKrumynas.Models.OrderDetails;
 using System;
 
 namespace EKrumynas
@@ -11,19 +12,39 @@ namespace EKrumynas
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserGetDto>().ConstructUsing(x => new()
+            CreateMap<BouquetCartItem, BouquetCartItemSnapshot>().ConstructUsing(x => new()
             {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                ProfileImage = x.ProfileImage,
-                CreatedAt = x.CreatedAt,
-                Country = x.Country,
-                Street = x.Street,
-                AddressLine1 = x.AddressLine1,
-                AddressLine2 = x.AddressLine2
+                Name = x.Bouquet.Product.Name,
+                Description = x.Bouquet.Product.Description,
+                Quantity = x.Quantity,
+                Price = (decimal)0.0 // TODO: add total bouquet price
             });
+
+            CreateMap<PlantCartItem, PlantCartItemSnapshot>().ConstructUsing(x => new()
+            {
+                Name = x.Plant.Product.Name,
+                Description = x.Plant.Product.Description,
+                Color = x.Plant.Color,
+                Quantity = x.Quantity,
+                Price = x.Plant.Price
+            });
+
+            CreateMap<PotCartItem, PotCartItemSnapshot>().ConstructUsing(x => new()
+            {
+                Name = x.Pot.Product.Name,
+                Description = x.Pot.Product.Description,
+                Color = x.Pot.Color,
+                Size = x.Pot.Size,
+                Quantity = x.Quantity,
+                Price = x.Pot.Price
+            });
+
+            CreateMap<ShoppingCart, ShoppingCartSnapshot>().ConstructUsing(x => new()
+            {
+                Id = 0
+            });
+
+            CreateMap<User, UserGetDto>();
             
             CreateMap<ProductAddDto, Product>().ConstructUsing(x => new()
             {

@@ -2,19 +2,35 @@ import React, { useContext, useState } from "react";
 import './UserSettings.scss';
 import UploadImageForm from "../ImageUploader/ImageUpload";
 import { UserContext } from "../contexts/UserContext";
-import { Label, Input } from "reactstrap";
+import { Label, Input, Table } from "reactstrap";
+
+type Order = {
+    id: number,
+    price: number,
+    createdAt: string,
+    updatedAt: string,
+    status: number,
+    delivery: number,
+    country: string,
+    street: string,
+    addressLine1: string,
+    addressLine2?: string
+}
 
 export const UserSettingsScreen = () => {
+    const orders = 'Orders';
+    const userInfo = 'User Info';
+    const billingInfo = 'Billing Info';
+    const changePassword = 'Change Password';
+
     const {user, token, UpdateProfileImage, UpdateUserData} = useContext(UserContext);
+    const [userOrders, setUserOrders] = useState<Array<Order>>([]);
     const [showModal, setShowModal] = useState(false)
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [currentOption, setCurrentOption] = useState('userInfo')
+    const [currentOption, setCurrentOption] = useState(orders)
     const profileAvatarDefaultImage = require('../../assets/profile-avatar-default.png');
-    const userInfo = 'userInfo';
-    const billingInfo = 'billingInfo';
-    const changePassword = 'changePassword';
 
     const [profileFirstLastName, setProfileFirstLastName] = useState(user?.firstName + ` ` + user?.lastName);
     const [password, setPassword] = useState('');
@@ -43,11 +59,13 @@ export const UserSettingsScreen = () => {
     });
 
     const RenderCurrentWindow = (() => {
+        if (currentOption == userInfo)
+        return UserInfo(setProfileFirstLastName, UpdateUserData, token, success, setSuccess, error, setError, isLoading, setIsLoading, firstName, setFirstName, lastName, setLastName, username, setUsername, email, setEmail);
         if (currentOption == changePassword)
             return ChangePassword(token, success, setSuccess, error, setError, isLoading, setIsLoading, password, setPassword, rePassword, setRePassword);
         if (currentOption == billingInfo)
             return BillingInfo(UpdateUserData, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2);
-        return UserInfo(setProfileFirstLastName, UpdateUserData, token, success, setSuccess, error, setError, isLoading, setIsLoading, firstName, setFirstName, lastName, setLastName, username, setUsername, email, setEmail);
+        return Orders(token, success, setSuccess, error, setError, isLoading, setIsLoading, userOrders, setUserOrders);
     });
     
     return (
@@ -69,7 +87,7 @@ export const UserSettingsScreen = () => {
                                     <UploadImageForm onResponse={UpdateProfileImage} isOpen={showModal} onAction={setShowModal}/>
                                     <div className="left-panel-additional-text">
                                         <div className="">Role: <a className="bold disabled-link">{user?.role === 1 ? `ADMIN` : 'USER'}</a></div>
-                                        <div className="">Total orders: <a className="disabled-link">xxx</a></div>
+                                        <div className="">Total orders: <a className="disabled-link">{userOrders?.length ?? 0}</a></div>
                                         <hr></hr>
                                         <div>Member Since: <a className="truncate disabled-link">{user?.createdAt.split('T')[0]}</a></div>
                                     </div>
@@ -78,10 +96,11 @@ export const UserSettingsScreen = () => {
                         </div>
                         <div className="rightPanel col-12 col-lg-8 panelBox">
                             <div className="header">
-                                <h1 className="bold header-title">Edit Profile</h1>
+                                <h1 className="bold header-title">Account | {currentOption}</h1>
                                 <div className="header-choices">
+                                    <button onClick={() => setWindowTo(orders)} className="choice" style={{width: '130px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Orders</button>
                                     <button onClick={() => setWindowTo(userInfo)} className="choice" style={{width: '150px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>User Info</button>
-                                    <button onClick={() => setWindowTo(billingInfo)} className="choice" style={{width: '150px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Billing Info</button>
+                                    <button onClick={() => setWindowTo(billingInfo)} className="choice" style={{width: '140px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Billing Info</button>
                                     <button onClick={() => setWindowTo(changePassword)} className="choice" style={{width: '200px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Change Password</button>
                                 </div>
                             </div>
@@ -313,6 +332,114 @@ const ChangePassword = ((token, success, setSuccess, error, setError, isLoading,
             { Spinner(error, isLoading, success) }
             <div className="update-info-button">
                 <button type="submit" style={{marginTop: '30px'}}>Update</button>
+            </div>
+        </form>
+    </div>
+    );
+});
+
+const Orders = ((token, success, setSuccess, error, setError, isLoading, setIsLoading, userOrders, setUserOrders) => {
+
+    // GetStatus: () => string,
+    // GetDelivery: () => string
+
+    const GetStatus = ((value: number) => {
+        return "Ordered";
+    });
+
+    const GetDelivery = ((value: number) => {
+        return "Packing";
+    });
+
+    const FetchUserOrders = async (event) => {
+        event.preventDefault();
+        setIsLoading(true);
+
+        const mockedList = 
+        [
+            {
+                id: 1,
+                price: 20.00,
+                createdAt: "2022-05-22",
+                updatedAt: "2022-05-24",
+                status: GetStatus(0),
+                delivery: GetDelivery(0),
+                country: "Lithuania",
+                street: "Naugarduko g.",
+                addressLine1: "99",
+                addressLine2: "",
+            },
+            {
+                id: 2,
+                price: 2.00,
+                createdAt: "2022-05-22",
+                updatedAt: "2022-05-24",
+                status: GetStatus(1),
+                delivery: GetDelivery(2),
+                country: "Lithuania",
+                street: "Naugarduko g.",
+                addressLine1: "99",
+                addressLine2: "",
+            },
+            {
+                id: 4,
+                price: 720.00,
+                createdAt: "2022-05-22",
+                updatedAt: "2022-05-24",
+                status: GetStatus(2),
+                delivery: GetDelivery(3),
+                country: "Lithuania",
+                street: "Naugarduko g.",
+                addressLine1: "99",
+                addressLine2: "",
+            },
+        ]
+
+
+        setIsLoading(false);
+        setUserOrders(mockedList);
+      }
+
+    return (
+    <div style={{margin: '20px', marginRight: '-50px'}}>
+        <form onSubmit={(event) => FetchUserOrders(event)}>
+            <div className="custom-container" style={{display: 'flex', alignItems: 'center'}}>
+                <Table responsive striped bordered hover>
+                    <thead>
+                        <tr>
+                        <th>Order ID#</th>
+                        <th>Price</th>
+                        <th>CreatedAt</th>
+                        <th>UpdatedAt</th>
+                        <th>Status</th>
+                        <th>Delivery</th>
+                        <th>Country</th>
+                        <th>Street</th>
+                        <th>Address Line 1</th>
+                        <th>Address Line 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    { !isLoading && userOrders.map((order, index) => (
+                        <tr key={index}>
+                            <td>{order?.id}</td>
+                            <td>{(order?.price ?? 0.00) + '€'}</td>
+                            <td>{order?.createdAt}</td>
+                            <td>{order?.updatedAt}</td>
+                            <td>{order?.status}</td>
+                            <td>{order?.delivery}</td>
+                            <td>{order?.country}</td>
+                            <td>{order?.street}</td>
+                            <td>{order?.addressLine1}</td>
+                            <td>{order?.addressLine2}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            </div>
+            { Spinner(error, isLoading, success) }
+            <div className="update-info-button">
+                <button type="submit" style={{marginTop: '10px'}}>Update</button>
             </div>
         </form>
     </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
@@ -9,12 +10,10 @@ namespace EKrumynas.Models
     [DataContract(Name = "Role")]
     public enum Role
     {
-        [Description("USER")]
-        [EnumMember]
-        USER = 0,
-        [Description("ADMIN")]
-        [EnumMember]
-        ADMIN = 1
+        [Description("USER"), EnumMember]
+        USER,
+        [Description("ADMIN"), EnumMember]
+        ADMIN
     }
 
     public class User

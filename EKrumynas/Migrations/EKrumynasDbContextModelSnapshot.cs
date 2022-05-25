@@ -57,7 +57,13 @@ namespace EKrumynas.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
                     b.Property<int?>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Stock")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -175,24 +181,17 @@ namespace EKrumynas.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AddressLine2")
-                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("DeliveryMethod")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Delivery")
                         .HasColumnType("integer");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -201,11 +200,138 @@ namespace EKrumynas.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Total")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.BouquetCartItemSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("BouquetCartItemSnapshots");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.PlantCartItemSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("PlantCartItemSnapshots");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.PotCartItemSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("PotCartItemSnapshot");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("ShoppingCartSnapshot");
                 });
 
             modelBuilder.Entity("EKrumynas.Models.Plant", b =>
@@ -216,6 +342,9 @@ namespace EKrumynas.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AddableToBouquet")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Color")
                         .HasColumnType("integer");
 
@@ -223,6 +352,9 @@ namespace EKrumynas.Migrations
                         .HasColumnType("numeric");
 
                     b.Property<int?>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Stock")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -276,6 +408,9 @@ namespace EKrumynas.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Size")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Stock")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -479,11 +614,47 @@ namespace EKrumynas.Migrations
 
             modelBuilder.Entity("EKrumynas.Models.Order", b =>
                 {
-                    b.HasOne("EKrumynas.Models.ShoppingCart", "Cart")
+                    b.HasOne("EKrumynas.Models.User", "User")
                         .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.BouquetCartItemSnapshot", b =>
+                {
+                    b.HasOne("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", "Cart")
+                        .WithMany("Bouquets")
                         .HasForeignKey("CartId");
 
                     b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.PlantCartItemSnapshot", b =>
+                {
+                    b.HasOne("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", "Cart")
+                        .WithMany("Plants")
+                        .HasForeignKey("CartId");
+
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.PotCartItemSnapshot", b =>
+                {
+                    b.HasOne("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", "Cart")
+                        .WithMany("Pots")
+                        .HasForeignKey("CartId");
+
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", b =>
+                {
+                    b.HasOne("EKrumynas.Models.Order", null)
+                        .WithOne("Cart")
+                        .HasForeignKey("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EKrumynas.Models.Plant", b =>
@@ -566,6 +737,20 @@ namespace EKrumynas.Migrations
             modelBuilder.Entity("EKrumynas.Models.Bouquet", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.Order", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("EKrumynas.Models.OrderDetails.ShoppingCartSnapshot", b =>
+                {
+                    b.Navigation("Bouquets");
+
+                    b.Navigation("Plants");
+
+                    b.Navigation("Pots");
                 });
 
             modelBuilder.Entity("EKrumynas.Models.Product", b =>

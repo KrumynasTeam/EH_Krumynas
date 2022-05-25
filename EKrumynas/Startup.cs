@@ -38,7 +38,7 @@ namespace EKrumynas
         {
             // Setup PostgreSQL connection string - localhost or Heroku
             string connectionString = null;
-            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
+            string envVar = Environment.GetEnvironmentVariable("HEROKU_POSTGRESQL_NAVY_URL");
 
             if (string.IsNullOrEmpty(envVar)) {
                 connectionString = Configuration.GetConnectionString("MainDatabaseConnection");
@@ -66,6 +66,7 @@ namespace EKrumynas
             services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IBouquetService, BouquetService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

@@ -26,10 +26,9 @@ function BlogsList() {
   
     function renderBlogsList (blogs : Blog[]){
       return (
-              <Scrollbar style={{ display: "flex", flexWrap: "wrap" , justifyContent: 'center', textAlign: 'left',
-                        maxHeight: '80vh', maxWidth:'70vw', alignSelf:'center', marginTop: '10px'}}>
+              <div style={{ display: "flex", justifyContent:'center', flexDirection:'column', textAlign:'left'}}>
               {blogs.map(renderCard)}
-              </Scrollbar>
+              </div>
           
       );
     }
@@ -61,7 +60,7 @@ function BlogsList() {
     }
 
     return  <div style={{justifyContent: 'center', textAlign: 'center', display: 'flex', flexDirection:'column',
-    background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%'}}>
+    background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', height:'100%'}}>
                 <h1>Our Blogs</h1>
                 {user?.role === 1 ? <Link to="createBlog"><Button className='loginBtn'>Create New</Button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}

@@ -69,7 +69,7 @@ function EditBlog() {
         return (
             <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height:'100%'}}>
             <h1>Editing blog</h1>
-                <Link to="/blogs"><Button>Back to blogs</Button></Link>
+                <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup className="mb-3">
                         <Label>Title:
@@ -81,10 +81,10 @@ function EditBlog() {
                             <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content" value={blog.content} readOnly={false} onChange={(e) => handleContentChange(e)}/>
                         </Label>
                     </FormGroup>
-                    <Button onClick={handleOpenModal}>Open Image Upload</Button><br/>
+                    <button style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/><br/>
                     <UploadImageForm onResponse={handleImageUpload} isOpen={showModal} onAction={setShowModal}/>
-                    <img src={blog.imageUrl} /><br/>
-                    <Button type="submit">Save</Button>
+                    <img src={blog.imageUrl} /><br/><br/>
+                    <button style={{width:'10rem'}} type="submit">Save</button>
                 </Form>
             </div>
         )

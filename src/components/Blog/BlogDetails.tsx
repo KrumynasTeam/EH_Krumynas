@@ -51,7 +51,7 @@ function BlogDetails() {
         <h4>{toShortDateString(blog.createdAt)}</h4>
         <p>{blog.content}</p>
         <img src={blog.imageUrl} /><br/><br/>
-        <Link to="/blogs"><Button>Back to blogs</Button></Link>
+        <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
     </div>
 )
 }

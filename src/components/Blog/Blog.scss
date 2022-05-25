@@ -1,0 +1,14 @@
+button{
+    border-radius: 0px;
+    width: 95%;
+    height: 40px;
+    margin-left: 0px;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 500;
+    background: rgb(34,193,195);
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+}

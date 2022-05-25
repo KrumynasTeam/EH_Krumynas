@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './custom.scss'
 import { Home } from './components/Home';
 import { AllProducts } from './components/product/AllProducts';
-import { NavMenu } from './components/NavMenu';
 import { LoginScreen } from './components/Login/LoginScreen';
 import { RegisterScreen } from './components/Register/RegisterScreen';
 import { UploadImageExample } from './components/UploadImageExample';

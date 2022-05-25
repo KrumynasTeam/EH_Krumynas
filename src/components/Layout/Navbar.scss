@@ -3,24 +3,53 @@
 .navStyle {
     box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
     background: black;
-    position: fixed !important;
+    position: sticky !important;
     width: 100%;
     z-index: 99!important;
-    transition: 0.1s!important;
+    transition: 0.0s!important;
     font-family: 'work sans';
 }
 .navDefault {
-    transition: 0.1s!important;
+    background-color: #fff;
+    transition: 0.0s!important;
+    position:sticky !important;
+    top: 0 !important;
 }
 
 #expandedNavbar{
-    background: transparent;
+    background-color: transparent !important;
+}
+
+#navbar{
+    background-color:#fff;
+    z-index: 100;
+}
+
+#basic-navbar-nav.navbar-collapse.collapse.show{
+    background-color: #fff;
+}
+
+#Logo{
+    top: auto;
+    right: auto;
+    left: auto;
+    align-self: center;
+}
+
+#popImg {
+    height: 65px;
+    border-radius: 50%;
+    margin: 0.2rem 0 0 0.7rem;
+    cursor: default;
+    pointer-events: none;        
+    text-decoration: none;
 }
 
 nav {
-    background: rgb(34,193,195);
+    
     background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
     border-bottom: 2px solid black;
+    
 }
 
 .mainNav .nav-link {
@@ -44,7 +73,7 @@ nav {
 
 .mainNav .nav-link:hover:after {
     width: 100%;
-    background: #4C25F5;
+    background: #259d4b;
 }
 
 .navBrn {
@@ -53,7 +82,7 @@ nav {
 }
 .brnIcon,
 .navHighlight {
-    color: #7456F7;;
+    color: #259d4b;;
 }
 .brnIcon {
     font-weight: 800;
@@ -66,13 +95,13 @@ nav {
     border-radius: 50px;
     font-weight: 500;
     color:#fff;
-    background: #7355F7;
+    background: #259d4b;
     padding: 0.5rem 1.5rem;
     margin: 0.5rem 1rem;
     transition: 0.4s;
 }
 .loginBtn:hover { 
-    background : #4B24F5
+    background : #2fc25d
 }
 .navActiveClass{
     color:"red";

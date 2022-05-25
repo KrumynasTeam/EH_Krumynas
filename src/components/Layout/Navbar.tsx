@@ -26,9 +26,6 @@ const NavBar = () => {
                             <Nav.Item id="Logo">
                                 <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Home</Nav.Link>
                             </Nav.Item>
-                            <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/image" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>ImageUpload</Nav.Link>
-                            </Nav.Item>
                             
                             <Nav.Item id="Logo">
                                 <Nav.Link as={Link} to="/flowers" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Flowers</Nav.Link>
@@ -36,53 +33,33 @@ const NavBar = () => {
                             <Nav.Item id="Logo">
                                 <Nav.Link as={Link} to="/blogs" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Blogs</Nav.Link>
                             </Nav.Item>
-                        
+
+                            <Nav.Item id="Logo">
+                                <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
+                            </Nav.Item>
+
                             <Navbar.Brand id="Logo" as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }} className="navBrn ">
                                 <img id="popImg" src={logoImg}/>
                                 <a className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                             </Navbar.Brand>
-                        
-                            <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Language</Nav.Link>
-                            </Nav.Item>
 
                             { token == null ? (
                                 <>
                                 <Nav.Item id="Logo">
-                                {
-                                    <Link to="/login">
-                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Login</button>
-                                    </Link>
-                                }
+                                    <Link to="/login"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>Login</button></Link>
                                 </Nav.Item>
-
                                 <Nav.Item id="Logo">
-                                {
-                                    <Link to="/signup">
-                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>SignUp</button>
-                                    </Link>
-                                }
-                                </Nav.Item>
+                                    <Link to="/signup"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>SignUp</button>
+                                    </Link></Nav.Item>
                                 </>
                             ) : (
                                 <>
                                 <Nav.Item id="Logo">
-                                {
-                                    <Link to={`/${window.location}`} onClick={() => Logout()}>
-                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button>
-                                    </Link>
-                                }
+                                    <Link to={`/${window.location}`} onClick={() => Logout()}><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button></Link>
                                 </Nav.Item>
                                 
                                 <Nav.Item id="Logo">
-                                {
-                                    <Link to="/account">
-                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button>
-                                    </Link>
-                                }
+                                    <Link to="/account"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button></Link>
                                 </Nav.Item>
                                 <div id="Logo">
                                     <img id="popImg" src={user?.profileImage || profileAvatarDefaultImage}/>

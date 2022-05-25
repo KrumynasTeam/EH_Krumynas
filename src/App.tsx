@@ -29,7 +29,6 @@ const App = () => {
             <Route path='/login' element={<LoginScreen/>} />
             <Route path='/signup' element={user === null ? <RegisterScreen/> : <Home/>} />
             <Route path='/account' element={user !== null ? <UserSettingsScreen/> : <Home/>} />
-            <Route path='/image' element={<UploadImageExample/>} />
             <Route path='/blogs' element={<BlogsList/>} />
             <Route path='blog/:id' element={<BlogDetails/>} />
             <Route path="/blogs/createBlog" element={user?.role === 1 ? <CreateBlog/> : <Home/>} />

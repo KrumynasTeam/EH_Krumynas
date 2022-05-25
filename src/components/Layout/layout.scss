@@ -200,3 +200,68 @@ nav {
   transition-timing-function: ease-in-out;
   transition-property: background-color, color;
 }
+
+
+.hero-row .leftPanelHero{
+  background-color: white;
+  max-height: 810px;
+  padding: 0px;
+  position:relative;
+  display: block;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 100%;
+  border: 50px;
+  border-color: black;
+
+}
+
+.hero-row .rightPanelHero{
+  background-color: white;
+  height: 100%;
+  align-self: center;
+}
+
+.hero-row{
+  display: flex;
+  flex-direction: row;
+  padding-top: 0rem;
+  width: 100%;
+  margin-left: 0rem;
+  background-color: transparent;
+  align-items: inherit;
+  background-color: rgb(255, 255, 255);
+}
+
+button.heroButton{
+  display: flexbox;
+  flex-direction: row;
+  width: auto;
+  margin:1ch;
+  border-radius: 0px;
+    height: 40px;
+    margin-left: 0px;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: 500;
+    background: rgb(34,193,195);
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+
+}
+
+.leftPanelHero .profileImage{
+  position: relative;
+  align-self: center;
+  background-color: grey;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 5px white;
+  cursor: pointer;
+  transition: opacity 0.25s ease-out;
+}

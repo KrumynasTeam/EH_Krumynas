@@ -1,5 +1,6 @@
 body > #root > div {
-    height: 100vh;
+    
+    min-height: 100%;
 }
 
 .input-div-right,
@@ -93,7 +94,7 @@ body > #root > div {
     background-color: white;
     max-height: 610px;
     padding: 0px;
-    position:static;
+    position:relative;
     display: block;
     justify-content: center;
     text-align: center;
@@ -162,7 +163,7 @@ body > #root > div {
 }
 
 .leftPanel .profileImage{
-    position: static;
+    position: relative;
     align-self: center;
     background-color: grey;
     margin: auto;

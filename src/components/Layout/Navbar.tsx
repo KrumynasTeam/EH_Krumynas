@@ -72,7 +72,7 @@ const NavBar = () => {
                                 <Nav.Item id="Logo">
                                 {
                                     <Link to={`/${window.location}`} onClick={() => Logout()}>
-                                        <button className="loginBtn">LogOut</button>
+                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button>
                                     </Link>
                                 }
                                 </Nav.Item>
@@ -80,7 +80,7 @@ const NavBar = () => {
                                 <Nav.Item id="Logo">
                                 {
                                     <Link to="/account">
-                                        <button className="loginBtn">MyAccount</button>
+                                        <button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button>
                                     </Link>
                                 }
                                 </Nav.Item>

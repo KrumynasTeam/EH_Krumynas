@@ -36,17 +36,24 @@ function BlogDetails() {
       },[])
 
     if(isLoading){
-        return <div>Loading...</div>
+      return(
+        <div className='spinner-container d-flex justify-content-center'>
+          <div className="spinner-border text-success mx-auto" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )
     }
 
     return  (
-                <div style={{margin: '2rem'}}>
-                    <h1>{blog.title}</h1>
-                    <h4>{toShortDateString(blog.createdAt)}</h4>
-                    <p>{blog.content}</p>
-                    <Link to="/blogs"><Button>Back to blogs</Button></Link>
-                </div>
-            )
+        <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height:'100%'}}>
+        <h1>{blog.title}</h1>
+        <h4>{toShortDateString(blog.createdAt)}</h4>
+        <p>{blog.content}</p>
+        <img src={blog.imageUrl} /><br/><br/>
+        <Link to="/blogs"><Button>Back to blogs</Button></Link>
+    </div>
+)
 }
 
 export default BlogDetails

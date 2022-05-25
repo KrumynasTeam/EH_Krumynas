@@ -1,5 +1,5 @@
 .footer {
-    background: #7355F7;
+    background: #259d4b;
     background-image: url('../../../assets/footerbg.png');
     width: 100%;
     font-family: 'Poppins', sans-serif;
@@ -15,7 +15,7 @@
     padding: 0.5rem;
 }
 .linkIcon {
-    color: #6F53EF;
+    color: #259d4b;
     font-size: 2rem;
     cursor: pointer;
     background: white;
@@ -100,27 +100,12 @@
     line-height: 2.5rem;
     background: #fff;
     margin-right: 5px;
-    color:#7355F7;
+    color:#259d4b;
     transition: 0.4s;
 }
 .fAboutUs li a:hover{
-    background: #4B24F5;
+    background: #29ce5d;
     color: #fff;
-}
-
-.copyRight {
-    background-color: #2608AB;
-    color: rgba(255, 255, 255, 0.692);
-    font-weight: 400;
-    font-size: 0.911rem;
-    text-align: center;
-    margin-bottom: 0;
-    padding: 1rem 0;
-}
-.copyRight > .fHighlight {
-    color: #fff;
-    font-weight: 400;
-    font-size: 1rem;
 }
 
 
@@ -166,7 +151,7 @@
     display: block;
     width: 115px;
     height: 3px;
-    background: #2608AB;
+    background: #145b2b;
 }
   
 .animate-border:after {

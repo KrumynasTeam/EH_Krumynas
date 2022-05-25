@@ -28,6 +28,19 @@
     background-color: #fff;
 }
 
+#Logo{
+    top: auto;
+    right: auto;
+    left: auto;
+    align-self: center;
+}
+
+#popImg {
+    height: 65px;
+    border-radius: 50%;
+    cursor: pointer!important;
+    margin: 0.2rem 0 0 0.7rem;
+}
 
 nav {
     
@@ -56,7 +69,7 @@ nav {
 
 .mainNav .nav-link:hover:after {
     width: 100%;
-    background: #4C25F5;
+    background: #259d4b;
 }
 
 .navBrn {
@@ -65,7 +78,7 @@ nav {
 }
 .brnIcon,
 .navHighlight {
-    color: #7456F7;;
+    color: #259d4b;;
 }
 .brnIcon {
     font-weight: 800;
@@ -78,13 +91,13 @@ nav {
     border-radius: 50px;
     font-weight: 500;
     color:#fff;
-    background: #7355F7;
+    background: #259d4b;
     padding: 0.5rem 1.5rem;
     margin: 0.5rem 1rem;
     transition: 0.4s;
 }
 .loginBtn:hover { 
-    background : #4B24F5
+    background : #2fc25d
 }
 .navActiveClass{
     color:"red";

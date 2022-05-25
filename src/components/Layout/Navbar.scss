@@ -3,22 +3,34 @@
 .navStyle {
     box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
     background: black;
-    position: fixed !important;
+    position: sticky !important;
     width: 100%;
     z-index: 99!important;
-    transition: 0.1s!important;
+    transition: 0.0s!important;
     font-family: 'work sans';
 }
 .navDefault {
-    transition: 0.1s!important;
+    background-color: #fff;
+    transition: 0.0s!important;
+    position:sticky !important;
+    top: 0 !important;
 }
 
 #expandedNavbar{
-    background: transparent;
+    background-color: transparent !important;
 }
 
+#navbar{
+    background-color:#fff;
+}
+
+#basic-navbar-nav.navbar-collapse.collapse.show{
+    background-color: #fff;
+}
+
+
 nav {
-    background: rgb(34,193,195);
+    
     background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
     border-bottom: 2px solid black;
 }

@@ -45,4 +45,11 @@ public class BlogService : IBlogService
         _context.SaveChanges();
         return blog;
     }
+
+    public IList<BlogPost> GetNewestBlogs()
+    {
+        var allBlogs = _context.BlogPosts;
+        var result = allBlogs.OrderByDescending(t => t.CreatedAt);
+        return result.Take(3).ToList();
+    }
 }

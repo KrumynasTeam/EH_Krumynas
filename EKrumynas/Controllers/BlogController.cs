@@ -27,6 +27,16 @@ namespace EKrumynas.Controllers
 
             return blogs ?? new List<BlogPost>();
         }
+        
+        [HttpGet]
+        [Route("GetNewestBlogs")]
+        [Authorize(Roles = "USER")]
+        public IList<BlogPost> GetNewestBlogs()
+        {
+            var blogs = _blogService.GetNewestBlogs();
+
+            return blogs ?? new List<BlogPost>();
+        }
 
         [HttpGet]
         [Route("{id}")]

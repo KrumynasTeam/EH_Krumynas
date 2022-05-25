@@ -1,5 +1,6 @@
 body > #root > div {
-    height: 100vh;
+    
+    min-height: 100%;
 }
 
 .input-div-right,
@@ -93,7 +94,7 @@ body > #root > div {
     background-color: white;
     max-height: 610px;
     padding: 0px;
-    position:sticky;
+    position:relative;
     display: block;
     justify-content: center;
     text-align: center;

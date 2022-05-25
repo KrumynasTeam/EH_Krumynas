@@ -26,10 +26,9 @@ function BlogsList() {
   
     function renderBlogsList (blogs : Blog[]){
       return (
-              <Scrollbar style={{ display: "flex", flexWrap: "wrap" , justifyContent: 'center', textAlign: 'left',
-                        maxHeight: '80vh', maxWidth:'60vw', alignSelf:'center', marginTop: '10px'}}>
+              <div style={{ display: "flex", justifyContent:'center', flexDirection:'column', textAlign:'left'}}>
               {blogs.map(renderCard)}
-              </Scrollbar>
+              </div>
           
       );
     }
@@ -51,12 +50,19 @@ function BlogsList() {
       },[])
 
     if(isLoading){
-        return <div>Loading...</div>
+      return(
+        <div className='spinner-container d-flex justify-content-center'>
+          <div className="spinner-border text-success mx-auto" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )
     }
 
-    return  <div style={{margin: '2rem', justifyContent: 'center', textAlign: 'center', display: 'flex', flexDirection:'column'}}>
-                <h1>Our Blogs</h1>
-                {user?.role === 1 ? <Link to="createBlog"><Button>Create New</Button></Link> : ''}
+    return  <div style={{justifyContent: 'center', textAlign: 'center', display: 'flex', flexDirection:'column',
+    background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', height:'100%'}}>
+                <h1 style={{marginTop:'1rem'}}>Our Blogs</h1>
+                {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn'>Create New</button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}
             </div>
 }

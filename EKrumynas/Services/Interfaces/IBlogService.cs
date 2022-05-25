@@ -10,4 +10,5 @@ public interface IBlogService
     BlogPost Create(BlogPost blog);
     BlogPost Update(BlogPost blog);
     BlogPost Delete(BlogPost blog);
+    IList<BlogPost> GetNewestBlogs();
 }

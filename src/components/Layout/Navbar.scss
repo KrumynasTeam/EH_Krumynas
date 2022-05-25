@@ -1,40 +1,55 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
-
 .navStyle {
     box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
     background: black;
-    position: fixed !important;
+    position: sticky !important;
     width: 100%;
     z-index: 99!important;
-    transition: 0.1s!important;
+    transition: 0.0s!important;
     font-family: 'work sans';
 }
-
-
 .navDefault {
-    //transition: 0.1s!important;
-
-    /* Uncomment this to have a fixed header
-    z-index: 99!important;
-    position: fixed;
-    width: 100%;
-    */
+    background-color: #fff;
+    transition: 0.0s!important;
+    position:sticky !important;
+    top: 0 !important;
 }
 
 #expandedNavbar{
-    //background: transparent;
-    background: white;
-    z-index: 98 !important;
+    background-color: transparent !important;
 }
 
+#navbar{
+    background-color:#fff;
+    z-index: 100;
+}
+
+#basic-navbar-nav.navbar-collapse.collapse.show{
+    background-color: #fff;
+}
+
+#Logo{
+    top: auto;
+    right: auto;
+    left: auto;
+    align-self: center;
+}
+
+#popImg {
+    height: 65px;
+    border-radius: 50%;
+    margin: 0.2rem 0 0 0.7rem;
+    cursor: default;
+    pointer-events: none;        
+    text-decoration: none;
+}
 
 nav {
-    //background: rgb(34,193,195);
-    //background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
-    overflow-x: hidden;
-    background: white;
+    
+    background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
     border-bottom: 2px solid black;
+    
 }
 
 .mainNav .nav-link {
@@ -53,17 +68,12 @@ nav {
     height: 3px;
     width: 0px;
     background: transparent;
-    //transition: width .5s ease, background-color .5s ease;
-    transition: none;
-}
-
-.nav-link{
-    transition: none !important;
+    transition: width .5s ease, background-color .5s ease;
 }
 
 .mainNav .nav-link:hover:after {
     width: 100%;
-    background: #4C25F5;
+    background: #259d4b;
 }
 
 .navBrn {
@@ -72,7 +82,7 @@ nav {
 }
 .brnIcon,
 .navHighlight {
-    color: #7456F7;;
+    color: #259d4b;;
 }
 .brnIcon {
     font-weight: 800;
@@ -85,29 +95,28 @@ nav {
     border-radius: 50px;
     font-weight: 500;
     color:#fff;
-    background: #7355F7;
+    background: #259d4b;
     padding: 0.5rem 1.5rem;
     margin: 0.5rem 1rem;
     transition: 0.4s;
 }
 .loginBtn:hover { 
-    background : #4B24F5
+    background : #2fc25d
 }
 .navActiveClass{
     color:"red";
     font-weight:900;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 981px) {
     .navDefault {
-        //background: rgb(34,193,195);
-        //background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
+        background: rgb(34,193,195);
+    background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
         padding: 0.8rem 0.5rem!important;
         width: 100%;
         z-index: 99!important;
         transition: 0.5s!important;
         text-align: center;
-        position: fixed;
     }
     .navStyle{
         text-align: center;

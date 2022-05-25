@@ -1,4 +1,5 @@
 import React from 'react'
+import { PencilFill } from 'react-bootstrap-icons';
 import { Button } from "reactstrap";
 
 function getPriceString(product: { variants: any[]; }){
@@ -24,7 +25,7 @@ function getPriceString(product: { variants: any[]; }){
 function ProductCard({product, click, enableAdminMode, onEditClick}) {
     return (
         <div className='product-card'>
-            {enableAdminMode ? <Button onClick={() => onEditClick(product)} id='product-card-edit-button'></Button> : ''}
+            {enableAdminMode ? <Button onClick={() => onEditClick(product)} id='product-card-edit-button'><PencilFill /></Button> : ''}
             <img src={product.item.images[0].imagePath} alt={product.item.name}/>
             <p className='name'>{product.item.name}</p>
             <p className='price'>Price: {getPriceString(product)}</p>

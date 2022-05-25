@@ -14,9 +14,10 @@ html, body{
 }
 
 .filters{
-    top: 100px;
+    background: black;
+    //top: 100px;
     position: fixed;
-    margin-top: 10px;
+    //margin-top: 10px;
     min-width: 300px;
     width: 300px;
 }
@@ -33,6 +34,7 @@ html, body{
 
 .filter-header{
     margin: 0;
+    margin-top: 20px;
     margin-left: 10%;
     margin-right: 10%;
     display: flex;
@@ -159,8 +161,17 @@ html, body{
     }
 }
 
+#product-card-edit-button{
+    background: linear-gradient(45deg, rgb(18, 176, 152) 15px, rgb(4, 210, 152) 0%);
+}
+
 .product-card button:hover{
     opacity: 0.8;
+}
+
+.product-card svg{
+    margin-left: -8px;
+    margin-top: -18px;
 }
 
 #product-card-edit-button {
@@ -241,6 +252,7 @@ html, body{
 }
 
 .spinner-container{
+    min-height: 100vh;
     background: linear-gradient(135deg, rgb(52, 53, 58) 0%,rgb(17, 17, 17) 100%);
     background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
     width: 100%;
@@ -412,12 +424,17 @@ button{
     }
 
     .filters{
-        //overflow-y: scroll;
-        margin-right: 10px;
+        overflow-y: scroll;
         width: auto;
         overflow-y: hidden;
         position: relative;
-        top: 0;
+        top: 10vh;
+        /*
+        top: 10vh;
+        z-index: 99;
+        background: linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%);
+        width: 100%;
+        */
     }
 
     .filter-clear{
@@ -427,6 +444,7 @@ button{
     .cards{
         justify-content: center;
         margin-left: 0;
+        margin-top: 10vh;
     }
 
     .product-container{
@@ -439,5 +457,10 @@ button{
 
     .modal-body, .product-modal-body{
         flex-direction: column;
+    }
+
+    .product-details-select-container{
+        //flex-direction: column;
+        flex-wrap: wrap;
     }
 }

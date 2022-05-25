@@ -93,7 +93,7 @@ body > #root > div {
     background-color: white;
     max-height: 610px;
     padding: 0px;
-    position:sticky;
+    position:static;
     display: block;
     justify-content: center;
     text-align: center;
@@ -162,7 +162,7 @@ body > #root > div {
 }
 
 .leftPanel .profileImage{
-    position: relative;
+    position: static;
     align-self: center;
     background-color: grey;
     margin: auto;

@@ -3,7 +3,6 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { UserContext } from '../contexts/UserContext';
 import UploadImageForm from '../ImageUploader/ImageUpload';
-import BlogCard from './BlogCard';
 import { Blog } from './BlogsList';
 
 function EditBlog() {
@@ -58,12 +57,18 @@ function EditBlog() {
         },[])
 
         if(isLoading){
-            return <div>Loading...</div>
+            return(
+                <div className='spinner-container d-flex justify-content-center'>
+                  <div className="spinner-border text-success mx-auto" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )
         }
 
         return (
-            <div style={{margin: '2rem'}}>
-                <h1>Editing blog</h1>
+            <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height:'100%'}}>
+            <h1>Editing blog</h1>
                 <Link to="/blogs"><Button>Back to blogs</Button></Link>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup className="mb-3">

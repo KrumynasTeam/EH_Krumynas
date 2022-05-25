@@ -34,26 +34,26 @@ function CreateBlog() {
     }
 
     return (
-        <div style={{margin: '2rem'}}>
-            <h1>Creating a new blog post</h1>
-            <Link to="/blogs"><Button>Back to blogs</Button></Link>
-            <Form onSubmit={handleSubmit}>
-                <FormGroup className="mb-3">
-                    <Label>Title:
-                        <Input style={{width:'35rem'}} type="text" name="title"/>
-                    </Label>
-                </FormGroup>
-                <FormGroup className="mb-3">
-                    <Label>Content:
-                        <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content"/>
-                    </Label>
-                </FormGroup>
-                <Button onClick={handleOpenModal}>Open Image Upload</Button><br/>
-                <UploadImageForm onResponse={setImageUrl} isOpen={showModal} onAction={setShowModal}/>
-                <img src={imageUrl} /><br/>
-                <Button style={{marginTop: '10px'}} type="submit">Save</Button>
-            </Form>
-        </div>
+        <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height: '100%'}}>
+                <h1>Creating a new blog post</h1>
+                <Link to="/blogs"><Button>Back to blogs</Button></Link>
+                <Form onSubmit={handleSubmit}>
+                    <FormGroup className="mb-3">
+                        <Label>Title:
+                            <Input style={{width:'35rem'}} type="text" name="title"/>
+                        </Label>
+                    </FormGroup>
+                    <FormGroup className="mb-3">
+                        <Label>Content:
+                            <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content"/>
+                        </Label>
+                    </FormGroup>
+                    <Button onClick={handleOpenModal}>Open Image Upload</Button><br/>
+                    <UploadImageForm onResponse={setImageUrl} isOpen={showModal} onAction={setShowModal}/>
+                    <img src={imageUrl} /><br/>
+                    <Button style={{marginTop: '10px'}} type="submit">Save</Button>
+                </Form>
+            </div>
     )
 }
 

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
+
 .navStyle {
     box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
     background: black;
@@ -9,17 +10,30 @@
     transition: 0.1s!important;
     font-family: 'work sans';
 }
+
+
 .navDefault {
-    transition: 0.1s!important;
+    //transition: 0.1s!important;
+
+    /* Uncomment this to have a fixed header
+    z-index: 99!important;
+    position: fixed;
+    width: 100%;
+    */
 }
 
 #expandedNavbar{
-    background: transparent;
+    //background: transparent;
+    background: white;
+    z-index: 98 !important;
 }
 
+
 nav {
-    background: rgb(34,193,195);
-    background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
+    //background: rgb(34,193,195);
+    //background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
+    overflow-x: hidden;
+    background: white;
     border-bottom: 2px solid black;
 }
 
@@ -39,7 +53,12 @@ nav {
     height: 3px;
     width: 0px;
     background: transparent;
-    transition: width .5s ease, background-color .5s ease;
+    //transition: width .5s ease, background-color .5s ease;
+    transition: none;
+}
+
+.nav-link{
+    transition: none !important;
 }
 
 .mainNav .nav-link:hover:after {
@@ -79,15 +98,16 @@ nav {
     font-weight:900;
 }
 
-@media (max-width: 981px) {
+@media (max-width: 1000px) {
     .navDefault {
-        background: rgb(34,193,195);
-    background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
+        //background: rgb(34,193,195);
+        //background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
         padding: 0.8rem 0.5rem!important;
         width: 100%;
         z-index: 99!important;
         transition: 0.5s!important;
         text-align: center;
+        position: fixed;
     }
     .navStyle{
         text-align: center;

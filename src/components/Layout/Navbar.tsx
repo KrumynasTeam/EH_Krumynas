@@ -13,7 +13,7 @@ const NavBar = () => {
     const [isSticky, setSticky] = useState(true)
     const [isCollapsed, setIsCollapsed] = useState(null);
     
-
+/*
     useEffect(() => {
         window.addEventListener("scroll", () => {
             if (window.scrollY > 50) {
@@ -23,38 +23,42 @@ const NavBar = () => {
             }
         })
     }, [])
+    <Navbar.Collapse id="basic-navbar-nav"/>
+    */
 
-    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+    const scrollTop = () => {
+        setIsCollapsed(false);
+        window['scrollTo']({ top: 0, behavior: 'smooth' });
+    }
     return (
-        <Navbar className={`navbar navbar-expand-lg navbar-light navDefault`} expanded={isCollapsed} expand="lg">
+        <Navbar className='navbar navbar-expand-lg navbar-light navDefault' expanded={isCollapsed} expand="lg">
             <Container id="expandedNavbar">
-                <Navbar.Toggle onClick={() => setIsCollapsed(isCollapsed ? false : "expanded")} className="mr-2" />
-                <Navbar.Collapse id="basic-navbar-nav"/>
+                <Navbar.Toggle onClick={() => setIsCollapsed(!isCollapsed)} className="mr-2" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-center mainNav" activeKey="/home">
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Home</Nav.Link>
+                            <Nav.Link as={Link} to="/" className="nav-link" onClick={scrollTop}>Home</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/image" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Image Upload</Nav.Link>
+                            <Nav.Link as={Link} to="/image" className="nav-link" onClick={scrollTop}>Image Upload</Nav.Link>
                         </Nav.Item>
                         
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/flowers" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Flowers</Nav.Link>
+                            <Nav.Link as={Link} to="/flowers" className="nav-link" onClick={scrollTop} >Flowers</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/blogs" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Blogs</Nav.Link>
+                            <Nav.Link as={Link} to="/blogs" className="nav-link" onClick={scrollTop} >Blogs</Nav.Link>
                         </Nav.Item>
 
-                        <Navbar.Brand as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100); }} className="navBrn">
+                        <Navbar.Brand as={Link} to="/" className="navBrn">
                             <FontAwesomeIcon icon={faSeedling} className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                         </Navbar.Brand>
 
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Cart</Nav.Link>
+                            <Nav.Link as={Link} to="/" className="nav-link" onClick={scrollTop} >Cart</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Language</Nav.Link>
+                            <Nav.Link as={Link} to="/" className="nav-link" onClick={scrollTop} >Language</Nav.Link>
                         </Nav.Item>
 
                         { token == null ? (
@@ -62,7 +66,7 @@ const NavBar = () => {
                             <Nav.Item>
                             {
                                 <Link to="/login">
-                                    <button className="loginBtn" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Login</button>
+                                    <button className="loginBtn" onClick={scrollTop}>Login</button>
                                 </Link>
                             }
                             </Nav.Item>
@@ -70,7 +74,7 @@ const NavBar = () => {
                             <Nav.Item>
                             {
                                 <Link to="/signup">
-                                    <button className="loginBtn" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Sign Up</button>
+                                    <button className="loginBtn" onClick={scrollTop}>Sign Up</button>
                                 </Link>
                             }
                             </Nav.Item>
@@ -79,7 +83,7 @@ const NavBar = () => {
                             <>
                             <Nav.Item>
                             {
-                                <Link to={`/${window.location}`} onClick={() => Logout()}>
+                                <Link to={`/${window.location}`} onClick={() => {Logout(); scrollTop()}}>
                                     <button className="loginBtn">Log out</button>
                                 </Link>
                             }
@@ -87,7 +91,7 @@ const NavBar = () => {
                             
                             <Nav.Item>
                             {
-                                <Link to="/account">
+                                <Link to="/account" onClick={scrollTop}>
                                     <button className="loginBtn">My Account</button>
                                 </Link>
                             }

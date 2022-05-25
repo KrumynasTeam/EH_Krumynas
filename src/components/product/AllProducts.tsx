@@ -52,20 +52,15 @@ const InitialFilter: Filter = {
   size: []
 }
 
-const emptyImage: Image = {
-  color: 'Red',
-  imagePath: 'None'
-}
-
 const colors = ['White', 'Black', 'Red', 'Green', 'Blue', 'Pink', 'Purple'];
 const sizes = ['Small', 'Medium', 'Large'];
 
 export const AllProducts = () => {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [retrieveData, setRetrieveData] = useState(true);
-  const {token, user} = useContext(UserContext);
-  const [showAdminMode, setShowAdminMode] = useState(true);
+  const {user} = useContext(UserContext);
+  const [showAdminMode, setShowAdminMode] = useState(false);
 
   const [products, setProducts] = useState<ProductVariant[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductVariant[]>([]);
@@ -291,7 +286,7 @@ export const AllProducts = () => {
 
   return(
   <>
-    <CreateProductForm onResponse={onFormResponse} isOpen={showCreateProductForm} onAction={handleProductFormClose} Product={selectedProduct}/>
+    <CreateProductForm onResponse={onFormResponse} isOpen={showCreateProductForm} onAction={handleProductFormClose} Product={selectedProduct} Plants={products}/>
     <Modal contentClassName='product-modal-rect' toggle={handleProductModalClose} isOpen={showProductModal}>
       {selectedProduct !== null && showProductModal ?
           <div>
@@ -319,6 +314,7 @@ export const AllProducts = () => {
                     :
                     <></>
                   }
+                  {selectedProduct.item.type !== 'Bouquet' ?
                   <div>
                     <label>Color:</label>
                       <div className='product-details-select-container'>
@@ -330,6 +326,9 @@ export const AllProducts = () => {
                       
                       </div>
                   </div>
+                  :
+                  ''
+                  }
                   <div className='quantity-price-field'>
                     <label>Quantity: </label>
                     <input type='number' value={selectedProductQuantity} onChange={(e) => setSelectedProductQuantity(Number(e.target.value))}/>

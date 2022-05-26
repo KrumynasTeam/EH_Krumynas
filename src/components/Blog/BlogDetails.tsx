@@ -46,7 +46,7 @@ function BlogDetails() {
     }
 
     return  (
-        <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height:'100%'}}>
+        <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height:'100%', minHeight: '100vh'}}>
         <h1>{blog.title}</h1>
         <h4>{toShortDateString(blog.createdAt)}</h4>
         <p>{blog.content}</p>

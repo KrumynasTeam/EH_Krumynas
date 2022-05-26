@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using EKrumynas.Data;
@@ -28,6 +28,19 @@ namespace EKrumynas.Services.Management
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<List<User>> Query(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return await _context.Users.ToListAsync();
+            } else
+            {
+                return await _context.Users.Where(user =>
+                (user.FirstName + ' ' + user.LastName + ' ' + user.Username).ToLower().Contains(query.ToLower())
+                ).ToListAsync();
+            }
+        }
+
         public async Task<User> Update(ManageUserUpdateDto user)
         {
             User foundUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
@@ -35,7 +48,7 @@ namespace EKrumynas.Services.Management
             if (foundUser is null)
             {
                 throw new ApiException(
-                    statusCode: 400,
+                    statusCode: 404,
                     message: string.Format("User with id='{0}' and username='{1}' not found.", user.Id, user.Username)
                 );
             }
@@ -80,7 +93,7 @@ namespace EKrumynas.Services.Management
             if (foundUser is null)
             {
                 throw new ApiException(
-                    statusCode: 400,
+                    statusCode: 404,
                     message: string.Format("User with id={0} not found.", id)
                 );
             }

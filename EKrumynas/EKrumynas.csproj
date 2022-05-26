@@ -20,6 +20,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
     <PackageReference Include="AutoWrapper.Core" Version="4.5.0" />
+    <PackageReference Include="Scrutor" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
@@ -41,6 +42,7 @@
     <None Remove="Middleware\DI\" />
     <None Remove="DTOs\Order\" />
     <None Remove="Models\OrderDetails\" />
+    <None Remove="Scrutor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\User\" />

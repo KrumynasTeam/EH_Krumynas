@@ -27,7 +27,7 @@ const CreateProductForm = props => {
     const [showImageUpload, setShowImageUpload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const defaultConnectionError = "Could not establish connection to server. Please try again!";
+    const defaultConnectionError = "Could not establish connection to the server. Please try again!";
 
     const colors = ['White', 'Black', 'Red', 'Green', 'Blue', 'Pink', 'Purple'];
     const sizes = ['Small', 'Medium', 'Large'];

@@ -9,6 +9,7 @@ namespace EKrumynas.Services.Management
 	{
         Task<List<User>> GetAll();
         Task<User> GetById(int id);
+        Task<List<User>> Query(string username);
         Task<User> Update(ManageUserUpdateDto user);
         Task<User> DeleteById(int id);
     }

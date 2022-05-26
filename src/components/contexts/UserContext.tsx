@@ -7,7 +7,7 @@ export type User = {
   username: string;
   email: string;
   profileImage?: string;
-  createdAt: string;
+  createdAt?: string;
   country?: string;
   street?: string;
   addressLine1?: string;
@@ -38,7 +38,7 @@ export const UserProvider = (props: { children: any }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const defaultConnectionError = "Could not establish connection to server. Please try again!";
+  const defaultConnectionError = "Could not establish connection to the server. Please try again!";
 
   useEffect(() => {
     let _user: User = user || JSON.parse(localStorage.getItem('user'));

@@ -15,8 +15,8 @@ import  Footer  from './components/Layout/Footer/Footer';
 import './components/Layout/layout.scss';
 import NavBar from './components/Layout/Navbar';
 import { UserContext } from './components/contexts/UserContext';
-
 import EditBlog from './components/Blog/EditBlog';
+import { OrdersAdminScreen } from './components/Orders/OrdersAdminScreen';
 
 const App = () => {
   const {user} = useContext(UserContext);
@@ -34,7 +34,8 @@ const App = () => {
             <Route path='/blogs' element={<BlogsList/>} />
             <Route path='blog/:id' element={<BlogDetails/>} />
             <Route path="/blogs/createBlog" element={user?.role === 1 ? <CreateBlog/> : <Home/>} />
-            <Route path='editBlog/:id' element={<EditBlog/>} />
+            <Route path='editBlog/:id' element={user?.role === 1 ? <EditBlog/> : <Home/>} />
+            <Route path="/orders" element={user?.role === 1 ? <OrdersAdminScreen/> : <Home/>} />
           </Routes>
           <Footer/>
     </BrowserRouter>

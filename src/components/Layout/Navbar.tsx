@@ -9,7 +9,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { UserContext } from '../contexts/UserContext';
 
 const NavBar = () => {
-    const {Logout, token} = useContext(UserContext);
+    const {Logout, token, user} = useContext(UserContext);
     const [isSticky, setSticky] = useState(true)
     const [isCollapsed, setIsCollapsed] = useState(null);
     
@@ -53,9 +53,6 @@ const NavBar = () => {
                         <Nav.Item>
                             <Nav.Link as={Link} to="/" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Cart</Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => setTimeout(() => setIsCollapsed(isCollapsed ? false : "expanded"), 100)}>Language</Nav.Link>
-                        </Nav.Item>
 
                         { token == null ? (
                             <>
@@ -77,21 +74,17 @@ const NavBar = () => {
                             </>
                         ) : (
                             <>
-                            <Nav.Item>
-                            {
-                                <Link to={`/${window.location}`} onClick={() => Logout()}>
-                                    <button className="loginBtn">Log out</button>
-                                </Link>
-                            }
-                            </Nav.Item>
-                            
-                            <Nav.Item>
-                            {
-                                <Link to="/account">
-                                    <button className="loginBtn">My Account</button>
-                                </Link>
-                            }
-                            </Nav.Item>
+                                { user?.role === 1 ?
+                                <Nav.Item>
+                                    <Nav.Link as={Link} to="/orders" className="nav-link">Manage Orders</Nav.Link>
+                                </Nav.Item>
+                                : <></> }
+                                <Nav.Item>
+                                    <Link to={`/${window.location}`} onClick={() => Logout()}><button className="loginBtn">Log out</button></Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Link to="/account"><button className="loginBtn">My Account</button></Link>
+                                </Nav.Item>
                             </>
                         )}
                     

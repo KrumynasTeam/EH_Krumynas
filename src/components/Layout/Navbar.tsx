@@ -43,7 +43,7 @@ const NavBar = () => {
                             <span className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                         </Navbar.Brand>
                         { user?.role === 1 ?
-                            <Nav.Item>
+                            <Nav.Item id="Logo">
                                 <Nav.Link as={Link} to="/orders" className="nav-link">Manage Orders</Nav.Link>
                             </Nav.Item>
                         : <></> }

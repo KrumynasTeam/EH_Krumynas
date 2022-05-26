@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using AutoWrapper.Wrappers;
 using EKrumynas.Data;
-using EKrumynas.DTOs;
 using EKrumynas.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,7 +33,7 @@ namespace EKrumynas.Services
             if (found is null)
             {
                 throw new ApiException(
-                    statusCode: 400,
+                    statusCode: 404,
                     message: "Product not found.");
             }
 

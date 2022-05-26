@@ -7,4 +7,3 @@ namespace EKrumynas.Middleware
 		void Log(ActivityRecord activityRecord);
 	}
 }
-

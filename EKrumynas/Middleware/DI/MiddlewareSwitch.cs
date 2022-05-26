@@ -5,4 +5,3 @@
 		public string ServiceType { get; set; }
 	}
 }
-

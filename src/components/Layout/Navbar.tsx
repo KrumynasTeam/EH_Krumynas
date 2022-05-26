@@ -40,7 +40,7 @@ const NavBar = () => {
 
                         <Navbar.Brand id="Logo" as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }} className="navBrn ">
                             <img id="popImg" src={logoImg}/>
-                            <a className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
+                            <span className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                         </Navbar.Brand>
                         { user?.role === 1 ?
                             <Nav.Item>

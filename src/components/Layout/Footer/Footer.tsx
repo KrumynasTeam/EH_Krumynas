@@ -48,7 +48,7 @@ const Footer = () => {
                 <Row className="footer-row">
                     <div className="d-flex fContactInfo fContactInfo3 align-items-center">
                         <FontAwesomeIcon icon={faMapMarkedAlt} className="fContactIcon"/>
-                        <a href = "https://goo.gl/maps/b3kqPtDt8exJUXqC9" target="_blank">
+                        <a id="link" href = "https://goo.gl/maps/b3kqPtDt8exJUXqC9" target="_blank">
                             <p className="brnName3">Adress Street 123</p>
                             <p>Vilnius, Lithuania</p>
                         </a>

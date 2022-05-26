@@ -17,13 +17,18 @@ const CreateProductForm = props => {
     const [productDescription, setProductDescription] = useState<string>("");
     const [productImage, setProductImage] = useState(null);
 
-    const [plantVariants, setPlantVariants] = useState([])
-    const [potVariants, setPotVariants] = useState([])
-    const [bouquetVariants, setBouquetVariants] = useState([])
-    const [varientColor, setVarientColor] = useState("White")
-    const [varientSize, setVarientSize] = useState("Small")
-    const [varientPrice, setVarientPrice] = useState(0)
+    const [plantVariants, setPlantVariants] = useState([]);
+    const [potVariants, setPotVariants] = useState([]);
+    const [varientColor, setVarientColor] = useState("White");
+    const [varientSize, setVarientSize] = useState("Small");
+    const [varientPrice, setVarientPrice] = useState(0);
+    const [stock, setStock] = useState(0);
+    const [addableToBouquet, setAddableToBouquet] = useState(false);
 
+    const [bouquetItems, setBouquetItems] = useState([]);
+    const [bouquetStock, setBouquetStock] = useState(0);
+    const [bouquetPrice, setBouquetPrice] = useState(0);
+    const [addablePlants, setAddablePlants] = useState([]);
     const [showImageUpload, setShowImageUpload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -47,13 +52,35 @@ const CreateProductForm = props => {
                     setPotVariants(props.Product.variants);
                     break;
                 case 'Bouquet':
-                    setBouquetVariants(props.Product.variants);
+                    setBouquetPrice(props.Product.variants[0].price);
+                    setBouquetStock(props.Product.variants[0].stock);
+                    var bItems = [];
+                    props.Product.variants[0].items.forEach(item => {
+                        var bItem = {id: item.id, name: props.Product.item.name, plantId:props.Product.item.id, quantity: item.quantity};
+                        bItems = [...bItems, bItem];
+                    });
+                    setBouquetItems(bItems);
                     break;
             }
         }else{
             clearProductInfo();
         }
     }, [props.Product])
+
+    useEffect(() => {
+        var allPlants = props.Plants.filter(p => p.item.type === 'Plant');
+        var addableVariants = []
+        allPlants.forEach(plant => {
+            plant.variants.forEach(variant => {
+                if(variant.addableToBouquet){
+                    var fullVariant = {id: variant.id, name: plant.item.name, plantId: plant.item.id, color: variant.color, price: variant.price, stock: variant.stock, quantity: 0};
+                    addableVariants = [...addableVariants, fullVariant];
+                }
+                addableVariants = [...addableVariants, ]
+            });
+        });
+        setAddablePlants(addableVariants);
+    }, [props.Plants])
 
     const handleCloseModal = () => {
         props.onAction();
@@ -68,21 +95,15 @@ const CreateProductForm = props => {
         switch(productType){
             case 'Plant':
                 if(plantVariants.find(v => v.color === varientColor)) return;
-                var newPlant = {color: varientColor, price: varientPrice};
+                var newPlant = {color: varientColor, price: varientPrice, addableToBouquet: addableToBouquet, stock: stock};
                 var newPlants = [...plantVariants, newPlant];
                 setPlantVariants(newPlants);
                 break;
             case 'Pot':
                 if(potVariants.find(v => v.color === varientColor && v.size === varientSize)) return;
-                var newPot = {color: varientColor, size: varientSize, price: varientPrice};
+                var newPot = {color: varientColor, size: varientSize, price: varientPrice, stock: stock};
                 var newPots = [...potVariants, newPot];
                 setPotVariants(newPots);
-                break;
-            case 'Bouquet':
-                if(plantVariants.find(v => v.color === varientColor)) return;
-                var newBouquet = {color: varientColor, price: varientPrice};
-                var newBouquets = [...bouquetVariants, newBouquet];
-                setBouquetVariants(newBouquets);
                 break;
             default: return;
         }
@@ -103,13 +124,6 @@ const CreateProductForm = props => {
                     if(j !== index) newPots = [...newPots, potVariants[j]]
                 }
                 setPotVariants(newPots);
-                break;
-            case 'Bouquet':
-                var newBouquets = []
-                for (var k = 0; k < bouquetVariants.length; k++) {
-                    if(k !== index) newBouquets = [...newBouquets, bouquetVariants[k]]
-                }
-                setBouquetVariants(newBouquets);
                 break;
             default: return;
         }
@@ -132,6 +146,25 @@ const CreateProductForm = props => {
             setErrorMessage('Product must have an image.');
             return false;
         }
+        if(stock < 0){
+            setErrorMessage('Stock must be positive.');
+            return false;
+        }
+
+        switch(productType){
+            case 'Plant':
+                if(plantVariants.length === 0){
+                    setErrorMessage('Product must have a variant.');
+                    return false;
+                }
+                break;
+            case 'Pot':
+                if(potVariants.length === 0){
+                    setErrorMessage('Product must have a variant.');
+                    return false;
+                }
+                break;
+        }
 
         setErrorMessage("");
         return true;
@@ -147,10 +180,11 @@ const CreateProductForm = props => {
         setProductType('None')
         setProductDescription('')
         setProductImage(null)
+        setAddableToBouquet(false);
+        setStock(0);
 
         setPlantVariants([]);
         setPotVariants([]);
-        setBouquetVariants([]);
         setErrorMessage("");
     }
 
@@ -180,7 +214,9 @@ const CreateProductForm = props => {
                 body['Variants'] = potVariants;
                 break;
             case 'Bouquet':
-                body['Variants'] = bouquetVariants;
+                var bItems = bouquetItems.map(i => {return {plantId: i.plantId, quantity: i.quantity}});
+                var variant = {items: bItems, price: bouquetPrice, stock: bouquetStock}
+                body['Variants'] = [variant];
                 break;
         }
         
@@ -224,7 +260,7 @@ const CreateProductForm = props => {
             case 'Pot':
                 return potVariants !== null && potVariants.length > 0;
             case 'Bouquet':
-                return bouquetVariants !== null && bouquetVariants.length > 0;
+                return bouquetItems !== null && bouquetItems.length > 0;
         }
     }
 
@@ -247,6 +283,24 @@ const CreateProductForm = props => {
             setIsLoading(false);
         })
         
+    }
+
+    const addBouquetItem = (item) => {
+        var found = bouquetItems.find(p => p.id === item.id);
+
+        if(found !== undefined){
+            found.quantity += 1;
+            setBouquetItems([...bouquetItems]);
+        }else{
+            item.quantity = 1;
+            var items = [...bouquetItems, item];
+            setBouquetItems(items);
+        }
+    }
+
+    const removeBouquetItem = (item) => {
+        var items = bouquetItems.filter(p => p.id !== item.id);
+        setBouquetItems(items);
     }
 
     return (
@@ -290,8 +344,8 @@ const CreateProductForm = props => {
                         <div className="create-product-variants-container">
                             <div className="create-product-container">
                                 <h2>Add plant variant</h2>
-                                <div id="add-variant-section">
-                                    <div style={{float: 'left'}}>
+                                <div id="add-form-variant-section">
+                                    <div className="add-variant-option">
                                         <div>
                                             <label style={{display: 'block'}}>Color</label>
                                             <select style={{display: 'block', width: '100%', height: '30px'}} id="product-color-select" value={varientColor} onChange={(e) => setVarientColor(e.target.value)}>
@@ -301,7 +355,7 @@ const CreateProductForm = props => {
                                             </select>
                                         </div>
                                     </div>
-                                    <div style={{float: 'left', marginLeft: '30px', marginRight: '10px'}}>
+                                    <div className="add-variant-option">
                                         <div>
                                             <label style={{display: 'block'}}>Size</label>
                                             <select style={{display: 'block', width: '100%', height: '30px'}} id="product-color-select" value={varientSize} onChange={(e) => setVarientSize(e.target.value)}>
@@ -311,10 +365,16 @@ const CreateProductForm = props => {
                                             </select>
                                         </div>
                                     </div>
-                                    <div style={{float: 'left', marginLeft: '30px', marginRight: '10px'}}>
+                                    <div className="add-variant-option">
                                         <div>
                                             <label style={{display: 'block'}}>Price</label>
                                             <input style={{display: 'block'}} type="number" id="product-color-select" value={varientPrice} onChange={(e) => setVarientPrice(Number(e.target.value))}/>
+                                        </div>
+                                    </div>
+                                    <div className="add-variant-option">
+                                        <div>
+                                            <label style={{display: 'block'}}>Stock</label>
+                                            <input style={{display: 'block'}} type="number" id="product-color-select" value={stock} onChange={(e) => setStock(Number(e.target.value))}/>
                                         </div>
                                     </div>
                                     <div>
@@ -327,6 +387,7 @@ const CreateProductForm = props => {
                                         <div className="product-variant-row-cell">Color</div>
                                         <div className="product-variant-row-cell">Size</div>
                                         <div className="product-variant-row-cell">Price</div>
+                                        <div className="product-variant-row-cell">Stock</div>
                                         <div className="product-variant-row-cell">Delete</div>
                                     </div>
                                     {potVariants.map((v, index) => (
@@ -335,6 +396,7 @@ const CreateProductForm = props => {
                                             <div className="product-variant-row-cell">{v.color}</div>
                                             <div className="product-variant-row-cell">{v.size}</div>
                                             <div className="product-variant-row-cell">{v.price}</div>
+                                            <div className="product-variant-row-cell">{v.stock}</div>
                                             <div className="product-variant-row-cell">
                                                 <Button onClick={() => removeVarient(index)}>-</Button>
                                             </div>
@@ -344,13 +406,73 @@ const CreateProductForm = props => {
                             </div>
                         </div>
                      : productType === 'Bouquet' ? 
-                        <div>Not implemented :(</div>
+                        <div className="create-product-variants-container">
+                            <div className="create-product-container">
+                                <h2>Enter bouquet details</h2>
+                                <div id="add-form-variant-section">
+                                    <div className="add-variant-option">
+                                        <div>
+                                            <label style={{display: 'block'}}>Price</label>
+                                            <input style={{display: 'block'}} type="number" id="product-color-select" value={bouquetPrice} onChange={(e) => setBouquetPrice(Number(e.target.value))}/>
+                                        </div>
+                                    </div>
+                                    <div className="add-variant-option">
+                                        <div>
+                                            <label style={{display: 'block'}}>Stock</label>
+                                            <input style={{display: 'block'}} type="number" id="product-color-select" value={bouquetStock} onChange={(e) => setBouquetStock(Number(e.target.value))}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="product-variant-list">
+                                    <label>Select bouquet composition</label>
+                                    <div className="product-variant-row">
+                                        <div className="product-variant-row-cell">Nr.</div>
+                                        <div className="product-variant-row-cell">Name</div>
+                                        <div className="product-variant-row-cell">Color</div>
+                                        <div className="product-variant-row-cell">Price</div>
+                                        <div className="product-variant-row-cell">Stock</div>
+                                        <div className="product-variant-row-cell">Add</div>
+                                    </div>
+                                    {addablePlants.map((v, index) => (
+                                        <div key={index} className="product-variant-row">
+                                            <div className="product-variant-row-cell">{index + 1}</div>
+                                            <div className="product-variant-row-cell">{v.name}</div>
+                                            <div className="product-variant-row-cell">{v.color}</div>
+                                            <div className="product-variant-row-cell">{v.price}</div>
+                                            <div className="product-variant-row-cell">{v.stock}</div>
+                                            <div className="product-variant-row-cell">
+                                                <Button onClick={() => addBouquetItem(v)}>+</Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="product-variant-list">
+                                <label>Selected composition</label>
+                                    <div className="product-variant-row">
+                                        <div className="product-variant-row-cell">Nr.</div>
+                                        <div className="product-variant-row-cell">Name</div>
+                                        <div className="product-variant-row-cell">Quantity</div>
+                                        <div className="product-variant-row-cell">Add</div>
+                                    </div>
+                                    {bouquetItems.map((v, index) => (
+                                        <div key={index} className="product-variant-row">
+                                            <div className="product-variant-row-cell">{index + 1}</div>
+                                            <div className="product-variant-row-cell">{v.name}</div>
+                                            <div className="product-variant-row-cell">{v.quantity}</div>
+                                            <div className="product-variant-row-cell">
+                                                <Button onClick={() => removeBouquetItem(v)}>-</Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                      : productType === 'Plant' ?
                         <div className="create-product-variants-container">
                             <div className="create-product-container">
                                 <h2>Add plant variant</h2>
-                                <div id="add-variant-section">
-                                    <div style={{float: 'left'}}>
+                                <div id="add-form-variant-section">
+                                    <div className="add-variant-option">
                                         <div>
                                             <label style={{display: 'block'}}>Color</label>
                                             <select style={{display: 'block', width: '100%', height: '30px'}} id="product-color-select" value={varientColor} onChange={(e) => setVarientColor(e.target.value)}>
@@ -360,10 +482,22 @@ const CreateProductForm = props => {
                                             </select>
                                         </div>
                                     </div>
-                                    <div style={{float: 'left', marginLeft: '30px', marginRight: '10px'}}>
+                                    <div className="add-variant-option">
                                         <div>
                                             <label style={{display: 'block'}}>Price</label>
                                             <input style={{display: 'block'}} type="number" id="product-color-select" value={varientPrice} onChange={(e) => setVarientPrice(Number(e.target.value))}/>
+                                        </div>
+                                    </div>
+                                    <div className="add-variant-option">
+                                        <div>
+                                            <label style={{display: 'block'}}>Stock</label>
+                                            <input style={{display: 'block'}} type="number" id="product-color-select" value={stock} onChange={(e) => setStock(Number(e.target.value))}/>
+                                        </div>
+                                    </div>
+                                    <div className="add-variant-option">
+                                        <div>
+                                            <label style={{display: 'block'}}>Addable to Bouquet</label>
+                                            <input style={{display: 'block'}} type="checkbox" id="product-color-select" checked={addableToBouquet} onChange={() => setAddableToBouquet(!addableToBouquet)}/>
                                         </div>
                                     </div>
                                     <div>
@@ -375,6 +509,8 @@ const CreateProductForm = props => {
                                         <div className="product-variant-row-cell">Nr.</div>
                                         <div className="product-variant-row-cell">Color</div>
                                         <div className="product-variant-row-cell">Price</div>
+                                        <div className="product-variant-row-cell">Stock</div>
+                                        <div className="product-variant-row-cell">Addable to Bouquet</div>
                                         <div className="product-variant-row-cell">Delete</div>
                                     </div>
                                     {plantVariants.map((v, index) => (
@@ -382,6 +518,8 @@ const CreateProductForm = props => {
                                             <div className="product-variant-row-cell">{index + 1}</div>
                                             <div className="product-variant-row-cell">{v.color}</div>
                                             <div className="product-variant-row-cell">{v.price}</div>
+                                            <div className="product-variant-row-cell">{v.stock}</div>
+                                            <div className="product-variant-row-cell">{v.addableToBouquet ? 'True' : 'False'}</div>
                                             <div className="product-variant-row-cell">
                                                 <Button onClick={() => removeVarient(index)}>-</Button>
                                             </div>
@@ -428,7 +566,8 @@ CreateProductForm.propTypes = {
     onResponse: PropTypes.func,
     isOpen: PropTypes.bool.isRequired,
     onAction: PropTypes.func,
-    Product: PropTypes.object
+    Product: PropTypes.object,
+    Plants: PropTypes.array
   }
   
   export default CreateProductForm;

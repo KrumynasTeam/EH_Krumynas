@@ -1,6 +1,7 @@
-body > #root > div {
-    height: 100vh;
-}
+/*body > #root > div {
+    
+    //min-height: 100%;
+}*/
 
 .input-div-right,
 .input-div{
@@ -70,6 +71,7 @@ body > #root > div {
 }
 
 .center-text {
+    min-height: 100vh;
     text-align: center;
     font-size: 100%;
     background: rgb(34,193,195);
@@ -93,7 +95,7 @@ body > #root > div {
     background-color: white;
     max-height: 610px;
     padding: 0px;
-    position:sticky;
+    position:relative;
     display: block;
     justify-content: center;
     text-align: center;

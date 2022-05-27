@@ -29,6 +29,20 @@ namespace EKrumynas.Controllers
         [Route("{id}")]
         public async Task<ShoppingCartGetDto> GetById(int id)
         {
+            return new ShoppingCartGetDto()
+            {
+                Id = 1,
+                Pots = new System.Collections.Generic.List<PotCartItemGetDto> { new() {
+                    Pot = null, Product = null, Quantity = 12}
+                },
+                Bouquets = new System.Collections.Generic.List<BouquetCartItemGetDto> {
+                    new() { Bouquet = new DTOs.BouquetGetDto {Id = 10, Price = 41}, Product = new DTOs.ProductGetDto {Id = 1, Name = "Juoda orchidėja"}, Quantity = 13 },
+                    new() { Bouquet = new DTOs.BouquetGetDto {Id = 10, Price = 41}, Product = new DTOs.ProductGetDto {Id = 1, Name = "JuodaAAAAA"}, Quantity = 10 },
+                },
+                Plants = new System.Collections.Generic.List<PlantCartItemGetDto> {
+                    new() { Quantity = 31, Product = null, Plant = null }
+                }
+            };
             try
             {
                 var shoppingCart = await _shoppingCartService.GetCartById(id);

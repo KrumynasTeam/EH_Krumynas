@@ -17,6 +17,15 @@ export type Order = {
     addressLine2?: string
 }
 
+export type OrderAddDto = {
+    CartId: number,
+    delivery: string,
+    country: string,
+    street: string,
+    addressLine1: string,
+    addressLine2?: string
+}
+
 export const OrderStatus = [
     "Ordered",
     "Accepted",

@@ -320,7 +320,7 @@ const CreateProductForm = props => {
                                 <textarea style={{resize: 'none'}} id="product-name-input" value={productName} onChange={(e) => setProductName(e.target.value)}/>
                                 <div id="type-select-container">
                                     <label>Product Type:</label>
-                                    <select id="product-type-select" value={productType} onChange={(e) => setProductType(e.target.value)}>
+                                    <select id="product-type-select" disabled={props.Product !== null} value={productType} onChange={(e) => setProductType(e.target.value)}>
                                         <option>None</option>
                                         <option>Plant</option>
                                         <option>Pot</option>

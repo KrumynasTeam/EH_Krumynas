@@ -132,7 +132,6 @@ export const AllProducts = () => {
     }
 
     if(selectedProduct.item.type === 'Pot'){
-      console.log('colors!');
       var sizeColors = selectedProduct.variants.filter(
         v => v.size === selectedProductSize).map(
           v => v.color);
@@ -379,11 +378,11 @@ export const AllProducts = () => {
                 <div className='filter-container'>
                   <div className='filter-select-container'>
                     <label className='filter-select-label'>Min: </label>
-                    <input className='filter-select-number' type='number' value={productFilter.price.min} onChange={(e) => changePriceRange('Min', Number(e.target.value))}/>
+                    <input className='filter-select-number' type='number' min={0} value={productFilter.price.min} onChange={(e) => changePriceRange('Min', Number(e.target.value))}/>
                   </div>
                   <div className='filter-select-container'>
                     <label className='filter-select-label'>Max: </label>
-                    <input className='filter-select-number' type='number' value={productFilter.price.max} onChange={(e) => changePriceRange('Max', Number(e.target.value))}/>
+                    <input className='filter-select-number' type='number' min={0} value={productFilter.price.max} onChange={(e) => changePriceRange('Max', Number(e.target.value))}/>
                   </div>
                 </div>
               </Collapse>

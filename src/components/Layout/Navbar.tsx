@@ -35,12 +35,11 @@ const NavBar = () => {
                         </Nav.Item>
 
                         <Nav.Item id="Logo">
-                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
+                            <Nav.Link as={Link} to="/cart" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
                         </Nav.Item>
 
                         <Navbar.Brand id="Logo" as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }} className="navBrn ">
-                            <img id="popImg" src={logoImg}/>
-                            <span className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
+                            <FontAwesomeIcon icon={faSeedling} className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
                         </Navbar.Brand>
                         { user?.role === 1 ?
                             <Nav.Item>

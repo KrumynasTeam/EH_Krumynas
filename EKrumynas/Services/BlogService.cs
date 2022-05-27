@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using AutoWrapper.Wrappers;
 using EKrumynas.Data;
 using EKrumynas.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EKrumynas.Services;
 
@@ -16,7 +19,7 @@ public class BlogService : IBlogService
 
     public IList<BlogPost> GetAll()
     {
-        return _context.BlogPosts.ToList();
+        return _context.BlogPosts.OrderBy(x => x.CreatedAt).ToList();
     }
 
     public BlogPost GetById(int id)
@@ -35,7 +38,16 @@ public class BlogService : IBlogService
     public BlogPost Update(BlogPost blog)
     {
         _context.BlogPosts.Update(blog);
-        _context.SaveChanges();
+        blog.Version += 1;
+        try
+        {
+            _context.SaveChanges();
+        } catch (DbUpdateConcurrencyException)
+        {
+            throw new ApiException(
+                    statusCode: 404,
+                    message: "Blog was already modified by another user.");
+        }
         return blog;
     }
 

@@ -17,6 +17,7 @@ export type User = {
 
 type UserContextType = {
   user: User | null;
+  cartId: number | null;
   token?: string | null;
   error?: string | null;
   isLoading: boolean;
@@ -26,6 +27,7 @@ type UserContextType = {
   Logout: () => void;
   UpdateProfileImage: (url: string | null) => void;
   UpdateUserData: (token: string | null, redirect: boolean | null) => void;
+  UpdateCartId: (cartId: number | null) => void;
 }
 
 export const UserContext = createContext<UserContextType>(
@@ -34,6 +36,7 @@ export const UserContext = createContext<UserContextType>(
 
 export const UserProvider = (props: { children: any }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [cartId, setCartId] = useState<number | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +48,9 @@ export const UserProvider = (props: { children: any }) => {
     setUser(_user);
     let _token = token || localStorage.getItem('token');
     setToken(_token);
+    let _cartId = cartId || localStorage.getItem('cartId');
+    if (_cartId != null)
+      setCartId(Number(_cartId));
   }, [isLoggedIn])
 
   const UpdateUserData = async (_token?:string, redirect?: boolean) => {
@@ -136,7 +142,9 @@ export const UserProvider = (props: { children: any }) => {
 
   const Logout = async () => {
     setIsLoading(true);
+    let cartId = localStorage.getItem('cartId');
     localStorage.clear();
+    localStorage.setItem('cartId', cartId);
     setUser(null);
     setToken(null);
     setIsLoading(false);
@@ -174,8 +182,12 @@ export const UserProvider = (props: { children: any }) => {
     });
   };
 
+  const UpdateCartId = (cartId: number) => {
+    localStorage.setItem('cartId', cartId.toString());
+  }
+
   return (
-    <UserContext.Provider value={{ user, token, error, isLoading, isLoggedIn, Login, Register, Logout, UpdateProfileImage, UpdateUserData }}>
+    <UserContext.Provider value={{ cartId, user, token, error, isLoading, isLoggedIn, Login, Register, Logout, UpdateProfileImage, UpdateUserData, UpdateCartId }}>
       {props.children}
     </UserContext.Provider>
   );

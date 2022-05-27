@@ -43,7 +43,7 @@ namespace EKrumynas.Services
             if (found is null)
             {
                 throw new ApiException(
-                    statusCode: 400,
+                    statusCode: 404,
                     message: "Product not found.");
             }
 

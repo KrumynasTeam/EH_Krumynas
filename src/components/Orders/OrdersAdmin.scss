@@ -1,0 +1,39 @@
+.rightPanel .header-title{
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 30px;
+}
+
+.orders-admin-input{
+    display: inherit;
+    height: 40px;
+}
+
+.user-row .orders-admin{
+    margin-left: 20px;
+    height: 60px;
+}
+
+.user-row .rightPanel{
+    min-height: auto;
+}
+
+.user-row .leftPanel{
+    max-height: fit-content;
+    padding-bottom: 15px;
+}
+
+.uselectable {
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.orders-search-result{
+    font-weight: 500;
+    padding: 20px 0px;
+    margin-bottom: -2px;
+    background-color: rgb(4, 210, 152);
+    color: white;
+}

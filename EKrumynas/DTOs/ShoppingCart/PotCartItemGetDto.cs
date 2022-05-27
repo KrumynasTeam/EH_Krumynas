@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EKrumynas.DTOs.ShoppingCart
+﻿namespace EKrumynas.DTOs.ShoppingCart
 {
     public class PotCartItemGetDto
     {
-        [Required] public int Quantity { get; set; }
-        [Required] public PotGetDto pot { get; set; }
+        public int Quantity { get; set; }
+        public PotGetDto Pot { get; set; }
+        public ProductGetDto Product { get; set; }
     }
 }

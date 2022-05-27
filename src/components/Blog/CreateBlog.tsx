@@ -34,26 +34,34 @@ function CreateBlog() {
     }
 
     return (
-        <div style={{background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', padding:'2rem', height: '100%'}}>
-                <h1>Creating a new blog post</h1>
-                <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup className="mb-3">
-                        <Label>Title:
-                            <Input style={{width:'35rem'}} type="text" name="title"/>
-                        </Label>
-                    </FormGroup>
-                    <FormGroup className="mb-3">
-                        <Label>Content:
-                            <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content"/>
-                        </Label>
-                    </FormGroup>
-                    <button style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/>
-                    <UploadImageForm onResponse={setImageUrl} isOpen={showModal} onAction={setShowModal}/>
-                    <img src={imageUrl} /><br/>
-                    <button style={{width:'10rem', marginTop: '10px'}} type="submit">Save</button>
-                </Form>
+        <div className="center-text" style={{minWidth: '400px'}}>
+            <div id="userSettingsForm">
+                <div className="container">
+                    <div className="user-row row">
+                        <div className="leftPanel col-12 col-lg-12 panelBox">
+                            <h1>Creating a new blog post</h1>
+                            <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
+                            <Form onSubmit={handleSubmit}>
+                                <FormGroup className="mb-3">
+                                    <Label style={{marginLeft: '-30px'}}>Title
+                                        <Input style={{width:'35rem'}} type="text" name="title"/>
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup className="mb-3">
+                                    <Label style={{marginLeft: '-30px'}}>Content
+                                        <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content"/>
+                                    </Label>
+                                </FormGroup>
+                                <button style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/>
+                                <UploadImageForm onResponse={setImageUrl} isOpen={showModal} onAction={setShowModal}/>
+                                <img src={imageUrl} /><br/>
+                                <button style={{width:'10rem', marginTop: '10px'}} type="submit">Save</button>
+                            </Form>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
     )
 }
 

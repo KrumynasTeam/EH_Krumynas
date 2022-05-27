@@ -45,6 +45,17 @@ namespace EKrumynas.Controllers.Management
 			return Ok(response);
 		}
 
+		[HttpGet]
+		[Route("Query/{query?}")]
+		public async Task<IActionResult> Query(string query)
+		{
+			List<User> users = await _manageUserService.Query(query);
+
+			var response = _mapper.Map<List<UserGetDto>>(users);
+
+			return Ok(response);
+		}
+
 		[HttpPut]
 		public async Task<IActionResult> Update(ManageUserUpdateDto userUpdate)
 		{

@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using AutoWrapper.Wrappers;
-using EKrumynas.DTOs;
 using EKrumynas.DTOs.ShoppingCart;
 using EKrumynas.Models;
 using EKrumynas.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EKrumynas.Controllers
@@ -24,23 +22,6 @@ namespace EKrumynas.Controllers
         {
             _shoppingCartService = shoppingCartService;
             _mapper = mapper;
-        }
-
-        [HttpGet]
-        public async Task<IList<ShoppingCartGetDto>> GetAll()
-        {
-            try
-            {
-                var shoppingCarts = await _shoppingCartService.GetAll();
-                var shoppingCartGetDtos = _mapper.Map<List<ShoppingCartGetDto>>(shoppingCarts);
-                return shoppingCartGetDtos ?? new List<ShoppingCartGetDto>();
-            }
-            catch(ArgumentException)
-            {
-                throw new ApiException(
-                    statusCode: 400,
-                    message: "Incorrect request data");
-            }
         }
 
         [HttpGet]
@@ -83,12 +64,12 @@ namespace EKrumynas.Controllers
             }
         }
         [HttpDelete]
-        [Route("/{cartId}/{itemId}")]
-        public async Task<ShoppingCartGetDto> DeleteItemById(int cartId, int itemId)
+        [Route("/{cartId}/{itemId}/{productType}")]
+        public async Task<ShoppingCartGetDto> DeleteItemById(int cartId, int itemId, ProductType productType)
         {
             try
             {
-                var shoppingCart = await _shoppingCartService.DeleteItemById(cartId, itemId);
+                var shoppingCart = await _shoppingCartService.DeleteItemById(cartId, itemId, productType);
                 var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(shoppingCart);
 
                 return shoppingCartGetDto ?? new ShoppingCartGetDto();
@@ -112,7 +93,7 @@ namespace EKrumynas.Controllers
                 var createdShoppingCart = await _shoppingCartService.CreateCart(shoppingCart);
                 var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(createdShoppingCart);
 
-                return Ok(shoppingCartGetDto);
+                return Ok(shoppingCart);
             }
             catch
             {

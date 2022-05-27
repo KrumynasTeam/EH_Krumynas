@@ -27,7 +27,7 @@ namespace EKrumynas.Services
             _context = context;
             _configuration = configuration;
             _emailRegex = new Regex(@"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$");
-            _usernameRegex = new Regex("^[A-Za-z0-9]{1,6}"); // TODO
+            _usernameRegex = new Regex(@"^[a-zA-Z0-9_]{6,12}$");
             _passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$");
         }
 
@@ -81,8 +81,8 @@ namespace EKrumynas.Services
             if (!_emailRegex.IsMatch(email))
                 ThrowBadRequestApiException("Invalid email address.");
 
-            //if (!_usernameRegex.IsMatch(username))
-                //ThrowBadRequestApiException("Username must be between 6-12 characters only of letters and numbers.");
+            if (!_usernameRegex.IsMatch(username))
+                ThrowBadRequestApiException("Username must be between 6-12 characters only of letters and numbers.");
 
             if (!_passwordRegex.IsMatch(password))
                 ThrowBadRequestApiException("Password must be between 8-16 characters long and contain one upper letter, lower letter and number.");

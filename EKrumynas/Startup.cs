@@ -68,6 +68,10 @@ namespace EKrumynas
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
 
+            services.AddScoped<IActivityLogger, DatabaseActivityWriter>();
+
+            ConfigureJsonDecorator(services);
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             string authToken = Environment.GetEnvironmentVariable("TOKEN");
@@ -164,6 +168,17 @@ namespace EKrumynas
             foreach (var service in requiredServices)
             {
                 app.UseMiddleware(Type.GetType(service.ServiceType));
+            }
+        }
+
+        private void ConfigureJsonDecorator(IServiceCollection services)
+        {
+            var jsonServices = JObject.Parse(File.ReadAllText("appsettings.json"))["Decorators"];
+            var requiredServices = JsonConvert.DeserializeObject<List<DecoratorSwitch>>(jsonServices.ToString());
+
+            foreach (var service in requiredServices)
+            {
+                services.Decorate(Type.GetType(service.ServiceType), Type.GetType(service.Concrete));
             }
         }
     }

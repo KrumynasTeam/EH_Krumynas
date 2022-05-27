@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using EKrumynas.Data;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Security.Claims;
 using EKrumynas.Models.Middleware;
@@ -22,7 +21,7 @@ namespace EKrumynas.Middleware
             _jsonSerializerOptions = new JsonSerializerOptions{PropertyNameCaseInsensitive = true};
         }
 
-        public async Task InvokeAsync(HttpContext context, EKrumynasDbContext dbContext)
+        public async Task InvokeAsync(HttpContext context, IActivityLogger activityLogger)
         {
             var endpoint = context.GetEndpoint();
 
@@ -52,18 +51,20 @@ namespace EKrumynas.Middleware
                             defaultUsername = hasRegisterUsername;
                     }
 
-                    string userName = context.User.Identity.Name ?? defaultUsername;
-                    string userRole = context.User.FindFirstValue(ClaimTypes.Role) ?? "Undefined";
-
-                    dbContext.ActivityRecords.Add(new ActivityRecord()
+                    string userName = "";
+                    string userRole = "";
+                    if (context.User != null) {
+                        userName = context.User.Identity.Name ?? defaultUsername;
+                        userRole = context.User.FindFirstValue(ClaimTypes.Role) ?? "Undefined";
+                    }
+                    
+                    activityLogger.Log(new ActivityRecord()
                     {
                         Username = userName,
                         Role = userRole,
                         Date = DateTime.UtcNow,
                         Method = controllerName + "#" + methodName
                     });
-
-                    await dbContext.SaveChangesAsync();
                 }
             }
             await _next(context);
@@ -102,4 +103,3 @@ namespace EKrumynas.Middleware
         }
     }
 }
-

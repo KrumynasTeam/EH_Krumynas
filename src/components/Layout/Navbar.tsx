@@ -23,50 +23,52 @@ const NavBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-center mainNav">
+                        <Nav.Item id="Logo">
+                            <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Home</Nav.Link>
+                        </Nav.Item>
+
+                        <Nav.Item id="Logo">
+                            <Nav.Link as={Link} to="/flowers" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Flowers</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item id="Logo">
+                            <Nav.Link as={Link} to="/blogs" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Blogs</Nav.Link>
+                        </Nav.Item>
+
+                        <Nav.Item id="Logo">
+                            <Nav.Link as={Link} to="/cart" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
+                        </Nav.Item>
+
+                        <Navbar.Brand id="Logo" as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }} className="navBrn ">
+                            <FontAwesomeIcon icon={faSeedling} className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
+                        </Navbar.Brand>
+                        { user?.role === 1 ?
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Home</Nav.Link>
+                                <Nav.Link as={Link} to="/orders" className="nav-link">Manage Orders</Nav.Link>
                             </Nav.Item>
-                            
+                        : <></> }
+                        { token == null ? (
+                            <>
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/flowers" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Flowers</Nav.Link>
+                                <Link to="/login"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>Login</button></Link>
                             </Nav.Item>
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/blogs" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Blogs</Nav.Link>
+                                <Link to="/signup"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>SignUp</button>
+                                </Link></Nav.Item>
+                            </>
+                        ) : (
+                            <>
+                            <Nav.Item id="Logo">
+                                <Link to={`/${window.location}`} onClick={() => Logout()}><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button></Link>
                             </Nav.Item>
 
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Cart</Nav.Link>
+                                <Link to="/account"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button></Link>
                             </Nav.Item>
-
-                            <Navbar.Brand id="Logo" as={Link} to="/" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }} className="navBrn ">
-                                <img id="popImg" src={logoImg}/>
-                                <a className="brnIcon" /> Eh <span className="navHighlight">Krumynas</span>
-                            </Navbar.Brand>
-
-                            { token == null ? (
-                                <>
-                                <Nav.Item id="Logo">
-                                    <Link to="/login"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>Login</button></Link>
-                                </Nav.Item>
-                                <Nav.Item id="Logo">
-                                    <Link to="/signup"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>SignUp</button>
-                                    </Link></Nav.Item>
-                                </>
-                            ) : (
-                                <>
-                                <Nav.Item id="Logo">
-                                    <Link to={`/${window.location}`} onClick={() => Logout()}><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button></Link>
-                                </Nav.Item>
-                                
-                                <Nav.Item id="Logo">
-                                    <Link to="/account"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button></Link>
-                                </Nav.Item>
-                                <div id="Logo">
-                                    <img id="popImg" src={user?.profileImage || profileAvatarDefaultImage}/>
-                                </div>
-                                </>
-                            )}
-                    
+                            <div id="Logo">
+                                <img id="popImg" src={user?.profileImage || profileAvatarDefaultImage}/>
+                            </div>
+                            </>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

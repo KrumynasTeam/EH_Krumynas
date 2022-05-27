@@ -203,8 +203,9 @@ nav {
 
 
 .hero-row .leftPanelHero{
-  background-color: white;
+  background-color: rgb(212, 228, 208);
   max-height: 810px;
+  min-height: 450px;
   padding: 0px;
   position:relative;
   display: block;
@@ -212,15 +213,14 @@ nav {
   text-align: center;
   align-items: center;
   height: 100%;
-  border: 50px;
-  border-color: black;
-
 }
 
 .hero-row .rightPanelHero{
-  background-color: white;
+  background-color: rgb(212, 228, 208);
   height: 100%;
   align-self: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .hero-row{
@@ -231,7 +231,8 @@ nav {
   margin-left: 0rem;
   background-color: transparent;
   align-items: inherit;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(212, 228, 208);
+  align-self: center;
 }
 
 button.heroButton{
@@ -253,15 +254,27 @@ button.heroButton{
 
 }
 
-.leftPanelHero .profileImage{
+button.blogButton{
   position: relative;
   align-self: center;
-  background-color: grey;
   margin: auto;
-  height: 100%;
-  width: 100%;
   border-radius: 50%;
   border: 5px white;
   cursor: pointer;
   transition: opacity 0.25s ease-out;
+  display: flexbox;
+  flex-direction: row;
+  width: auto;
+  margin:1ch;
+    height: 40px;
+    width: 40px;
+    margin-left: 0px;
+    color: white;
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+}
+
+button.blogButton:hover{
+  background: linear-gradient(45deg, rgb(25, 219, 190) 35px, rgb(6, 246, 178) 0%);
 }

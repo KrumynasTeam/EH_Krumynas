@@ -10,7 +10,8 @@ export type Blog = {
     title: string,
     content: string,
     createdAt: Date,
-    imageUrl: string
+    imageUrl: string,
+    version: number
 }
 
 function BlogsList() {
@@ -21,15 +22,15 @@ function BlogsList() {
     function renderCard (blog : Blog){
         return(
             <BlogCard key={blog.id} blog={blog}/>
+
         )
     }
   
     function renderBlogsList (blogs : Blog[]){
       return (
-              <div style={{ display: "flex", justifyContent:'center', flexDirection:'column', textAlign:'left'}}>
-              {blogs.map(renderCard)}
-              </div>
-          
+        <div style={{ display: "flex", justifyContent:'center', flexDirection:'column', textAlign:'left'}}>
+          {blogs.map(renderCard)}
+        </div>
       );
     }
 
@@ -59,12 +60,21 @@ function BlogsList() {
       )
     }
 
-    return  <div style={{justifyContent: 'center', textAlign: 'center', display: 'flex', flexDirection:'column',
-    background: 'linear-gradient(135deg, rgba(34,193,195,1) 0%,rgba(253,187,45,1) 100%', height:'100%'}}>
-                <h1 style={{marginTop:'1rem'}}>Our Blogs</h1>
+    return (
+      <div className="center-text">
+        <div id="userSettingsForm">
+          <div className="container">
+            <div className="user-row row">
+              <div className="leftPanel col-12 col-lg-12 panelBox">
+                <h1 style={{marginTop:'1rem', marginLeft: '-15px'}}>Our Blogs</h1>
                 {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn'>Create New</button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    )
 }
 
 export default BlogsList

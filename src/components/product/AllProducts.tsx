@@ -8,7 +8,7 @@ import CreateProductForm from './NewProduct'
 import './Product.scss';
 import { Collapse, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 
-type Product = {
+export type Product = {
   id: number;
   type: string;
   name: string;
@@ -17,12 +17,12 @@ type Product = {
   images: Image[];
 }
 
-type ProductVariant = {
+export type ProductVariant = {
   item: Product;
   variants: Array<any>
 }
 
-type Discount = {
+export type Discount = {
   id: number;
   amount: number;
   description: string;

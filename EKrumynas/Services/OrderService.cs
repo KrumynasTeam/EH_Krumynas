@@ -94,7 +94,7 @@ namespace EKrumynas.Services
                 orderUser = null;
             }
 
-            decimal bouquetsTotal = cartSnapshot.Bouquets.Sum(item => item.Price);
+            decimal bouquetsTotal = cartSnapshot.Bouquets.Sum(item => item.Price * item.Quantity);
             decimal plantsTotal = cartSnapshot.Plants.Sum(item => item.Price);
             decimal potsTotal = cartSnapshot.Pots.Sum(item => item.Price);
 

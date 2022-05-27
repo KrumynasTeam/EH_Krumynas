@@ -51,8 +51,12 @@ namespace EKrumynas.Middleware
                             defaultUsername = hasRegisterUsername;
                     }
 
-                    string userName = context.User.Identity.Name ?? defaultUsername;
-                    string userRole = context.User.FindFirstValue(ClaimTypes.Role) ?? "Undefined";
+                    string userName = "";
+                    string userRole = "";
+                    if (context.User != null) {
+                        userName = context.User.Identity.Name ?? defaultUsername;
+                        userRole = context.User.FindFirstValue(ClaimTypes.Role) ?? "Undefined";
+                    }
                     
                     activityLogger.Log(new ActivityRecord()
                     {

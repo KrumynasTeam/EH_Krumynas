@@ -87,16 +87,19 @@ namespace EKrumynas
 
             CreateMap<PotCartItemAddDto, PotCartItem>().ConstructUsing(x => new()
             {
+                PotId = x.VariantId,
                 Quantity = x.Quantity
             });
 
             CreateMap<PlantCartItemAddDto, PlantCartItem>().ConstructUsing(x => new()
             {
+                PlantId = x.VariantId,
                 Quantity = x.Quantity
             });
 
             CreateMap<BouquetCartItemAddDto, BouquetCartItem>().ConstructUsing(x => new()
             {
+                BouquetId = x.VariantId,
                 Quantity = x.Quantity
             });
 
@@ -126,30 +129,16 @@ namespace EKrumynas
                 UserId = (x.User != null) ? x.User.Id : null,
                 Status = x.Status.ToString()
             });
-
+            
             CreateMap<PotCartItem, PotCartItemGetDto>()
-                .ForMember(src => src.Product, opt => opt.MapFrom(src => src.Pot.Product));
-
+                .ForMember(dst => dst.Product, opt => opt.MapFrom(src => src.Pot.Product));
+            
             CreateMap<PlantCartItem, PlantCartItemGetDto>()
-                .ForMember(src => src.Product, opt => opt.MapFrom(src => src.Plant.Product));
+                .ForMember(dst => dst.Product, opt => opt.MapFrom(src => src.Plant.Product));
 
             CreateMap<BouquetCartItem, BouquetCartItemGetDto>()
-                .ForMember(src => src.Product, opt => opt.MapFrom(src => src.Bouquet.Product));
+                .ForMember(dst => dst.Product, opt => opt.MapFrom(src => src.Bouquet.Product));
 
-            CreateMap<PotCartItem, PotCartItemGetDto>().ConstructUsing(x => new()
-            {
-                Quantity = x.Quantity
-            });
-
-            CreateMap<PlantCartItem, PlantCartItemGetDto>().ConstructUsing(x => new()
-            {
-                Quantity = x.Quantity
-            });
-
-            CreateMap<BouquetCartItem, BouquetCartItemGetDto>().ConstructUsing(x => new()
-            {
-                Quantity = x.Quantity
-            });
             CreateMap<ItemVariants<Product, Pot>, ItemVariants<ProductGetDto, PotGetDto>>();
             CreateMap<ItemVariants<Product, Plant>, ItemVariants<ProductGetDto, PlantGetDto>>();
             CreateMap<ItemVariants<Product, Bouquet>, ItemVariants<ProductGetDto, BouquetGetDto>>();

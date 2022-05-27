@@ -15,11 +15,10 @@ html, body{
 
 .filters{
     background: black;
-    //top: 100px;
     position: fixed;
-    //margin-top: 10px;
     min-width: 300px;
     width: 300px;
+    min-height: 100vh;
 }
 
 #filter-collapse-check{

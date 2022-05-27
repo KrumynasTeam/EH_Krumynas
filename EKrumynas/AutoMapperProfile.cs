@@ -87,16 +87,19 @@ namespace EKrumynas
 
             CreateMap<PotCartItemAddDto, PotCartItem>().ConstructUsing(x => new()
             {
+                PotId = x.VariantId,
                 Quantity = x.Quantity
             });
 
             CreateMap<PlantCartItemAddDto, PlantCartItem>().ConstructUsing(x => new()
             {
+                PlantId = x.VariantId,
                 Quantity = x.Quantity
             });
 
             CreateMap<BouquetCartItemAddDto, BouquetCartItem>().ConstructUsing(x => new()
             {
+                BouquetId = x.VariantId,
                 Quantity = x.Quantity
             });
 

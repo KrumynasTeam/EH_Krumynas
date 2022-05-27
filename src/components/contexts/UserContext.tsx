@@ -49,8 +49,10 @@ export const UserProvider = (props: { children: any }) => {
     let _token = token || localStorage.getItem('token');
     setToken(_token);
     let _cartId = cartId || localStorage.getItem('cartId');
-    if (_cartId != null)
+    if (_cartId != null){
+      console.log(_cartId);
       setCartId(Number(_cartId));
+    }
   }, [isLoggedIn])
 
   const UpdateUserData = async (_token?:string, redirect?: boolean) => {
@@ -184,6 +186,7 @@ export const UserProvider = (props: { children: any }) => {
 
   const UpdateCartId = (cartId: number) => {
     localStorage.setItem('cartId', cartId.toString());
+    setCartId(cartId);
   }
 
   return (

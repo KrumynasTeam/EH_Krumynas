@@ -59,7 +59,7 @@ export const AllProducts = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [retrieveData, setRetrieveData] = useState(true);
-  const {user} = useContext(UserContext);
+  const {user, token, cartId, UpdateCartId} = useContext(UserContext);
   const [showAdminMode, setShowAdminMode] = useState(false);
 
   const [products, setProducts] = useState<ProductVariant[]>([]);
@@ -123,7 +123,6 @@ export const AllProducts = () => {
       if(selectedProductSize == null) setSelectedProductSize("")
       else setSelectedProductSize(null);
     }
-
   }, [selectedProduct])
 
   useEffect(() => {
@@ -273,6 +272,71 @@ export const AllProducts = () => {
     setShowCreateProductForm(false);
   }
 
+  const handleAddToCart = async () => {
+    var body = {};
+    var variantId = null;
+    var endpoint = process.env.REACT_APP_API_URL + 'ShoppingCart';
+    var method = 'POST';
+
+    switch(selectedProduct.item.type){
+      case 'Plant':
+          variantId = selectedProduct.variants
+            .find(v => v.color === selectedProductColor);
+          break;
+      case 'Pot':
+          variantId = selectedProduct.variants
+            .find(v => v.color === selectedProductColor
+                && v.size == selectedProductSize);
+          break;
+      case 'Bouquet':
+          variantId = selectedProduct.variants.at(0);
+          break;
+      default: break;
+    }
+
+    if(variantId === null) return;
+    else variantId = variantId.id;
+
+    var itemToAdd = {variantId: variantId, quantity: selectedProductQuantity}
+    if(cartId === null || cartId === 0){
+      body = {
+        userId: user?.id,
+        pots: selectedProduct.item.type === 'Pot' ? [itemToAdd] : [],
+        plants: selectedProduct.item.type === 'Plant' ? [itemToAdd] : [],
+        bouquets: selectedProduct.item.type === 'Bouquet' ? [itemToAdd] : []
+      }
+    }else{
+      body = itemToAdd;
+      method = 'PUT';
+      endpoint += '/' + cartId + '/' + selectedProduct.item.type;
+    }
+
+    await fetch(endpoint,
+    {
+        method: method,
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+      body: JSON.stringify(body),
+    })
+    .then(response => response.json())
+    .then(data => {
+        setIsLoading(false);
+        if(data.isError){
+            //setErrorMessage(data.error.message);
+        }else{
+            //setErrorMessage("");
+            //props.onResponse();
+            UpdateCartId(data.result.id);
+        }
+
+    }).catch(() => {
+        //setIsLoading(false);
+        //setErrorMessage(defaultConnectionError);
+    })
+  }
+
   if(isLoading){
       return(
         <div className='spinner-container d-flex justify-content-center'>
@@ -336,7 +400,7 @@ export const AllProducts = () => {
                     <label>Price: {getSelectedPrice()}</label>
                   </div>
                 </div>
-                <Button type="button" onClick={() => handleProductModalClose()}>Add to Cart</Button>
+                <Button type="button" onClick={() => handleAddToCart()}>Add to Cart</Button>
               </div>
             </ModalBody>
             <ModalFooter/>

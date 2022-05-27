@@ -1,10 +1,9 @@
 import './ShoppingCart.scss';
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { Discount } from "../product/AllProducts";
+import { Discount, Product } from "../product/AllProducts";
 import { Label, Input, Table } from "reactstrap";
 import { Order, OrderDelivery, OrderStatus, OrderAddDto } from '../Orders/OrdersAdminScreen';
-
 
 export type Cart = {
     id: number,
@@ -16,27 +15,38 @@ export type Cart = {
 
 export type Pot = {
     id: number;
-    name: string;
-    description: string;
     quantity: number;
-    size: number;
-    discount: Discount;
+    pot: {
+      id: number;
+      color: string;
+      size: string;
+      price: number,
+      stock: number
+    },
+    product: Product
 }
 
 export type Plant = {
+  id: number;
+  quantity: number;
+  plant: {
     id: number;
-    name: string;
-    description: string;
-    quantity: number;
-    discount: Discount;
+    color: string;
+    price: number,
+    stock: number
+  },
+  product: Product
 }
 
 export type Bouquet = {
+  id: number;
+  quantity: number;
+  bouquet: {
     id: number;
-    name: string;
-    description: string;
-    quantity: number;
-    discount: Discount;
+    price: number,
+    stock: number
+  },
+  product: Product
 }
 
 const CourierTypes = [
@@ -250,7 +260,7 @@ export const ShoppingCart = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCartLoading, setIsCartLoading] = useState(false);
     const [cartSuccess, setCartSuccess] = useState(false);
-    const {user, token, cartId} = useContext(UserContext);
+    const {user, token, cartId, UpdateCartId} = useContext(UserContext);
     
     const [cart, setCart] = useState<Cart>(null);
     const [deliveryType, setDeliveryType] = useState(DeliveryTypes[0]);
@@ -272,8 +282,8 @@ export const ShoppingCart = () => {
         }
     });
 
-
     useEffect(() => {
+      if(cartId === null) return;
         setIsCartLoading(true);
         fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}`, {
             method: 'GET',
@@ -282,11 +292,21 @@ export const ShoppingCart = () => {
             }
           })
           .then(response => response.json())
-          .then(data => { return data.result; })
-          .then(result => {
-              setCart(result);
-          }).then(() => setIsCartLoading(false))
-          .catch(() => setCartError("Could not establish connection to server. Please try again!"));
+          .then(data => { 
+            setIsCartLoading(false);
+            if(data.isError){
+              if(data.status === 404){
+                UpdateCartId(null);
+              }
+            }else{
+              setCart(data.result);
+              setIsCartLoading(false)
+            }
+          })
+          .catch(() => {
+            setIsCartLoading(false);
+            //setCartError("Could not establish connection to server. Please try again!");
+          });
     }, [cartId]);
 
     const HandleDeliveryType = (event) => {
@@ -338,7 +358,7 @@ export const ShoppingCart = () => {
                             </div>
                         </div>
                         <div className="rightPanel col-12 col-lg-8 panelBox">
-                            <h2>Shopping Cart info</h2>
+                            <h2 className='shopping-cart-h2'>Shopping Cart info</h2>
                             <hr style={{marginTop: '30px'}}></hr>
                             <div>
                                 { Spinner(cartError, isCartLoading, cartSuccess) }
@@ -352,19 +372,19 @@ export const ShoppingCart = () => {
                                                     <tr>
                                                     <th></th>
                                                     <th>Name</th>
-                                                    <th>Price</th>
+                                                    <th>Color</th>
                                                     <th>Quantity</th>
                                                     <th>Half Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    { cart != null ? cart.plants.map((plant, index) => (
+                                                    { cart != null ? cart.plants.map((item, index) => (
                                                         <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => console.log(plant.id)}>REMOVE</button></td>
-                                                            <td>{plant.id}</td>
-                                                            <td>{plant.name}</td>
-                                                            <td>{plant.quantity}</td>
-                                                            <td>{plant.quantity * 69.33}</td>
+                                                            <td><button style={{width: '100px'}} onClick={() => console.log(item.id)}>REMOVE</button></td>
+                                                            <td>{item.product.name}</td>
+                                                            <td>{item.plant.color}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td>{item.quantity * item.plant.price}</td>
                                                         </tr>
                                                     )) : <></>}
                                                 </tbody>
@@ -379,19 +399,21 @@ export const ShoppingCart = () => {
                                                     <tr>
                                                     <th></th>
                                                     <th>Name</th>
-                                                    <th>Price</th>
+                                                    <th>Color</th>
+                                                    <th>Size</th>
                                                     <th>Quantity</th>
                                                     <th>Half Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    { cart != null ? cart.pots.map((pot, index) => (
+                                                    { cart != null ? cart.pots.map((item, index) => (
                                                         <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => DeleteItemById(pot.id, 'pot')}>REMOVE</button></td>
-                                                            <td>{pot.id}</td>
-                                                            <td>{pot.name}</td>
-                                                            <td>{pot.size}</td>
-                                                            <td>{pot.quantity * 12.33}</td>
+                                                            <td><button style={{width: '100px'}} onClick={() => DeleteItemById(item.id, 'pot')}>REMOVE</button></td>
+                                                            <td>{item.product.name}</td>
+                                                            <td>{item.pot.color}</td>
+                                                            <td>{item.pot.size}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td>{item.quantity * item.pot.price}</td>
                                                         </tr>
                                                     )) : <></>}
                                                 </tbody>
@@ -406,19 +428,17 @@ export const ShoppingCart = () => {
                                                     <tr>
                                                     <th></th>
                                                     <th>Name</th>
-                                                    <th>Price</th>
                                                     <th>Quantity</th>
                                                     <th>Half Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    { cart != null ? cart.bouquets.map((bouquet, index) => (
+                                                    { cart != null ? cart.bouquets.map((item, index) => (
                                                         <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => kk(bouquet.id)}>REMOVE</button></td>
-                                                            <td>{bouquet.id}</td>
-                                                            <td>{bouquet.name}</td>
-                                                            <td>{bouquet.quantity}</td>
-                                                            <td>{bouquet.quantity * 12.33}</td>
+                                                            <td><button style={{width: '100px'}} onClick={() => kk(item.id)}>REMOVE</button></td>
+                                                            <td>{item.product.name}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td>{item.quantity * item.bouquet.price}</td>
                                                         </tr>
                                                     )) : <></>}
                                                 </tbody>

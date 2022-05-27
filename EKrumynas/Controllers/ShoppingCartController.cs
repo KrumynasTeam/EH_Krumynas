@@ -6,6 +6,7 @@ using EKrumynas.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EKrumynas.Controllers
@@ -93,7 +94,7 @@ namespace EKrumynas.Controllers
                 var createdShoppingCart = await _shoppingCartService.CreateCart(shoppingCart);
                 var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(createdShoppingCart);
 
-                return Ok(shoppingCart);
+                return Ok(shoppingCartGetDto);
             }
             catch
             {
@@ -110,6 +111,7 @@ namespace EKrumynas.Controllers
             try
             {
                 PotCartItem pot = _mapper.Map<PotCartItem>(potCartItemAddDto);
+                return Ok(pot);
                 var newShoppingCart = await _shoppingCartService.UpdateCart(cartId, pot);
                 var shoppingCartGetDto = _mapper.Map<ShoppingCartGetDto>(newShoppingCart);
 

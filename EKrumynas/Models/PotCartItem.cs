@@ -6,6 +6,7 @@ namespace EKrumynas.Models
     {
         [Key]
         public int Id { get; set; }
+        public int PotId { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Quantity {0} must be greater than {1}.")]
         public int Quantity { get; set; }
 

@@ -13,6 +13,8 @@ namespace EKrumynas.Models.OrderDetails
         public virtual ICollection<PotCartItemSnapshot> Pots { get; set; }
         public virtual ICollection<BouquetCartItemSnapshot> Bouquets { get; set; }
 
+        public virtual Order Order { get; set; }
+
         public ShoppingCartSnapshot()
         {
             Plants = new HashSet<PlantCartItemSnapshot>();

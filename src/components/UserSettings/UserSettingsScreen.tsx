@@ -1,9 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './UserSettings.scss';
 import UploadImageForm from "../ImageUploader/ImageUpload";
 import { UserContext } from "../contexts/UserContext";
-import { Label, Input, Table } from "reactstrap";
-import { GetDelivery, GetStatus, Order } from "../Orders/OrdersAdminScreen";
+import { Label, Input } from "reactstrap";
+import { GetDelivery, GetStatus, Order, Row } from "../Orders/OrdersAdminScreen";
+import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 export const UserSettingsScreen = () => {
     const orders = 'Orders';
@@ -33,9 +36,28 @@ export const UserSettingsScreen = () => {
     const [addressLine1, setAddressLine1] = useState(user?.addressLine1);
     const [addressLine2, setAddressLine2] = useState(user?.addressLine2);
 
+    useEffect(() => {
+        if (user?.id) {
+            fetch(process.env.REACT_APP_API_URL + 'Order', {
+                method: 'GET',
+                headers: { 'Authorization': token },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isError === true) {
+                    setError(data.error.message);
+                } else {
+                    setError(null);
+                    setUserOrders(data.result);
+                }
+            })
+            .catch(() => {console.log('Could not retrieve user orders.'); setUserOrders([])});
+        }
+    }, []);
+
     const handleOpenModal = () => {
         setShowModal(true)
-    }
+    };
 
     const setWindowTo = ((to) => {
         if (currentOption !== to) {
@@ -53,7 +75,7 @@ export const UserSettingsScreen = () => {
             return ChangePassword(token, success, setSuccess, error, setError, isLoading, setIsLoading, password, setPassword, rePassword, setRePassword);
         if (currentOption == billingInfo)
             return BillingInfo(UpdateUserData, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2);
-        return Orders(token, success, setSuccess, error, setError, isLoading, setIsLoading, userOrders, setUserOrders);
+        return Orders(success, error, isLoading, userOrders);
     });
     
     return (
@@ -326,277 +348,36 @@ const ChangePassword = ((token, success, setSuccess, error, setError, isLoading,
     );
 });
 
-const Orders = ((token, success, setSuccess, error, setError, isLoading, setIsLoading, userOrders, setUserOrders) => {
-    const FetchUserOrders = async (event) => {
-        event.preventDefault();
-        setIsLoading(true);
-
-        const mockedList = 
-        [
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 1,
-                price: 20.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(0),
-                delivery: GetDelivery(0),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 2,
-                price: 2.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(1),
-                delivery: GetDelivery(2),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-            {
-                id: 4,
-                price: 720.00,
-                createdAt: "2022-05-22",
-                updatedAt: "2022-05-24",
-                status: GetStatus(2),
-                delivery: GetDelivery(3),
-                country: "Lithuania",
-                street: "Naugarduko g.",
-                addressLine1: "99",
-                addressLine2: "",
-            },
-        ];
-
-        setIsLoading(false);
-        setUserOrders(mockedList);
-      }
-
+const Orders = ((success, error, isLoading, userOrders) => {
     return (
     <div className="orders-layout">
-        <form onSubmit={(event) => FetchUserOrders(event)}>
-            <div style={{display: 'flex', marginBottom: '10px'}}>
-                <button type="submit" style={{marginTop: '10px'}}>Refresh</button>
-                <div className="orders-spinner">{ Spinner(error, isLoading, success) }</div>
-            </div>
-            <div className="custom-container" style={{display: 'flex', alignItems: 'center', maxHeight: '250px', overflowY: 'auto'}}>
-                <Table responsive striped bordered hover>
-                    <thead>
-                        <tr>
-                        <th>Order ID#</th>
-                        <th>Price</th>
-                        <th>CreatedAt</th>
-                        <th>UpdatedAt</th>
-                        <th>Status</th>
-                        <th>Delivery</th>
-                        <th>Country</th>
-                        <th>Street</th>
-                        <th>Address Line 1</th>
-                        <th>Address Line 2</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    { !isLoading && userOrders.map((order, index) => (
-                        <tr key={index}>
-                            <td>{order?.id}</td>
-                            <td>{(order?.price ?? 0.00) + '€'}</td>
-                            <td>{order?.createdAt}</td>
-                            <td>{order?.updatedAt}</td>
-                            <td>{order?.status}</td>
-                            <td>{order?.delivery}</td>
-                            <td>{order?.country}</td>
-                            <td>{order?.street}</td>
-                            <td>{order?.addressLine1}</td>
-                            <td>{order?.addressLine2}</td>
-                        </tr>
+        <div className="custom-container" style={{display: 'flex', alignItems: 'center', maxHeight: '250px', overflowY: 'auto'}}>
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Order ID#</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Status</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Delivery</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Country</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Street</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Address Line 1</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Address Line 2</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {userOrders && userOrders.map((row) => (
+                        <Row key={row.id} row={row} />
                     ))}
-                    </tbody>
+                    </TableBody>
                 </Table>
-            </div>
-        </form>
+            </TableContainer>
+        </div>
+        <div style={{margin: '30px 50px 100px 0px'}}>
+            { userOrders.length < 1 ? <div>No orders.</div> : <></>}
+            <div className="orders-spinner" >{ Spinner(error, isLoading, success) }</div>
+        </div>
     </div>
     );
 });

@@ -7,6 +7,14 @@ import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer,
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
+type OrderCart = {
+    id: number,
+    orderId: number,
+    plants: any[],
+    pots: any[],
+    bouquets: any[]
+}
+
 export type Order = {
     id: number,
     price: number,
@@ -17,7 +25,8 @@ export type Order = {
     country: string,
     street: string,
     addressLine1: string,
-    addressLine2?: string
+    addressLine2?: string,
+    cart: OrderCart
 }
 
 export type OrderAddDto = {
@@ -89,199 +98,29 @@ export const OrdersAdminScreen = () => {
         .catch(() => setError(defaultConnectionError));
     }, [searchInput]);
 
-    const mockedList = 
-    [
-        {
-            id: 1,
-            price: 20.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 0,
-            delivery: 0,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
-        },
-        {
-            id: 2,
-            price: 2.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 1,
-            delivery: 2,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
-        },
-        {
-            id: 3,
-            price: 720.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 2,
-            delivery: 3,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
-        },
-        {
-            id: 4,
-            price: 20.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 0,
-            delivery: 0,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
-        },
-        {
-            id: 5,
-            price: 2.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 1,
-            delivery: 2,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
-        },
-        {
-            id: 6,
-            price: 720.00,
-            createdAt: "2022-05-22",
-            updatedAt: "2022-05-24",
-            status: 2,
-            delivery: 3,
-            country: "Lithuania",
-            street: "Naugarduko g.",
-            addressLine1: "99",
-            addressLine2: "",
+    useEffect(() => {
+        if (activeSelection != null) {
+            fetch(process.env.REACT_APP_API_URL + `Order/User/${activeSelection?.id}`, {
+                method: 'GET',
+                headers: { 'Authorization': token },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isError === true) {
+                    setError(data.error.message);
+                } else {
+                    setError(null);
+                    setUserOrders(data.result);
+                }
+            })
+            .catch(() => {console.log('Could not retrieve user orders.'); setUserOrders([])});
         }
-    ];
-
-    const handleOpenModal = () => {
-        setShowModal(true)
-    }
+    }, [activeSelection]);
 
     const ClearSearchInput = ((event) => {
         event.preventDefault();
         setSearchInput('');
     });
-
-    const UpdateOrderState = ((value, index) => {
-        if (userOrders[index] != null) {
-            userOrders[index].status = value;
-            setUserOrders(userOrders);
-        }
-    });
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-  price: number,
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
-
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-    
 
     return (
         <div className="center-text">
@@ -347,22 +186,25 @@ const rows = [
                                         <TableContainer component={Paper}>
                                             <Table aria-label="collapsible table">
                                                 <TableHead>
-                                                <TableRow>
-                                                    <TableCell />
-                                                    <TableCell>Dessert (100g serving)</TableCell>
-                                                    <TableCell align="right">Calories</TableCell>
-                                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                                </TableRow>
+                                                    <TableRow>
+                                                        <TableCell />
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Order ID#</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Status</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Delivery</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Country</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Street</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Address Line 1</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Address Line 2</TableCell>
+                                                    </TableRow>
                                                 </TableHead>
                                                 <TableBody>
-                                                {rows.map((row) => (
-                                                    <Row key={row.name} row={row} />
+                                                {userOrders && userOrders.map((row) => (
+                                                    <Row key={row.id} row={row} />
                                                 ))}
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
+                                        { userOrders.length < 1 ? <div>No orders.</div> : <></>}
                                     </div>
                                 </div>
                             </div>
@@ -389,3 +231,97 @@ export const FormLine = ({ type, setInputValue, inputValue, placeholder, regex, 
         disabled={isDisabled}
     />
 );
+
+export const Row = ((props: { row: Order }) => {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+  
+    return (
+      <React.Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right">{row.price}</TableCell>
+          <TableCell align="right">{row.createdAt}</TableCell>
+          <TableCell align="right">{row.updatedAt}</TableCell>
+          <TableCell align="right">{GetStatus(row.status)}</TableCell>
+          <TableCell align="right">{GetDelivery(row.delivery)}</TableCell>
+          <TableCell align="right">{row.country}</TableCell>
+          <TableCell align="right">{row.street}</TableCell>
+          <TableCell align="right">{row.addressLine1}</TableCell>
+          <TableCell align="right">{row.addressLine2}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Details
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Product</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Color</TableCell>
+                      <TableCell>Size</TableCell>
+                      <TableCell align="right">Quantity</TableCell>
+                      <TableCell align="right">Pcs. price (€)</TableCell>
+                      <TableCell align="right">Pcs. price (€)</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.cart.plants.map((plant) => (
+                      <TableRow key={plant.id}>
+                        <TableCell>{plant.name}</TableCell>
+                        <TableCell component="th" scope="row">
+                          {plant.description ? plant.description : '' }
+                        </TableCell>
+                        <TableCell>{plant.color}</TableCell>
+                        <TableCell>{plant.quantity}</TableCell>
+                        <TableCell align="right">{plant.price}</TableCell>
+                      </TableRow>
+                    ))}
+                    {row.cart.pots.map((pot) => (
+                      <TableRow key={pot.id}>
+                        <TableCell>{pot.name}</TableCell>
+                        <TableCell component="th" scope="row">
+                          {pot.description ? pot.description : '' }
+                        </TableCell>
+                        <TableCell>{pot.color}</TableCell>
+                        <TableCell>{pot.size}</TableCell>
+                        <TableCell>{pot.quantity}</TableCell>
+                        <TableCell align="right">{pot.price}</TableCell>
+                      </TableRow>
+                    ))}
+                    {row.cart.bouquets.map((bouquet) => (
+                      <TableRow key={bouquet.id}>
+                        <TableCell>{bouquet.name}</TableCell>
+                        <TableCell component="th" scope="row">
+                          {bouquet.description ? bouquet.description : '' }
+                        </TableCell>
+                        <TableCell/>
+                        <TableCell/>
+                        <TableCell>{bouquet.quantity}</TableCell>
+                        <TableCell align="right">{bouquet.price}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+});

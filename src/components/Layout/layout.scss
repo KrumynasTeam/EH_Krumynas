@@ -203,21 +203,20 @@ nav {
 
 
 .hero-row .leftPanelHero{
-  background-color: rgb(212, 228, 208);
+  background-color: rgba(212, 228, 208, 0.3);
   max-height: 810px;
-  min-height: 450px;
+  min-height: 100px;
+  width: inherit;
   padding: 0px;
   position:relative;
   display: block;
   justify-content: center;
   text-align: center;
   align-items: center;
-  height: 100%;
 }
 
 .hero-row .rightPanelHero{
-  background-color: rgb(212, 228, 208);
-  height: 100%;
+  background-color: rgba(212, 228, 208, 0.3);
   align-self: center;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -231,7 +230,7 @@ nav {
   margin-left: 0rem;
   background-color: transparent;
   align-items: inherit;
-  background-color: rgb(212, 228, 208);
+  background-color: white;
   align-self: center;
 }
 

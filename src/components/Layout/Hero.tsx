@@ -3,12 +3,7 @@ import { UserContext } from '../contexts/UserContext';
 import { Blog } from '../Blog/BlogsList';
 import { Link } from "react-router-dom";
 
-type BlogIndex = {
-    index: number;
-}
-
 export default function Hero() {
-  const profileAvatarDefaultImage = require('../../assets/profile-avatar-default.png');
   const {token} = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -31,24 +26,18 @@ export default function Hero() {
     fetchData();
   },[])
   
-  const executeScroll = () =>
-    window.scrollTo({
-      top: 928,
-      left: 0,
-      behavior: "smooth",
-    });
   return (
     <div className="center-text">
             <div id="userSettingsForm">
                 <div className="container">
-                    <div className="hero-row row">
+                    <div className="hero-row row" style={{background: 'white'}}>
                         <div className="leftPanelHero col-12 col-lg-8 panelBox">
                             <div>
                                 <h2 style={{paddingTop: '10px'}}>Most Recent</h2>
                                 
                             </div>
                             <div style={{margin: '35px', backgroundColor: 'rgba(159, 169, 156, 0.442)'}}>
-                                <img src={blogs[currentIndex]?.imageUrl} className=" disabled-link"/>
+                                <img src={blogs[currentIndex]?.imageUrl} className="disabled-link"/>
                             </div>
                             <div style={{padding: '20px'}}>
                               <button className="blogButton" onClick={() => setCurrentIndex(currentIndex = 0)}></button>

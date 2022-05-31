@@ -52,7 +52,7 @@ function CreateBlog() {
                                         <Input style={{width:'50rem', height:'20rem'}} type="textarea" name="content"/>
                                     </Label>
                                 </FormGroup>
-                                <button style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/>
+                                <button type="button" style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/>
                                 <UploadImageForm onResponse={setImageUrl} isOpen={showModal} onAction={setShowModal}/>
                                 <img src={imageUrl} /><br/>
                                 <button style={{width:'10rem', marginTop: '10px'}} type="submit">Save</button>

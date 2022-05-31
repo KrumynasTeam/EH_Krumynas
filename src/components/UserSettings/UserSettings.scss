@@ -108,7 +108,17 @@
     min-height: 500px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 498px) {
+    .rightPanel .header{
+        background-color: rgb(245, 245, 245);
+        padding: 30px;
+        padding-bottom: 200px;
+        margin-left: -11px;
+        margin-right: -11px;
+    }
+}
+
+@media (min-width: 499px) and (max-width: 991px) {
     .rightPanel .header{
         background-color: rgb(245, 245, 245);
         padding: 30px;

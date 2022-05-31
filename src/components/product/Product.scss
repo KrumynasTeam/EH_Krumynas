@@ -21,6 +21,12 @@ html, body{
     min-height: 100vh;
 }
 
+@media screen and (max-width: 1000px) {
+    .filters {
+      min-height: 0vh;
+    }
+}
+
 #filter-collapse-check{
     margin-top: 20px;
 }

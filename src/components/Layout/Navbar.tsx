@@ -43,7 +43,7 @@ const NavBar = () => {
                         </Navbar.Brand>
                         { user?.role === 1 ?
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/orders" className="nav-link">Manage Orders</Nav.Link>
+                                <Nav.Link as={Link} to="/orders" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Manage Orders</Nav.Link>
                             </Nav.Item>
                         : <></> }
                         { token == null ? (

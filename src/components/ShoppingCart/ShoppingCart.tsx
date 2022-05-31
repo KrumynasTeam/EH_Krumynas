@@ -2,8 +2,9 @@ import './ShoppingCart.scss';
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Discount, Product } from "../product/AllProducts";
-import { Label, Input, Table } from "reactstrap";
+import { Label, Input } from "reactstrap";
 import { Order, OrderDelivery, OrderStatus, OrderAddDto } from '../Orders/OrdersAdminScreen';
+import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
 export type Cart = {
     id: number,
@@ -80,11 +81,10 @@ export const GetCartById = async (setIsLoading: any, setError: any, setCart: any
         setError(null);
       }
       UpdateCartId(data.result.id);
-      //setIsLoading(false);
       return data.result;
-    }).then(result => {
-        setCart(result);
-    }).then(() => setIsLoading(false))
+    })
+    .then(result => setCart(result))
+    .then(() => setIsLoading(false))
     .catch(() => setError("Could not establish connection to server. Please try again!"));
 }
 
@@ -242,20 +242,6 @@ export const DeleteById = async (setIsLoading: any, setError: any, setSuccess: a
     .catch(() => setError("Could not establish connection to server. Please try again!"));
 }
 
-export const DeleteItemById = async (itemId: any, productType: any) => {
-    const {token, cartId} = useContext(UserContext);
-
-    return await fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}/${itemId}/${productType}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': token || ''
-      }
-    })
-    .then(response => response.json())
-    .then(data => {return true;})
-    .catch((err) => null);
-}
-
 export const ShoppingCart = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCartLoading, setIsCartLoading] = useState(false);
@@ -305,7 +291,7 @@ export const ShoppingCart = () => {
           })
           .catch(() => {
             setIsCartLoading(false);
-            //setCartError("Could not establish connection to server. Please try again!");
+            setCartError("Could not establish connection to server. Please try again!");
           });
     }, [cartId]);
 
@@ -321,11 +307,95 @@ export const ShoppingCart = () => {
             return CourierInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail);
         else 
             return PickUpInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail);
-    })
+    });
 
-    const kk = async (id) => {
-        await DeleteItemById(id, 'bouquet');
-    };
+    const DeleteItemById = async (itemId: number, productType: string) => {
+      const {token, cartId} = useContext(UserContext);
+  
+      return await fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}/${itemId}/${productType}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': token || ''
+        }
+      })
+      .then(response => response.json())
+      .then(data => {return true;})
+      .catch((err) => null);
+  }
+
+  const [selectToDelete, setSelectToDelete] = useState<any>(null);
+
+  useEffect(() => {
+    let itemId, productType = {...selectToDelete};
+    if (selectToDelete != null) {
+      DeleteItemById(itemId, productType);
+    }
+  }, [selectToDelete]);
+
+  const Row = ((props: { row: Cart }) => {
+    const { row } = props;
+    
+    return (
+        <React.Fragment>
+          <TableRow>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+              <Collapse in={true} timeout="auto" unmountOnExit>
+                <Box sx={{ margin: 1 }}>
+                  <Table size="medium" aria-label="purchases">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell/>
+                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Product</TableCell>
+                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Quantity</TableCell>
+                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Pcs. price (€)</TableCell>
+                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Color</TableCell>
+                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Size</TableCell>
+                        <TableCell/>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {row.plants.map((plant) => (
+                        <TableRow key={plant.id}>
+                          <TableCell>
+                            <button onClick={() => setSelectToDelete({'id': plant.id, 'productType': 'plant'})} style={{background: 'rgb(209, 26, 42)', maxWidth: '80px', fontFamily: 'open sans', fontSize: '12pt'}}>Remove</button>
+                          </TableCell>
+                          <TableCell align="center">{plant.plant.id}</TableCell>
+                          <TableCell align="center">{plant.quantity}</TableCell>
+                          <TableCell align="center">{plant.plant.price + '€'}</TableCell>
+                          <TableCell align="center">{plant.plant.color}</TableCell>
+                          <TableCell/>
+                          <TableCell/>
+                        </TableRow>
+                      ))}
+                      {row.pots.map((pot) => (
+                        <TableRow key={pot.id}>
+                          <TableCell align="center">{pot.pot.id}</TableCell>
+                          <TableCell align="center">{pot.quantity}</TableCell>
+                          <TableCell align="center">{pot.pot.price}</TableCell>
+                          <TableCell align="center">{pot.pot.color}</TableCell>
+                          <TableCell align="center">{pot.pot.size}</TableCell>
+                          <TableCell/>
+                        </TableRow>
+                      ))}
+                      {row.bouquets.map((bouquet) => (
+                        <TableRow key={bouquet.id}>
+                          <TableCell align="center">{bouquet.bouquet.id}</TableCell>
+                          <TableCell align="center">{bouquet.quantity}</TableCell>
+                          <TableCell align="center"/>
+                          <TableCell align="center"/>
+                          <TableCell align="center"/>
+                          <TableCell align="center"/>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
+              </Collapse>
+            </TableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    });    
 
     return (
         <div className="center-text">
@@ -362,87 +432,17 @@ export const ShoppingCart = () => {
                             <hr style={{marginTop: '30px'}}></hr>
                             <div>
                                 { Spinner(cartError, isCartLoading, cartSuccess) }
-                                {cart == null ? <h6>Cart is empty!</h6> :
+                                {cart == null && !isCartLoading ? <h6>Cart is empty!</h6> :
                                 <div style={{marginLeft: '20px', marginRight: '20px'}}>
-                                    <div style={{margin: '0px -70px 0px 0px'}}>
-                                        <h5>Plants</h5>
+                                    <div style={{margin: '-50px -70px 0px 0px'}}>
                                         <div className="custom-container" style={{display: 'flex', alignItems: 'center', overflowY: 'auto'}}>
-                                            <Table responsive striped bordered hover>
-                                                <thead>
-                                                    <tr>
-                                                    <th></th>
-                                                    <th>Name</th>
-                                                    <th>Color</th>
-                                                    <th>Quantity</th>
-                                                    <th>Half Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    { cart != null ? cart.plants.map((item, index) => (
-                                                        <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => console.log(item.id)}>REMOVE</button></td>
-                                                            <td>{item.product.name}</td>
-                                                            <td>{item.plant.color}</td>
-                                                            <td>{item.quantity}</td>
-                                                            <td>{item.quantity * item.plant.price}</td>
-                                                        </tr>
-                                                    )) : <></>}
-                                                </tbody>
+                                          <TableContainer component={Paper}>
+                                            <Table aria-label="collapsible table">
+                                                <TableBody>
+                                                {cart && <Row key={cart.id} row={cart} />}
+                                                </TableBody>
                                             </Table>
-                                        </div>
-                                    </div>
-                                    <div style={{margin: '0px -70px 0px 0px'}}>
-                                        <h5>Pots</h5>
-                                        <div className="custom-container" style={{display: 'flex', alignItems: 'center', overflowY: 'auto'}}>
-                                            <Table responsive striped bordered hover>
-                                                <thead>
-                                                    <tr>
-                                                    <th></th>
-                                                    <th>Name</th>
-                                                    <th>Color</th>
-                                                    <th>Size</th>
-                                                    <th>Quantity</th>
-                                                    <th>Half Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    { cart != null ? cart.pots.map((item, index) => (
-                                                        <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => DeleteItemById(item.id, 'pot')}>REMOVE</button></td>
-                                                            <td>{item.product.name}</td>
-                                                            <td>{item.pot.color}</td>
-                                                            <td>{item.pot.size}</td>
-                                                            <td>{item.quantity}</td>
-                                                            <td>{item.quantity * item.pot.price}</td>
-                                                        </tr>
-                                                    )) : <></>}
-                                                </tbody>
-                                            </Table>
-                                        </div>
-                                    </div>
-                                    <div style={{margin: '0px -70px 0px 0px'}}>
-                                        <h5>Bouquets</h5>
-                                        <div className="custom-container" style={{display: 'flex', alignItems: 'center', overflowY: 'auto'}}>
-                                            <Table responsive striped bordered hover>
-                                                <thead>
-                                                    <tr>
-                                                    <th></th>
-                                                    <th>Name</th>
-                                                    <th>Quantity</th>
-                                                    <th>Half Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    { cart != null ? cart.bouquets.map((item, index) => (
-                                                        <tr key={index}>
-                                                            <td><button style={{width: '100px'}} onClick={() => kk(item.id)}>REMOVE</button></td>
-                                                            <td>{item.product.name}</td>
-                                                            <td>{item.quantity}</td>
-                                                            <td>{item.quantity * item.bouquet.price}</td>
-                                                        </tr>
-                                                    )) : <></>}
-                                                </tbody>
-                                            </Table>
+                                          </TableContainer>
                                         </div>
                                     </div>
                                 </div>
@@ -743,8 +743,4 @@ const Spinner = ((error, isLoading, success) => {
             }
         </div>
     );
-}); 
-
-function async(arg0: (id: any) => void) {
-    throw new Error('Function not implemented.');
-}
+});

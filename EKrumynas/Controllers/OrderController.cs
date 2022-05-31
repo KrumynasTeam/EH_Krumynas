@@ -38,11 +38,11 @@ namespace EKrumynas.Controllers
 
         [HttpGet, Authorize(Roles = "ADMIN")]
         [Route("User/{id}")]
-        public async Task<OrderGetDto> GetByUserId(int id)
+        public async Task<IList<OrderGetDto>> GetByUserId(int id)
         {
-            var order = await _orderService.GetById(id);
+            var order = await _orderService.GetByUserId(id);
 
-            return order ?? new OrderGetDto();
+            return order ?? new List<OrderGetDto>();
         }
 
         [HttpPost]

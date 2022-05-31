@@ -7,6 +7,7 @@ import ProductCard from './ProductCard';
 import CreateProductForm from './NewProduct'
 import './Product.scss';
 import { Collapse, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import { Popover } from "@mui/material";
 
 export type Product = {
   id: number;
@@ -57,6 +58,8 @@ const sizes = ['Small', 'Medium', 'Large'];
 
 export const AllProducts = () => {
 
+  const [showPopover, setShowPopover] = useState(false);
+  const [popoverCounter, setPopoverCounter] = useState(3);
   const [isLoading, setIsLoading] = useState(true);
   const [retrieveData, setRetrieveData] = useState(true);
   const {user, token, cartId, UpdateCartId} = useContext(UserContext);
@@ -79,6 +82,20 @@ export const AllProducts = () => {
   const [selectedProductColor, setSelectedProductColor] = useState('');
   const [selectedProductQuantity, setSelectedProductQuantity] = useState(1);
   const [selectedProductSizeColors, setSelectedProductSizeColors] = useState<string[]>([])
+
+  useEffect(() => {
+    console.log('buvo');
+    if (showPopover && popoverCounter != 0) {
+      setTimeout(() => {
+        setPopoverCounter(popoverCounter - 1);
+      }, 1000);
+    } else if (!showPopover) {
+      setPopoverCounter(5);
+    } else {
+      setShowPopover(false);
+      return;
+    }
+  }, [popoverCounter, showPopover]);
 
   useEffect(() => {
     var filtered = products;
@@ -330,8 +347,10 @@ export const AllProducts = () => {
             //props.onResponse();
             UpdateCartId(data.result.id);
         }
-
-    }).catch(() => {
+    })
+    .then(() => setShowProductModal(false))
+    .then(() => setShowPopover(true))
+    .catch(() => {
         //setIsLoading(false);
         //setErrorMessage(defaultConnectionError);
     })
@@ -508,13 +527,29 @@ export const AllProducts = () => {
           </div> 
           : ''}
         {filteredProducts.map(product => <ProductCard key={product.item.id} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+10} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+20} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+30} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+40} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
-        {filteredProducts.map(product => <ProductCard key={product.item.id+50} product={product} click={openProductModal} enableAdminMode={showAdminMode} onEditClick={handleProductEdit}/> )}
       </section>
     </div>
+    <Popover
+          open={showPopover}
+        anchorReference="anchorPosition"
+        anchorPosition={{ top: 100, left: window.innerWidth }}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transitionDuration="auto"
+      >
+        <div style={{minHeight: '100px', minWidth: '200px', padding: '20px'}}>
+          <span onClick={() => setShowPopover(false)} style={{position: 'relative', float: 'right', cursor: 'pointer'}}>X</span>
+          <p>Item successfully added!</p>
+          <hr></hr>
+          <button onClick={() => window.location.href = '/cart'} style={{width: '100%'}}>Go to cart</button>
+        </div>
+    </Popover>
   </>
   )
 }

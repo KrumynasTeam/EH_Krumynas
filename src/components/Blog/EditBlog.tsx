@@ -116,7 +116,7 @@ function EditBlog() {
                                         <Input style={{width: '50vw'}} type="textarea" name="content" value={blog.content} readOnly={false} onChange={(e) => handleContentChange(e)}/>
                                     </Label>
                                 </FormGroup>
-                                <button style={{width:'20rem'}} onClick={handleOpenModal}>Open Image Upload</button><br/><br/>
+                                <button style={{width:'20rem'}} type='button' onClick={handleOpenModal}>Open Image Upload</button><br/><br/>
                                 <UploadImageForm onResponse={handleImageUpload} isOpen={showModal} onAction={setShowModal}/>
                                 <img style={{maxWidth: '100%'}} src={blog.imageUrl} /><br/><br/>
                                 <button style={{width:'10rem'}} type="submit">Save</button>

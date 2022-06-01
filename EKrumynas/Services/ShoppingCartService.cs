@@ -19,6 +19,15 @@ namespace EKrumynas.Services
         }
         public async Task<ShoppingCart> CreateCart(ShoppingCart cart)
         {
+            /*User user = _context.Users.FirstOrDefault(u => u.Id == cart.User.Id);
+
+            if (cart == null)
+            {
+                throw new ApiException(
+                    statusCode: 404,
+                    message: "Cart not found.");
+            }*/
+
             _context.ShoppingCarts.Add(cart);
             
             await _context.SaveChangesAsync();

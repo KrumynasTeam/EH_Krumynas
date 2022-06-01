@@ -206,7 +206,7 @@ nav {
   background-color: rgba(212, 228, 208, 0.3);
   max-height: 810px;
   min-height: 100px;
-  width: inherit;
+  //width: inherit;
   padding: 0px;
   position:relative;
   display: block;
@@ -220,6 +220,10 @@ nav {
   align-self: center;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.rightPanelHero h5 {
+  overflow-wrap: break-word;
 }
 
 .hero-row{

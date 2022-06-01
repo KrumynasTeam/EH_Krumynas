@@ -246,6 +246,7 @@ export const ShoppingCart = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCartLoading, setIsCartLoading] = useState(false);
     const [cartSuccess, setCartSuccess] = useState(false);
+    const [fetchCart, setFetchCart] = useState(false);
     const {user, token, cartId, UpdateCartId} = useContext(UserContext);
     
     const [cart, setCart] = useState<Cart>(null);
@@ -269,31 +270,36 @@ export const ShoppingCart = () => {
     });
 
     useEffect(() => {
-      if(cartId === null) return;
-        setIsCartLoading(true);
-        fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': token || ''
+      setFetchCart(false);
+      //if(cartId === null || cartId === 0) return;
+
+      setIsCartLoading(true);
+      fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': token || ''
+          }
+        })
+        .then(response => response.json())
+        .then(data => { 
+          setIsCartLoading(false);
+          if(data.isError){
+            if(data.status === 404){
+              setCart(null);
+              UpdateCartId(0);
+              setIsCartLoading(false);
             }
-          })
-          .then(response => response.json())
-          .then(data => { 
-            setIsCartLoading(false);
-            if(data.isError){
-              if(data.status === 404){
-                UpdateCartId(null);
-              }
-            }else{
-              setCart(data.result);
-              setIsCartLoading(false)
-            }
-          })
-          .catch(() => {
-            setIsCartLoading(false);
-            setCartError("Could not establish connection to server. Please try again!");
-          });
-    }, [cartId]);
+          }else{
+            setCart(data.result);
+            setIsCartLoading(false)
+          }
+        })
+        .catch(() => {
+          setIsCartLoading(false);
+          setCart(null);
+          setCartError("Could not establish connection to server. Please try again!");
+        });
+    }, [cartId, fetchCart]);
 
     const HandleDeliveryType = (event) => {
         setDeliveryType(DeliveryTypes[event.currentTarget.value]);
@@ -302,16 +308,15 @@ export const ShoppingCart = () => {
 
     const RenderDeliveryInfo = (() => {
         if (deliveryType == DeliveryTypes[0])
-            return DeliveryInfo(cartId, user, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail);
+            return DeliveryInfo(cartId, user, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, UpdateCartId, setFetchCart);
         else if (deliveryType == DeliveryTypes[1])
-            return CourierInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail);
+            return CourierInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, UpdateCartId, setFetchCart);
         else 
-            return PickUpInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail);
+            return PickUpInfo(cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, UpdateCartId, setFetchCart);
     });
 
     const DeleteItemById = async (itemId: number, productType: string) => {
-      const {token, cartId} = useContext(UserContext);
-  
+
       return await fetch(process.env.REACT_APP_API_URL + `ShoppingCart/${cartId}/${itemId}/${productType}`, {
         method: 'DELETE',
         headers: {
@@ -319,18 +324,13 @@ export const ShoppingCart = () => {
         }
       })
       .then(response => response.json())
-      .then(data => {return true;})
+      .then(data => {
+        if(!data.isError){
+          setFetchCart(true);
+        }
+      })
       .catch((err) => null);
   }
-
-  const [selectToDelete, setSelectToDelete] = useState<any>(null);
-
-  useEffect(() => {
-    let itemId, productType = {...selectToDelete};
-    if (selectToDelete != null) {
-      DeleteItemById(itemId, productType);
-    }
-  }, [selectToDelete]);
 
   const Row = ((props: { row: Cart }) => {
     const { row } = props;
@@ -357,34 +357,37 @@ export const ShoppingCart = () => {
                       {row.plants.map((plant) => (
                         <TableRow key={plant.id}>
                           <TableCell>
-                            <button onClick={() => setSelectToDelete({'id': plant.id, 'productType': 'plant'})} style={{background: 'rgb(209, 26, 42)', maxWidth: '80px', fontFamily: 'open sans', fontSize: '12pt'}}>Remove</button>
+                            <button onClick={() => DeleteItemById(plant.id, 'Plant')} style={{background: 'rgb(209, 26, 42)', maxWidth: '80px', fontFamily: 'open sans', fontSize: '12pt'}}>Remove</button>
                           </TableCell>
-                          <TableCell align="center">{plant.plant.id}</TableCell>
+                          <TableCell align="center">{plant.product.name}</TableCell>
                           <TableCell align="center">{plant.quantity}</TableCell>
                           <TableCell align="center">{plant.plant.price + '€'}</TableCell>
                           <TableCell align="center">{plant.plant.color}</TableCell>
-                          <TableCell/>
-                          <TableCell/>
+                          <TableCell align="center">-</TableCell>
                         </TableRow>
                       ))}
                       {row.pots.map((pot) => (
                         <TableRow key={pot.id}>
-                          <TableCell align="center">{pot.pot.id}</TableCell>
+                          <TableCell>
+                            <button onClick={() => DeleteItemById(pot.id, 'Pot')} style={{background: 'rgb(209, 26, 42)', maxWidth: '80px', fontFamily: 'open sans', fontSize: '12pt'}}>Remove</button>
+                          </TableCell>
+                          <TableCell align="center">{pot.product.name}</TableCell>
                           <TableCell align="center">{pot.quantity}</TableCell>
-                          <TableCell align="center">{pot.pot.price}</TableCell>
+                          <TableCell align="center">{pot.pot.price}€</TableCell>
                           <TableCell align="center">{pot.pot.color}</TableCell>
                           <TableCell align="center">{pot.pot.size}</TableCell>
-                          <TableCell/>
                         </TableRow>
                       ))}
                       {row.bouquets.map((bouquet) => (
                         <TableRow key={bouquet.id}>
-                          <TableCell align="center">{bouquet.bouquet.id}</TableCell>
+                          <TableCell>
+                            <button onClick={() => DeleteItemById(bouquet.id, 'Bouquet')} style={{background: 'rgb(209, 26, 42)', maxWidth: '80px', fontFamily: 'open sans', fontSize: '12pt'}}>Remove</button>
+                          </TableCell>
+                          <TableCell align="center">{bouquet.product.name}</TableCell>
                           <TableCell align="center">{bouquet.quantity}</TableCell>
-                          <TableCell align="center"/>
-                          <TableCell align="center"/>
-                          <TableCell align="center"/>
-                          <TableCell align="center"/>
+                          <TableCell align="center">{bouquet.bouquet.price}€</TableCell>
+                          <TableCell align="center">-</TableCell>
+                          <TableCell align="center">-</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -431,7 +434,7 @@ export const ShoppingCart = () => {
                             <h2 className='shopping-cart-h2'>Shopping Cart info</h2>
                             <hr style={{marginTop: '30px'}}></hr>
                             <div>
-                                { Spinner(cartError, isCartLoading, cartSuccess) }
+                                { Spinner("", isCartLoading, cartSuccess) }
                                 {cart == null && !isCartLoading ? <h6>Cart is empty!</h6> :
                                 <div style={{marginLeft: '20px', marginRight: '20px'}}>
                                     <div style={{margin: '-50px -70px 0px 0px'}}>
@@ -456,7 +459,7 @@ export const ShoppingCart = () => {
     );
 }
 
-const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail) => {
+const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, updateCartId, setFetchCart) => {
     const PerformPayment = async (event) => {
         event.preventDefault();
         setIsLoading(true);
@@ -482,6 +485,8 @@ const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError
             setError(data.error.message);
           } else {
             setError(null);
+            updateCartId(0);
+            setFetchCart(true);
             console.log('Delivery');
           }
         })
@@ -533,7 +538,7 @@ const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError
     );
 });
 
-const CourierInfo = ((cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail) => {
+const CourierInfo = ((cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, updateCartId, setFetchCart) => {
     const PerformPayment = async (event) => {
         event.preventDefault();
         setIsLoading(true);
@@ -559,6 +564,8 @@ const CourierInfo = ((cartId, user, token, courierType, setCourierType, success,
             setError(data.error.message);
           } else {
             setError(null);
+            updateCartId(0);
+            setFetchCart(true);
             console.log('Delivery');
           }
         })
@@ -631,7 +638,7 @@ const CourierInfo = ((cartId, user, token, courierType, setCourierType, success,
     );
 });
 
-const PickUpInfo = ((cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail) => {
+const PickUpInfo = ((cartId, user, token, courierType, setCourierType, success, setSuccess, error, setError, isLoading, setIsLoading, country, setCountry, street, setStreet, addressLine1, setAddressLine1, addressLine2, setAddressLine2, email, setEmail, updateCartId, setFetchCart) => {
     const PerformPayment = async (event) => {
         event.preventDefault();
         setIsLoading(true);
@@ -657,10 +664,12 @@ const PickUpInfo = ((cartId, user, token, courierType, setCourierType, success, 
             setError(data.error.message);
           } else {
             setError(null);
+            updateCartId(0);
+            setFetchCart(true);
             console.log('Delivery');
           }
         })
-        .then(() => { setIsLoading(false); setSuccess(true); })
+        .then(() => { setIsLoading(false); setSuccess(true);})
         .catch(() => setError("Could not establish connection to server. Please try again!"));
       }
 
@@ -728,7 +737,7 @@ const Spinner = ((error, isLoading, success) => {
                 error ?
                 <div style={{height: '10px', margin: '10px', textDecoration: 'underline', color: 'darkred', textAlign: 'center'}}>{error}</div>
                 :
-                <div style={{height: '10px', margin: '10px', textDecoration: 'underline', color: 'green', textAlign: 'center'}}>Successfuly updated!</div>
+                <div style={{height: '10px', margin: '10px', textDecoration: 'underline', color: 'green', textAlign: 'center'}}>Successfully updated!</div>
             ) : (
                 isLoading ? (
                     <div className='lds-default' style={{alignSelf: "center", margin: '-10px'}}>

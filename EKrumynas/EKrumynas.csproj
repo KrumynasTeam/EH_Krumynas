@@ -54,7 +54,6 @@
     <Folder Include="Controllers\User\" />
     <Folder Include="Models\Middleware\" />
     <Folder Include="Middleware\DI\" />
-    <Folder Include="DTOs\Order\" />
     <Folder Include="Models\OrderDetails\" />
   </ItemGroup>
 </Project>

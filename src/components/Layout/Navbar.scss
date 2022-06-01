@@ -18,6 +18,7 @@
 
 #expandedNavbar{
     background-color: transparent !important;
+    padding: 0;
 }
 
 #navbar{
@@ -120,5 +121,10 @@ nav {
     }
     .navStyle{
         text-align: center;
+    }
+
+    #basic-navbar-nav{
+        background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgb(253, 187, 45, 1) 100%) !important;
+        margin-top: 10px;
     }
 }

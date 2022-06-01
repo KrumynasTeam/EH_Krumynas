@@ -20,7 +20,6 @@ const NavBar = () => {
         <Navbar className="navbar navbar-expand-lg navbar-light navDefault" expanded={isCollapsed} expand="lg" id="navbar">
             <Container id="expandedNavbar">
                 <Navbar.Toggle onClick={() => setIsCollapsed(isCollapsed ? false : "expanded")} className="mr-2" />
-                <Navbar.Collapse id="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-center mainNav">
                         <Nav.Item id="Logo">

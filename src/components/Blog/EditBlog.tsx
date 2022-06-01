@@ -47,7 +47,7 @@ function EditBlog() {
                 if (data.isError == true) {
                     setError(data.error.message);
                 } else {
-                    _blog = data.result;
+                    _blog.version = data.result.version;
                 }
             })
             .then(() => {return UpdateBlog(_blog)})

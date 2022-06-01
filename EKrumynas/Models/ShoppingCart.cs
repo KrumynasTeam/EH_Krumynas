@@ -16,7 +16,7 @@ namespace EKrumynas.Models
         [Key]
         public int Id { get; set; }
         public CartStatus Status { get; set; }
-
+        public int? UserId { get; set; }
         #nullable enable
         public virtual User? User { get; set; }
         #nullable disable

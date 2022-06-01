@@ -32,6 +32,11 @@ namespace EKrumynas.Services
         {
             var orders = await _context.Orders
                 .Include(o => o.Cart)
+                    .ThenInclude(c => c.Plants)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Pots)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Bouquets)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderGetDto>>(orders);
@@ -48,7 +53,12 @@ namespace EKrumynas.Services
 
             var foundOrder = await _context.Orders
                 .Include(x => x.User)
-                .Include(x => x.Cart)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Plants)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Pots)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Bouquets)
                 .FirstOrDefaultAsync(x => x.User.Id == userId && x.Id == id);
 
             return _mapper.Map<OrderGetDto>(foundOrder);
@@ -58,6 +68,11 @@ namespace EKrumynas.Services
         {
             var orders = await _context.Orders
                 .Include(o => o.Cart)
+                    .ThenInclude(c => c.Plants)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Pots)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Bouquets)
                 .Include(o => o.User)
                 .Where(x => x.User.Id == userId)
                 .ToListAsync();
@@ -67,7 +82,14 @@ namespace EKrumynas.Services
 
         public async Task<OrderGetDto> Create(OrderAddDto orderAddDto)
         {
-            var shoppingCart = await _context.ShoppingCarts.FirstOrDefaultAsync(x => x.Id == orderAddDto.CartId);
+            var shoppingCart = await _context.ShoppingCarts
+                .Include(x => x.Bouquets)
+                    .ThenInclude(x => x.Bouquet.Product)
+                .Include(x => x.Plants)
+                    .ThenInclude(x => x.Plant.Product)
+                .Include(x => x.Pots)
+                    .ThenInclude(x => x.Pot.Product)
+                .FirstOrDefaultAsync(x => x.Id == orderAddDto.CartId);
 
             if (shoppingCart == null)
             {
@@ -83,6 +105,24 @@ namespace EKrumynas.Services
             } catch (Exception) {}
 
             var cartSnapshot = _mapper.Map<ShoppingCartSnapshot>(shoppingCart);
+            cartSnapshot.Id = 0;
+
+            foreach(PlantCartItemSnapshot snapshotItem in cartSnapshot.Plants)
+            {
+                snapshotItem.Id = 0;
+            }
+
+            foreach (PotCartItemSnapshot snapshotItem in cartSnapshot.Pots)
+            {
+                snapshotItem.Id = 0;
+            }
+
+            foreach (BouquetCartItemSnapshot snapshotItem in cartSnapshot.Bouquets)
+            {
+                snapshotItem.Id = 0;
+            }
+
+
             User orderUser = null;
 
             if (userId != null)
@@ -95,8 +135,8 @@ namespace EKrumynas.Services
             }
 
             decimal bouquetsTotal = cartSnapshot.Bouquets.Sum(item => item.Price * item.Quantity);
-            decimal plantsTotal = cartSnapshot.Plants.Sum(item => item.Price);
-            decimal potsTotal = cartSnapshot.Pots.Sum(item => item.Price);
+            decimal plantsTotal = cartSnapshot.Plants.Sum(item => item.Price * item.Quantity);
+            decimal potsTotal = cartSnapshot.Pots.Sum(item => item.Price * item.Quantity);
 
             decimal total = bouquetsTotal + plantsTotal + potsTotal;
 

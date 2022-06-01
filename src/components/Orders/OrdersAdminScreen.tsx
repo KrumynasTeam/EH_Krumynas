@@ -17,7 +17,7 @@ type OrderCart = {
 
 export type Order = {
     id: number,
-    price: number,
+    total: number,
     createdAt: string,
     updatedAt: string,
     status: number,
@@ -198,9 +198,9 @@ export const OrdersAdminScreen = () => {
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
-                                                {userOrders && userOrders.map((row) => (
-                                                    <Row key={row.id} row={row} />
-                                                ))}
+                                                    {userOrders && userOrders.map((row) => (
+                                                        <Row key={row.id} row={row} />
+                                                    ))}
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
@@ -251,18 +251,18 @@ export const Row = ((props: { row: Order }) => {
           <TableCell component="th" scope="row">
             {row.id}
           </TableCell>
-          <TableCell align="right">{row.price}</TableCell>
-          <TableCell align="right">{row.createdAt}</TableCell>
-          <TableCell align="right">{row.updatedAt}</TableCell>
-          <TableCell align="right">{GetStatus(row.status)}</TableCell>
-          <TableCell align="right">{GetDelivery(row.delivery)}</TableCell>
+          <TableCell align="right">{row.total}€</TableCell>
+          <TableCell align="right">{row.createdAt.split('T')[0]}</TableCell>
+          <TableCell align="right">{row.updatedAt.split('T')[0]}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right">{row.delivery}</TableCell>
           <TableCell align="right">{row.country}</TableCell>
           <TableCell align="right">{row.street}</TableCell>
           <TableCell align="right">{row.addressLine1}</TableCell>
           <TableCell align="right">{row.addressLine2}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
@@ -272,48 +272,42 @@ export const Row = ((props: { row: Order }) => {
                   <TableHead>
                     <TableRow>
                       <TableCell>Product</TableCell>
-                      <TableCell>Description</TableCell>
                       <TableCell>Color</TableCell>
                       <TableCell>Size</TableCell>
                       <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="right">Pcs. price (€)</TableCell>
-                      <TableCell align="right">Pcs. price (€)</TableCell>
+                      <TableCell align="right">Pcs. price</TableCell>
+                      <TableCell align="right">Total price</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {row.cart.plants.map((plant) => (
                       <TableRow key={plant.id}>
                         <TableCell>{plant.name}</TableCell>
-                        <TableCell component="th" scope="row">
-                          {plant.description ? plant.description : '' }
-                        </TableCell>
                         <TableCell>{plant.color}</TableCell>
-                        <TableCell>{plant.quantity}</TableCell>
-                        <TableCell align="right">{plant.price}</TableCell>
+                        <TableCell>-</TableCell>
+                        <TableCell align="right">{plant.quantity}</TableCell>
+                        <TableCell align="right">{plant.price}€</TableCell>
+                        <TableCell align="right">{plant.price * plant.quantity}€</TableCell>
                       </TableRow>
                     ))}
                     {row.cart.pots.map((pot) => (
                       <TableRow key={pot.id}>
                         <TableCell>{pot.name}</TableCell>
-                        <TableCell component="th" scope="row">
-                          {pot.description ? pot.description : '' }
-                        </TableCell>
                         <TableCell>{pot.color}</TableCell>
                         <TableCell>{pot.size}</TableCell>
-                        <TableCell>{pot.quantity}</TableCell>
-                        <TableCell align="right">{pot.price}</TableCell>
+                        <TableCell align="right">{pot.quantity}</TableCell>
+                        <TableCell align="right">{pot.price}€</TableCell>
+                        <TableCell align="right">{pot.price * pot.quantity}€</TableCell>
                       </TableRow>
                     ))}
                     {row.cart.bouquets.map((bouquet) => (
                       <TableRow key={bouquet.id}>
                         <TableCell>{bouquet.name}</TableCell>
-                        <TableCell component="th" scope="row">
-                          {bouquet.description ? bouquet.description : '' }
-                        </TableCell>
                         <TableCell/>
                         <TableCell/>
-                        <TableCell>{bouquet.quantity}</TableCell>
-                        <TableCell align="right">{bouquet.price}</TableCell>
+                        <TableCell align="right">{bouquet.quantity}</TableCell>
+                        <TableCell align="right">{bouquet.price}€</TableCell>
+                        <TableCell align="right">{bouquet.price * bouquet.quantity}€</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

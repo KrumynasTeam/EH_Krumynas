@@ -65,7 +65,7 @@ namespace EKrumynas.Controllers
             }
         }
         [HttpDelete]
-        [Route("/{cartId}/{itemId}/{productType}")]
+        [Route("{cartId}/{itemId}/{productType}")]
         public async Task<ShoppingCartGetDto> DeleteItemById(int cartId, int itemId, ProductType productType)
         {
             try

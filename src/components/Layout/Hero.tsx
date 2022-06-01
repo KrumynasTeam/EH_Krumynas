@@ -37,7 +37,7 @@ export default function Hero() {
                                 
                             </div>
                             <div style={{margin: '35px', backgroundColor: 'rgba(159, 169, 156, 0.442)'}}>
-                                <img src={blogs[currentIndex]?.imageUrl} className="disabled-link"/>
+                                <img src={blogs[currentIndex]?.imageUrl} className="disabled-link" style={{width: '100%'}}/>
                             </div>
                             <div style={{padding: '20px'}}>
                               <button className="blogButton" onClick={() => setCurrentIndex(currentIndex = 0)}></button>

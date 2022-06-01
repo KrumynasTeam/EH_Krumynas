@@ -358,6 +358,9 @@ const Orders = ((success, error, isLoading, userOrders) => {
                         <TableRow>
                             <TableCell />
                             <TableCell align="center" style={{fontFamily: 'open sans'}}>Order ID#</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Total</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Created at</TableCell>
+                            <TableCell align="center" style={{fontFamily: 'open sans'}}>Updated at</TableCell>
                             <TableCell align="center" style={{fontFamily: 'open sans'}}>Status</TableCell>
                             <TableCell align="center" style={{fontFamily: 'open sans'}}>Delivery</TableCell>
                             <TableCell align="center" style={{fontFamily: 'open sans'}}>Country</TableCell>

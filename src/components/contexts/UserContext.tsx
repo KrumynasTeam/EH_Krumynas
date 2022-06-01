@@ -50,7 +50,6 @@ export const UserProvider = (props: { children: any }) => {
     setToken(_token);
     let _cartId = cartId || localStorage.getItem('cartId');
     if (_cartId != null){
-      console.log(_cartId);
       setCartId(Number(_cartId));
     }
   }, [isLoggedIn])

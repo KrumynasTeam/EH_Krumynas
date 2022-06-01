@@ -84,7 +84,6 @@ export const AllProducts = () => {
   const [selectedProductSizeColors, setSelectedProductSizeColors] = useState<string[]>([])
 
   useEffect(() => {
-    console.log('buvo');
     if (showPopover && popoverCounter != 0) {
       setTimeout(() => {
         setPopoverCounter(popoverCounter - 1);
@@ -530,9 +529,9 @@ export const AllProducts = () => {
       </section>
     </div>
     <Popover
-          open={showPopover}
+        open={showPopover}
         anchorReference="anchorPosition"
-        anchorPosition={{ top: 100, left: window.innerWidth }}
+        anchorPosition={{ top: 100, left: window.innerWidth}}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',

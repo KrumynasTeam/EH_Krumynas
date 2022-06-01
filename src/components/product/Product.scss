@@ -13,18 +13,17 @@ html, body{
     height: 100%;
 }
 
+body {
+    padding-right: 0px !important;
+    overflow: auto !important;
+}
+
 .filters{
     background: black;
     position: fixed;
     min-width: 300px;
     width: 300px;
     min-height: 100vh;
-}
-
-@media screen and (max-width: 1000px) {
-    .filters {
-      min-height: 0vh;
-    }
 }
 
 #filter-collapse-check{
@@ -433,6 +432,7 @@ button{
         width: auto;
         overflow-y: hidden;
         position: relative;
+        min-height: 0vh;
     }
 
     .filter-clear{

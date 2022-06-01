@@ -29,7 +29,7 @@ export default function Hero() {
   return (
     <div className="center-text">
             <div id="userSettingsForm">
-                <div className="container">
+                <div className="container" style={{border: '10px solid rgb(204 202 204)', paddingRight: '0px', paddingLeft: '0px'}}>
                     <div className="hero-row row" style={{background: 'white'}}>
                         <div className="leftPanelHero col-12 col-lg-8 panelBox">
                             <div>

@@ -28,7 +28,7 @@ function BlogCard({blog} : {blog: Blog}) {
 
     return <Card style={{ width: '90%', margin: '1rem', borderRadius: '5px', 
     boxShadow:'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px',
-    background:'rgb(212, 228, 208)', alignSelf:'center', borderWidth:'5px'}}>
+    background:'rgb(231 220 230)', alignSelf:'center', borderWidth:'5px'}}>
     <CardBody>
         <CardTitle><h3>{blog.title}</h3></CardTitle>
         <CardImg alt="Blog Image"

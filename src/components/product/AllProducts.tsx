@@ -411,8 +411,8 @@ export const AllProducts = () => {
                   ''
                   }
                   <div className='quantity-price-field'>
-                    <label>Quantity: </label>
-                    <input type='number' value={selectedProductQuantity} onChange={(e) => setSelectedProductQuantity(Number(e.target.value))}/>
+                    <label style={{flex: '70%'}}>Quantity: </label>
+                    <input type='number' value={selectedProductQuantity} onChange={(e) => setSelectedProductQuantity(Number(e.target.value))} style={{marginTop: '-5px', flex: '30%', marginRight: '10%', textAlign: 'end'}}/>
                   </div>
                   <div className='quantity-price-field'>
                     <label>Price: {getSelectedPrice()}</label>

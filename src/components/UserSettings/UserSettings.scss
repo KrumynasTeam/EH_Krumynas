@@ -76,6 +76,7 @@
     font-size: 100%;
     background: rgb(34,193,195);
     background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
+    background: linear-gradient(135deg, rgb(84 2 80 / 14%) 0%, rgb(0 238 79 / 12%) 100%);
     font-family: "work sans";
     padding-top: 1%;
 }
@@ -92,7 +93,7 @@
 }
 
 .user-row .leftPanel{
-    background-color: white;
+    background-color: #ffffff;
     max-height: 610px;
     padding: 0px;
     position:relative;
@@ -169,7 +170,7 @@
 
 .panelBox{
   box-sizing: border-box;
-  border: 10px solid transparent;
+  border: 10px solid #ffffff00;
   background-clip: padding-box;
 }
 

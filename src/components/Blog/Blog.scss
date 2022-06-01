@@ -12,3 +12,8 @@ button{
     cursor: pointer;
     transition: opacity 0.25s ease-out;
 }
+
+#create-blog-button:hover{
+    background: linear-gradient(45deg, rgb(18, 176, 152) 35px, rgb(4, 210, 152) 0%);;
+    opacity: 0.8;
+}

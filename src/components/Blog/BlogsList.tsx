@@ -67,7 +67,7 @@ function BlogsList() {
             <div className="user-row row">
               <div className="leftPanel col-12 col-lg-12 panelBox">
                 <h1 style={{marginTop:'1rem', marginLeft: '-15px'}}>Our Blogs</h1>
-                {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn'>Create New</button></Link> : ''}
+                {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn' id='create-blog-button'>Create New</button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}
               </div>
             </div>

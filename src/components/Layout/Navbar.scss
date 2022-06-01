@@ -10,7 +10,7 @@
     font-family: 'work sans';
 }
 .navDefault {
-    background-color: #fff;
+    //background-color: #fff;
     transition: 0.0s!important;
     position:sticky !important;
     top: 0 !important;
@@ -22,12 +22,7 @@
 }
 
 #navbar{
-    background-color:#fff;
     z-index: 100;
-}
-
-#basic-navbar-nav.navbar-collapse.collapse.show{
-    background-color: #fff;
 }
 
 #Logo{
@@ -47,14 +42,14 @@
 }
 
 nav {
-    
     background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
-    border-bottom: 2px solid black;
     
+    background: #259d4b;
+    background-image: url(http://localhost:3000/static/media/footerbg.23fa6ea06b7128a9ac55.png);
 }
 
 .mainNav .nav-link {
-    color: #070120!important;
+    color: #ffffff!important;
     margin: 0.5rem 1.2rem!important;
     font-weight: 500!important;
     transition: 0.3s;
@@ -74,7 +69,7 @@ nav {
 
 .mainNav .nav-link:hover:after {
     width: 100%;
-    background: #259d4b;
+    background: #ffffff;
 }
 
 .navBrn {
@@ -83,7 +78,7 @@ nav {
 }
 .brnIcon,
 .navHighlight {
-    color: #259d4b;;
+    color: #ffffff;;
 }
 .brnIcon {
     font-weight: 800;
@@ -96,7 +91,8 @@ nav {
     border-radius: 50px;
     font-weight: 500;
     color:#fff;
-    background: #259d4b;
+    background: #0000001a;
+    
     //padding: 0.5rem 1.5rem;
     margin: 0.5rem 1rem;
     transition: 0.4s;
@@ -111,20 +107,19 @@ nav {
 
 @media (max-width: 981px) {
     .navDefault {
-        background: rgb(34,193,195);
-        background: linear-gradient(135deg, rgba(34,193,195,0.3) 0%,     rgba(253,187,45,1) 100%);
         padding: 0.8rem 0.5rem!important;
         width: 100%;
         z-index: 99!important;
         transition: 0.5s!important;
         text-align: center;
+        background-image: none;
     }
     .navStyle{
         text-align: center;
     }
 
     #basic-navbar-nav{
-        background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgb(253, 187, 45, 1) 100%) !important;
+        background: rgb(37 157 75) !important;
         margin-top: 10px;
     }
 }

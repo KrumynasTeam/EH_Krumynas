@@ -42,7 +42,7 @@ const NavBar = () => {
                         </Navbar.Brand>
                         { user?.role === 1 ?
                             <Nav.Item id="Logo">
-                                <Nav.Link as={Link} to="/orders" className="nav-link" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Manage Orders</Nav.Link>
+                                <Link to="/orders"><button style={{whiteSpace: 'nowrap'}} className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Manage Orders</button></Link>
                             </Nav.Item>
                         : <></> }
                         { token == null ? (
@@ -51,17 +51,17 @@ const NavBar = () => {
                                 <Link to="/login"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>Login</button></Link>
                             </Nav.Item>
                             <Nav.Item id="Logo">
-                                <Link to="/signup"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>SignUp</button>
+                                <Link to="/signup"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100);}}>Sign Up</button>
                                 </Link></Nav.Item>
                             </>
                         ) : (
                             <>
                             <Nav.Item id="Logo">
-                                <Link to={`/${window.location}`} onClick={() => Logout()}><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>LogOut</button></Link>
+                                <Link to={`/${window.location}`} style={{whiteSpace: 'nowrap'}} onClick={() => Logout()}><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>Log Out</button></Link>
                             </Nav.Item>
 
                             <Nav.Item id="Logo">
-                                <Link to="/account"><button className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>MyAccount</button></Link>
+                                <Link to="/account"><button style={{whiteSpace: 'nowrap'}} className="loginBtn" onClick={() => { scrollTop(); setTimeout(() => setIsCollapsed(false), 100); }}>My Account</button></Link>
                             </Nav.Item>
                             <div id="Logo">
                                 <img id="popImg" src={user?.profileImage || profileAvatarDefaultImage}/>

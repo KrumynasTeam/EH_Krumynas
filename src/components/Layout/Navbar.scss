@@ -122,4 +122,14 @@ nav {
         background: rgb(37 157 75) !important;
         margin-top: 10px;
     }
+
+    .navbar-collapse {
+        display: flex;
+        justify-content: left;
+    }
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: center;
 }

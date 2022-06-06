@@ -19,6 +19,8 @@ function BlogsList() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const {user, token} = useContext(UserContext);
 
+    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
     function renderCard (blog : Blog){
         return(
             <BlogCard key={blog.id} blog={blog}/>
@@ -29,7 +31,7 @@ function BlogsList() {
     function renderBlogsList (blogs : Blog[]){
       return (
         <div style={{ display: "flex", justifyContent:'center', flexDirection:'column', textAlign:'left'}}>
-          {blogs.map(renderCard)}
+          {blogs.map(renderCard).reverse()}
         </div>
       );
     }
@@ -67,7 +69,7 @@ function BlogsList() {
             <div className="user-row row">
               <div className="leftPanel col-12 col-lg-12 panelBox">
                 <h1 style={{marginTop:'1rem', marginLeft: '-15px'}}>Our Blogs</h1>
-                {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn' id='create-blog-button'>Create New</button></Link> : ''}
+                {user?.role === 1 ? <Link to="createBlog"><button style={{width:'10rem'}} className='loginBtn' onClick={() => scrollTop()} id='create-blog-button'>Create New</button></Link> : ''}
                 {isLoading ? <div>Loading...</div> : renderBlogsList(blogs)}
               </div>
             </div>

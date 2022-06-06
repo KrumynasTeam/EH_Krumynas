@@ -173,7 +173,7 @@ namespace EKrumynas.Services
 
             order.Status = orderUpdateDto.Status;
 
-            _context.Add(order);
+            _context.Update(order);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<OrderGetDto>(order);

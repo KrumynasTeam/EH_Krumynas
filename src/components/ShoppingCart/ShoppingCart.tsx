@@ -242,6 +242,8 @@ export const DeleteById = async (setIsLoading: any, setError: any, setSuccess: a
     .catch(() => setError("Could not establish connection to server. Please try again!"));
 }
 
+const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
 export const ShoppingCart = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCartLoading, setIsCartLoading] = useState(false);
@@ -257,7 +259,7 @@ export const ShoppingCart = () => {
     const [street, setStreet] = useState(user?.street);
     const [addressLine1, setAddressLine1] = useState(user?.addressLine1);
     const [addressLine2, setAddressLine2] = useState(user?.addressLine2);
-    const [email, setEmail] = useState(null);
+    const [email, setEmail] = useState(user?.email);
 
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
@@ -472,10 +474,10 @@ const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError
           body: JSON.stringify({
             "cartId": cartId,
             "delivery": DeliveryTypes[0],
-            "country": user?.country || country || '',
-            "street": user?.street || street || '',
-            "addressLine1": user?.addressLine1 || addressLine1 || '',
-            "addressLine2": user?.addressLine2 || addressLine2 || ''
+            "country": country || user?.country || '',
+            "street": street || user?.street || '',
+            "addressLine1": addressLine1 || user?.addressLine1 || '',
+            "addressLine2": addressLine2 || user?.addressLine2 || ''
           })
         })
         .then(response => response.json())
@@ -487,7 +489,7 @@ const DeliveryInfo = ((cartId, user, token, success, setSuccess, error, setError
             setError(null);
             updateCartId(0);
             setFetchCart(true);
-            console.log('Delivery');
+            scrollTop();
           }
         })
         .then(() => { setIsLoading(false); setSuccess(true); })
@@ -551,10 +553,10 @@ const CourierInfo = ((cartId, user, token, courierType, setCourierType, success,
           body: JSON.stringify({
             "cartId": cartId,
             "delivery": DeliveryTypes[1],
-            "country": user?.country || country || '',
-            "street": user?.street || street || '',
-            "addressLine1": user?.addressLine1 || addressLine1 || '',
-            "addressLine2": user?.addressLine2 || addressLine2
+            "country": country || user?.country || '',
+            "street": street || user?.street || '',
+            "addressLine1": addressLine1 || user?.addressLine1 || '',
+            "addressLine2": addressLine2 || user?.addressLine2 || ''
           })
         })
         .then(response => response.json())
@@ -566,7 +568,7 @@ const CourierInfo = ((cartId, user, token, courierType, setCourierType, success,
             setError(null);
             updateCartId(0);
             setFetchCart(true);
-            console.log('Delivery');
+            scrollTop();
           }
         })
         .then(() => { setIsLoading(false); setSuccess(true); })
@@ -574,7 +576,6 @@ const CourierInfo = ((cartId, user, token, courierType, setCourierType, success,
       }
 
     const handleCourierType = (event) => {
-        console.log(event.currentTarget.value);
         setCourierType(CourierTypes[event.currentTarget.value]);
     }
 
@@ -651,10 +652,10 @@ const PickUpInfo = ((cartId, user, token, courierType, setCourierType, success, 
           body: JSON.stringify({
             "cartId": cartId,
             "delivery": DeliveryTypes[2],
-            "country": user?.country || country || '',
-            "street": user?.street || street || '',
-            "addressLine1": user?.addressLine1 || addressLine1 || '',
-            "addressLine2": user?.addressLine2 || addressLine2 || ''
+            "country": country || user?.country || '',
+            "street": street || user?.street || '',
+            "addressLine1": addressLine1 || user?.addressLine1 || '',
+            "addressLine2": addressLine2 || user?.addressLine2 || ''
           })
         })
         .then(response => response.json())
@@ -666,42 +667,21 @@ const PickUpInfo = ((cartId, user, token, courierType, setCourierType, success, 
             setError(null);
             updateCartId(0);
             setFetchCart(true);
-            console.log('Delivery');
+            scrollTop();
           }
         })
         .then(() => { setIsLoading(false); setSuccess(true);})
         .catch(() => setError("Could not establish connection to server. Please try again!"));
       }
 
-    const handleCourierType = (event) => {
-        setCourierType(CourierTypes[event.currentTarget.value]);
-    }
-
     return (
         <div>
         <form onSubmit={(event) => PerformPayment(event)}>
-        <hr />
-            <div>
-                <label>Choose a courier:</label>
-                <br/>
-                <label>
-                    <input value={0} checked={courierType == CourierTypes[0]} onChange={handleCourierType} name="courier" type="radio" className="choice" style={{width: '15px', height: '15px', padding: '10px', marginTop: '10px', marginRight: '10px', borderBottom: '10px solid rgba(34,193,195,1)'}}/>
-                        DPD
-                </label>
-                <br/>
-                <label>
-                    <input value={1} checked={courierType == CourierTypes[1]} onChange={handleCourierType} name="courier" type="radio" className="choice" style={{width: '15px', height: '15px', padding: '10px', marginTop: '10px', marginRight: '10px', borderBottom: '10px solid rgba(34,193,195,1)'}}/>
-                        Omniva
-                </label>
-                <label style={{minWidth: '150px'}}>
-                    <input value={2} checked={courierType == CourierTypes[2]} onChange={handleCourierType} name="courier" type="radio" className="choice" style={{width: '15px', height: '15px', padding: '10px', marginTop: '10px', marginRight: '10px', borderBottom: '10px solid rgba(34,193,195,1)'}}/>LP Expres
-                </label>
-            </div>
             <hr />
             <div className="custom-container">
                 <div className="input-div">
                     <Label>Email</Label>
-                    <FormLine type="text" inputValue={email || ''} setInputValue={setEmail} placeholder='Enter your email' regex="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" onInvalidMessage="Invalid email address." isRequired={true} isAutoComplete={"false"} isDisabled={false} />
+                    <FormLine type="text" inputValue={email} setInputValue={setEmail} placeholder='Enter your email' regex="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" onInvalidMessage="Invalid email address." isRequired={true} isAutoComplete={"false"} isDisabled={false} />
                 </div>
             </div>
             { Spinner(error, isLoading, success) }

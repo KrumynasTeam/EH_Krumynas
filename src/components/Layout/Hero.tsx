@@ -25,6 +25,8 @@ export default function Hero() {
     setIsLoading(true);
     fetchData();
   },[])
+
+  const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
   
   return (
     <div className="center-text">
@@ -51,9 +53,10 @@ export default function Hero() {
                             
                         <div className="rightPanelHero col-12 col-lg-4 panelBox">
                             <h2>{blogs[currentIndex]?.title}</h2>
-                            <h5>{blogs[currentIndex]?.content}</h5>
-                          
-                            <Link to={`/blog/${blogs[currentIndex]?.id}`}><button className="heroButton" >Read more</button></Link>
+                            <div style={{textAlign: 'left'}}>
+                              <h5>{blogs[currentIndex]?.content.substring(0, 521)} ...</h5>
+                            </div>
+                            <Link to={`/blog/${blogs[currentIndex]?.id}`}><button className="heroButton" onClick={() => scrollTop()} >Read more</button></Link>
                         </div>
                         
                     </div>

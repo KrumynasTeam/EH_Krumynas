@@ -15,6 +15,8 @@ function EditBlog() {
     const [error, setError] = useState(null);
     const defaultConnectionError = "Could not establish connection to the server. Please try again!";
 
+    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
     const UpdateBlog = async (blog) => {
         await fetch(process.env.REACT_APP_API_URL + 'Blog', {
             method: 'PUT',
@@ -23,13 +25,15 @@ function EditBlog() {
                 'Content-Type': 'application/json',
                 'Authorization': token
             }
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(data => {
             if (data.isError === true) {
                 setError(data.error.message);
             } else {
                 setError(null);
                 navigate("/blogs");
+                scrollTop();
             }
         })
         .catch(err => setError(defaultConnectionError));
@@ -50,7 +54,7 @@ function EditBlog() {
                     _blog.version = data.result.version;
                 }
             })
-            .then(() => {return UpdateBlog(_blog)})
+            .then(() => {scrollTop(); return UpdateBlog(_blog)})
             .catch(err => setError(true));
         } else {
             await UpdateBlog(_blog);
@@ -103,7 +107,7 @@ function EditBlog() {
                     <div className="user-row row">
                         <div className="leftPanel col-12 col-lg-12 panelBox">
                             <h1>Editing blog</h1>
-                            <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
+                            <Link to="/blogs"><button style={{width:'20rem'}} onClick={() => scrollTop()}>Back to blogs</button></Link>
                             <form onSubmit={(event) => handleSubmit(event, false)}>
                             <div>
                                 <FormGroup>

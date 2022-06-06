@@ -3,10 +3,99 @@ import './UserSettings.scss';
 import UploadImageForm from "../ImageUploader/ImageUpload";
 import { UserContext } from "../contexts/UserContext";
 import { Label, Input } from "reactstrap";
-import { GetDelivery, GetStatus, Order, Row } from "../Orders/OrdersAdminScreen";
+import { GetDelivery, GetStatus, Order } from "../Orders/OrdersAdminScreen";
 import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
+const Row = ((props: { row: Order }) => {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+  
+    return (
+      <React.Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.total}€</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.createdAt.split('T')[0]}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.updatedAt.split('T')[0]}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.status}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.delivery}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.country || '-'}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.street || '-'}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.addressLine1 || '-'}</TableCell>
+          <TableCell align="right" style={{textAlign: 'center'}}>{row.addressLine2 || '-'}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div" style={{fontFamily: 'open sans'}}>
+                  Details
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell style={{fontFamily: 'open sans'}}>Product</TableCell>
+                      <TableCell style={{fontFamily: 'open sans'}}>Color</TableCell>
+                      <TableCell style={{fontFamily: 'open sans'}}>Size</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Quantity</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Pcs. price</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Total price</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.cart.plants.map((plant) => (
+                      <TableRow key={plant.id}>
+                        <TableCell style={{fontFamily: 'open sans'}}>{plant.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{plant.color}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>-</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.price * plant.quantity}€</TableCell>
+                      </TableRow>
+                    ))}
+                    {row.cart.pots.map((pot) => (
+                      <TableRow key={pot.id}>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.color}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.size}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.price * pot.quantity}€</TableCell>
+                      </TableRow>
+                    ))}
+                    {row.cart.bouquets.map((bouquet) => (
+                      <TableRow key={bouquet.id}>
+                        <TableCell style={{fontFamily: 'open sans'}}>{bouquet.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}/>
+                        <TableCell/>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.price * bouquet.quantity}€</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+});
+
 
 export const UserSettingsScreen = () => {
     const orders = 'Orders';
@@ -38,7 +127,7 @@ export const UserSettingsScreen = () => {
 
     useEffect(() => {
         if (user?.id) {
-            fetch(process.env.REACT_APP_API_URL + 'Order', {
+            fetch(process.env.REACT_APP_API_URL + `Order/User/${user.id}`, {
                 method: 'GET',
                 headers: { 'Authorization': token },
             })
@@ -51,7 +140,7 @@ export const UserSettingsScreen = () => {
                     setUserOrders(data.result);
                 }
             })
-            .catch(() => {console.log('Could not retrieve user orders.'); setUserOrders([])});
+            .catch(() => {setUserOrders([]);});
         }
     }, []);
 
@@ -351,7 +440,7 @@ const ChangePassword = ((token, success, setSuccess, error, setError, isLoading,
 const Orders = ((success, error, isLoading, userOrders) => {
     return (
     <div className="orders-layout">
-        <div className="custom-container" style={{display: 'flex', alignItems: 'center', maxHeight: '250px', overflowY: 'auto'}}>
+        <div className="custom-container" style={{display: 'flex', alignItems: 'center', overflowY: 'auto'}}>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>

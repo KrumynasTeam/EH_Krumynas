@@ -69,6 +69,7 @@ export const UserProvider = (props: { children: any }) => {
       } else {
         setError(null);
         localStorage.setItem('user', JSON.stringify(data.result));
+        setUser(data.result);
         setIsLoggedIn(true);
         if (redirect)
           window.location.href = '/';
@@ -143,9 +144,9 @@ export const UserProvider = (props: { children: any }) => {
 
   const Logout = async () => {
     setIsLoading(true);
-    let cartId = localStorage.getItem('cartId');
+    //let cartId = localStorage.getItem('cartId');
     localStorage.clear();
-    localStorage.setItem('cartId', cartId);
+    //localStorage.setItem('cartId', cartId);
     setUser(null);
     setToken(null);
     setIsLoading(false);

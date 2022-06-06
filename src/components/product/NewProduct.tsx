@@ -519,7 +519,7 @@ const CreateProductForm = props => {
                                             <div className="product-variant-row-cell">{v.color}</div>
                                             <div className="product-variant-row-cell">{v.price}</div>
                                             <div className="product-variant-row-cell">{v.stock}</div>
-                                            <div className="product-variant-row-cell">{v.addableToBouquet ? 'True' : 'False'}</div>
+                                            <div className="product-variant-row-cell">{v.addableToBouquet ? 'Yes' : 'No'}</div>
                                             <div className="product-variant-row-cell">
                                                 <Button onClick={() => removeVarient(index)}>-</Button>
                                             </div>

@@ -26,6 +26,8 @@ function BlogCard({blog} : {blog: Blog}) {
         window.location.reload();
     }
 
+    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
     return <Card style={{ width: '90%', margin: '1rem', borderRadius: '5px', 
     boxShadow:'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px',
     background:'rgb(231 220 230)', alignSelf:'center', borderWidth:'5px'}}>
@@ -40,7 +42,7 @@ function BlogCard({blog} : {blog: Blog}) {
             {blog.content.substring(0, 350)}...
         </CardText>
         <Link to={`/blog/${blog.id}`}>
-            <button className=" choice" style={{width: '130px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Read more</button>
+            <button className=" choice" onClick={() => scrollTop()} style={{width: '130px', height: '40px', marginTop: '4px', borderBottom: '2px solid rgba(34,193,195,1)'}}>Read more</button>
         </Link>
         </CardBody>
         <CardFooter className='text-muted' style={{display: 'flex', alignItems: 'center'}}>
@@ -50,7 +52,7 @@ function BlogCard({blog} : {blog: Blog}) {
                 {user?.role === 1 ? 
                 <div style={{marginLeft: 'auto'}}>
                 <button style={{height:'48px', width: '48px', borderRadius: '5px'}}><Trash3Fill onClick={() => handleDeleteClick(blog.id)} /></button>
-                <Link to={`/editBlog/${blog.id}`}><button style={{marginInline:'3px', height:'48px', width: '48px', borderRadius: '5px'}}><PencilFill /></button></Link>
+                <Link to={`/editBlog/${blog.id}`}><button onClick={() => scrollTop()} style={{marginInline:'3px', height:'48px', width: '48px', borderRadius: '5px'}}><PencilFill /></button></Link>
                 </div> : 
                 ''}
         </CardFooter>

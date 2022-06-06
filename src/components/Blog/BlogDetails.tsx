@@ -45,6 +45,8 @@ function BlogDetails() {
       )
     }
 
+    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
     return  (
       <div className="center-text" style={{minWidth: '400px'}}>
           <div id="userSettingsForm">
@@ -55,7 +57,7 @@ function BlogDetails() {
                         <h4>{toShortDateString(blog.createdAt)}</h4>
                         <img style={{width: '70%', height: '60%'}} src={blog.imageUrl} /><br/><br/>
                         <p>{blog.content}</p>
-                        <Link to="/blogs"><button style={{maxWidth:'20rem'}}>Back to blogs</button></Link>
+                        <Link to="/blogs"><button onClick={() => scrollTop()} style={{maxWidth:'20rem'}}>Back to blogs</button></Link>
                       </div>
                   </div>
               </div>

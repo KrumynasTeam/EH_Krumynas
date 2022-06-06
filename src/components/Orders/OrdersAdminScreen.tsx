@@ -3,7 +3,7 @@ import './OrdersAdmin.scss';
 import { User, UserContext } from "../contexts/UserContext";
 import { Input, ListGroup, ListGroupItem } from "reactstrap";
 import { Spinner } from "../UserSettings/UserSettingsScreen";
-import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from "@mui/material";
+import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Select, MenuItem, FormControl } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
@@ -113,7 +113,7 @@ export const OrdersAdminScreen = () => {
                     setUserOrders(data.result);
                 }
             })
-            .catch(() => {console.log('Could not retrieve user orders.'); setUserOrders([])});
+            .catch(() => {setUserOrders([]);});
         }
     }, [activeSelection]);
 
@@ -189,6 +189,9 @@ export const OrdersAdminScreen = () => {
                                                     <TableRow>
                                                         <TableCell />
                                                         <TableCell align="center" style={{fontFamily: 'open sans'}}>Order ID#</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Total</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Created at</TableCell>
+                                                        <TableCell align="center" style={{fontFamily: 'open sans'}}>Updated at</TableCell>
                                                         <TableCell align="center" style={{fontFamily: 'open sans'}}>Status</TableCell>
                                                         <TableCell align="center" style={{fontFamily: 'open sans'}}>Delivery</TableCell>
                                                         <TableCell align="center" style={{fontFamily: 'open sans'}}>Country</TableCell>
@@ -199,7 +202,7 @@ export const OrdersAdminScreen = () => {
                                                 </TableHead>
                                                 <TableBody>
                                                     {userOrders && userOrders.map((row) => (
-                                                        <Row key={row.id} row={row} />
+                                                        <Row key={row.id} row={row} token={token} />
                                                     ))}
                                                 </TableBody>
                                             </Table>
@@ -232,9 +235,34 @@ export const FormLine = ({ type, setInputValue, inputValue, placeholder, regex, 
     />
 );
 
-export const Row = ((props: { row: Order }) => {
-    const { row } = props;
+const Row = ((props: { row: Order, token: string }) => {
+    const { row, token } = props;
     const [open, setOpen] = React.useState(false);
+    const [fetchStatus, setFetchStatus] = React.useState(false);
+    const [status, setStatus] = useState<number | string>(row.status);
+    
+    useEffect(() => {
+        if (fetchStatus) {
+            fetch(process.env.REACT_APP_API_URL + `Order`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'id': row.id,
+                    'status': OrderStatus.indexOf(status.toString())
+                })
+            })
+            .catch(() => console.log('error'));
+        }
+    }, [status]);
+
+    const handleStatusSelect = ((e) => {
+        const s: number = e.target.value;
+        setStatus(OrderStatus[s]);
+        setFetchStatus(true);
+    });
   
     return (
       <React.Fragment>
@@ -247,67 +275,81 @@ export const Row = ((props: { row: Order }) => {
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
-          </TableCell>
-          <TableCell component="th" scope="row">
-            {row.id}
-          </TableCell>
-          <TableCell align="right">{row.total}€</TableCell>
-          <TableCell align="right">{row.createdAt.split('T')[0]}</TableCell>
-          <TableCell align="right">{row.updatedAt.split('T')[0]}</TableCell>
-          <TableCell align="right">{row.status}</TableCell>
-          <TableCell align="right">{row.delivery}</TableCell>
-          <TableCell align="right">{row.country}</TableCell>
-          <TableCell align="right">{row.street}</TableCell>
-          <TableCell align="right">{row.addressLine1}</TableCell>
-          <TableCell align="right">{row.addressLine2}</TableCell>
+            </TableCell>
+            <TableCell component="th" scope="row">
+                {row.id}
+            </TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.total}€</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.createdAt.split('T')[0]}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.updatedAt.split('T')[0]}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>
+            <FormControl>
+            <Select
+                value={OrderStatus.indexOf(status.toString())}
+                onChange={handleStatusSelect}
+            >
+                <MenuItem value={0}>{OrderStatus[0]}</MenuItem>
+                <MenuItem value={1}>{OrderStatus[1]}</MenuItem>
+                <MenuItem value={2}>{OrderStatus[2]}</MenuItem>
+                <MenuItem value={3}>{OrderStatus[3]}</MenuItem>
+                <MenuItem value={4}>{OrderStatus[4]}</MenuItem>
+                <MenuItem value={5}>{OrderStatus[5]}</MenuItem>
+            </Select>
+            </FormControl>
+            </TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.delivery}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.country || '-'}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.street || '-'}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.addressLine1 || '-'}</TableCell>
+            <TableCell align="right" style={{textAlign: 'center'}}>{row.addressLine2 || '-'}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
+                <Typography variant="h6" gutterBottom component="div" style={{fontFamily: 'open sans'}}>
                   Details
                 </Typography>
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Product</TableCell>
-                      <TableCell>Color</TableCell>
-                      <TableCell>Size</TableCell>
-                      <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="right">Pcs. price</TableCell>
-                      <TableCell align="right">Total price</TableCell>
+                      <TableCell style={{fontFamily: 'open sans'}}>Product</TableCell>
+                      <TableCell style={{fontFamily: 'open sans'}}>Color</TableCell>
+                      <TableCell style={{fontFamily: 'open sans'}}>Size</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Quantity</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Pcs. price</TableCell>
+                      <TableCell align="right" style={{fontFamily: 'open sans'}}>Total price</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {row.cart.plants.map((plant) => (
                       <TableRow key={plant.id}>
-                        <TableCell>{plant.name}</TableCell>
-                        <TableCell>{plant.color}</TableCell>
-                        <TableCell>-</TableCell>
-                        <TableCell align="right">{plant.quantity}</TableCell>
-                        <TableCell align="right">{plant.price}€</TableCell>
-                        <TableCell align="right">{plant.price * plant.quantity}€</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{plant.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{plant.color}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>-</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{plant.price * plant.quantity}€</TableCell>
                       </TableRow>
                     ))}
                     {row.cart.pots.map((pot) => (
                       <TableRow key={pot.id}>
-                        <TableCell>{pot.name}</TableCell>
-                        <TableCell>{pot.color}</TableCell>
-                        <TableCell>{pot.size}</TableCell>
-                        <TableCell align="right">{pot.quantity}</TableCell>
-                        <TableCell align="right">{pot.price}€</TableCell>
-                        <TableCell align="right">{pot.price * pot.quantity}€</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.color}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{pot.size}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{pot.price * pot.quantity}€</TableCell>
                       </TableRow>
                     ))}
                     {row.cart.bouquets.map((bouquet) => (
                       <TableRow key={bouquet.id}>
-                        <TableCell>{bouquet.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}>{bouquet.name}</TableCell>
+                        <TableCell style={{fontFamily: 'open sans'}}/>
                         <TableCell/>
-                        <TableCell/>
-                        <TableCell align="right">{bouquet.quantity}</TableCell>
-                        <TableCell align="right">{bouquet.price}€</TableCell>
-                        <TableCell align="right">{bouquet.price * bouquet.quantity}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.quantity}</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.price}€</TableCell>
+                        <TableCell align="right" style={{fontFamily: 'open sans'}}>{bouquet.price * bouquet.quantity}€</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

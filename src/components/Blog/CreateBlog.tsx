@@ -10,6 +10,8 @@ function CreateBlog() {
     const [showModal, setShowModal] = useState(false)
     const [imageUrl, setImageUrl] = useState(null)
 
+    const scrollTop = () => window['scrollTo']({ top: 0, behavior: 'smooth' });
+
     function handleSubmit(e){
         e.preventDefault();
         let blog = {
@@ -25,8 +27,9 @@ function CreateBlog() {
                 'Content-Type': 'application/json',
                 'Authorization': token
             }
-        }).then(() => navigate("/blogs")
-        ).catch(err => err);
+        })
+        .then(() => { navigate("/blogs"); scrollTop(); })
+        .catch(err => err);
       }
 
     const handleOpenModal = () => {
@@ -40,7 +43,7 @@ function CreateBlog() {
                     <div className="user-row row">
                         <div className="leftPanel col-12 col-lg-12 panelBox">
                             <h1>Creating a new blog post</h1>
-                            <Link to="/blogs"><button style={{width:'20rem'}}>Back to blogs</button></Link>
+                            <Link to="/blogs"><button onClick={() => scrollTop()} style={{width:'20rem'}}>Back to blogs</button></Link>
                             <Form onSubmit={handleSubmit}>
                                 <FormGroup className="mb-3">
                                     <Label style={{marginLeft: '-30px'}}>Title

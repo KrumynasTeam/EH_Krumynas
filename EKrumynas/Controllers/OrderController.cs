@@ -36,7 +36,7 @@ namespace EKrumynas.Controllers
             return order ?? new OrderGetDto();
         }
 
-        [HttpGet, Authorize(Roles = "ADMIN")]
+        [HttpGet, Authorize(Roles = "ADMIN, USER")]
         [Route("User/{id}")]
         public async Task<IList<OrderGetDto>> GetByUserId(int id)
         {
@@ -58,11 +58,11 @@ namespace EKrumynas.Controllers
         [HttpPut, Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update(OrderUpdateDto orderUpdateDto)
         {
-            var createdOrder = await _orderService.Update(orderUpdateDto);
+            var updatedOrder = await _orderService.Update(orderUpdateDto);
 
             // TODO: Send email to user about updated order status
 
-            return Ok(createdOrder);
+            return Ok(updatedOrder);
         }
 
         [HttpDelete, Authorize(Roles = "ADMIN")]
